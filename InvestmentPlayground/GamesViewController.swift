@@ -7,9 +7,14 @@
 //
 
 import UIKit
+import FirebaseFirestore
 
 class GamesViewController: UIViewController, UITableViewDataSource, UITableViewDelegate{
     
+    let db = Firestore.firestore()
+    
+    // Maybe it would make sense to make an array of Game structs instead of a string, but for now just doing strings to show the concept
+    var games: [String] = []
     @IBOutlet weak var gamesTable: UITableView!
     
     override func viewDidLoad() {
@@ -32,7 +37,7 @@ class GamesViewController: UIViewController, UITableViewDataSource, UITableViewD
     
     //EVERYTHING NEEDS TO BE CHANGED
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 0;
+        return games.count
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -41,25 +46,24 @@ class GamesViewController: UIViewController, UITableViewDataSource, UITableViewD
     
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell { //help from https://www.ralfebert.de/tutorials/ios-swift-uitableviewcontroller/#data_swift_arrays
-        print("3")
         let cell1 = tableView.dequeueReusableCell(withIdentifier: "gameCell", for: indexPath) as UITableViewCell
-        print("index Path: ")
-        print(indexPath.item)
-        cell1.textLabel?.text = "hello"
+        cell1.textLabel?.text = games[indexPath.row]
         return cell1
     }
     
-    func addGame(title: String) {
-        var ref: DocumentReference? = nil
-        ref = db.collection("games").addDocument(data: [
-            "title": title
-        ]) { err in
-            if let err = err {
-                print("Error adding document: \(err)")
-            } else {
-                print("Document added with ID: \(ref!.documentID)")
-            }
+    func getGamesForUser(username: String) {
+        db.collection("gameMembers").whereField("username", isEqualTo: username)
+            .getDocuments() { [unowned self] (querySnapshot, err) in
+                if let err = err {
+                    print("Error getting documents: \(err)")
+                } else {
+                    for document in querySnapshot!.documents {
+                        if let title = document.data()["title"] as? String {
+                            self.games.append(title)
+                        }
+                    }
+                    self.gamesTable.reloadData()
+                }
         }
     }
-    
 }
