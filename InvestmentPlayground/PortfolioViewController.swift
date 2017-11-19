@@ -55,7 +55,11 @@ class PortfolioViewController: UIViewController, UITableViewDataSource, UITableV
                     for document in querySnapshot!.documents {
                         if let ticker = document.data()["ticker"] as? String {
                             if let numShares = document.data()["numShares"] as? Int {
-                                self.stocks.append(Stock(ticker: ticker, numShares: numShares))
+                                if let name = document.data()["name"] as? String {
+                                    if let midprice = document.data()["midprice"] as? [Float] {
+                                        self.stocks.append(Stock(name: name, midprice: midprice, ticker: ticker, numShares: numShares))
+                                    }
+                                }
                             }
                         }
                     }

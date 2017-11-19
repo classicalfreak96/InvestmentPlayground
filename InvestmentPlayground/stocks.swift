@@ -10,6 +10,8 @@ import Foundation
 import UIKit
 
 struct Stock {
+    var name:String = ""
+    var midprice: [Float] = []
     var ticker: String = ""
     var numShares: Int = 0
 }

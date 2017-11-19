@@ -11,10 +11,8 @@ import UIKit
 
 class dataParse{ //change this for stock API
     
-    
-    /*
-    var movieList: [movie] = []
     var path: String = ""
+    var equityList: [Stock] = []
     
     private func getJSON(path: String) -> JSON {
         guard let url = URL(string: path) else { return JSON.null }
@@ -25,6 +23,26 @@ class dataParse{ //change this for stock API
             return JSON.null
         }
     }
+    func searchData(function: String, symbol: String, interval: String, time_period: String){
+        
+    }
+    
+    func searchEquity (function: String, symbol: String, interval: String, time_period: String) -> Stock {
+        path = "https://www.alphavantage.co/query?function=" + function + "&symbol=" + symbol + "&interval=" + interval + "&time_period=" + time_period + "&apikey=TCAENU31I5Q6X2UU"
+        let results = getJSON(path: path)
+        var tempStock = Stock()
+        tempStock.name = results["Meta Data"]["1: Symbol"].string!
+        print("name is: " + tempStock.name)
+        for result in results["Technical Analysis: MIDPRICE"] {
+            print(tempStock.name)
+            print(result)
+        }
+        return tempStock
+    }
+    
+    /*
+    var movieList: [movie] = []
+    var path: String = ""
     
     func getData (path: String) {
         let allMovies = getJSON(path: path)

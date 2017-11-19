@@ -11,6 +11,7 @@ import FirebaseFirestore
 
 class StocksViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
+    var equityInfo = dataParse()
     let db = Firestore.firestore()
     
     @IBOutlet weak var stocksTable: UITableView!
@@ -19,6 +20,8 @@ class StocksViewController: UIViewController, UITableViewDelegate, UITableViewDa
         super.viewDidLoad()
         stocksTable.dataSource = self
         stocksTable.delegate = self
+        print("reached here")
+        equityInfo.searchEquity(function: "MIDPRICE", symbol: "SBUX", interval: "30min", time_period: "20")
     }
     
     override func didReceiveMemoryWarning() {

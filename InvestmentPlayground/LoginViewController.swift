@@ -23,8 +23,9 @@ class LoginViewController: UIViewController {
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if (segue.identifier == "loginButton"){
-            let nextVC:StocksViewController = (segue.destination as?StocksViewController)!
+//        if (segue.identifier == "loginButton"){
+        if (segue.identifier == "clickedPlay") {
+            let nextVC:StocksViewController = (segue.destination as? StocksViewController)!
         }
     }
     
