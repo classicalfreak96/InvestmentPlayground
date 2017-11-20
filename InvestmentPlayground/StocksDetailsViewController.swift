@@ -13,8 +13,8 @@ class StocksDetailsViewController: UIViewController{
 
     @IBOutlet weak var price: UILabel!
     
-    @IBOutlet weak var changeDollars: UILabel!
-    
+    @IBOutlet weak var changeDol: UILabel!
+
     @IBOutlet weak var changePercent: UILabel!
     
     @IBOutlet weak var marketCap: UILabel!
@@ -28,11 +28,11 @@ class StocksDetailsViewController: UIViewController{
     override func viewDidLoad() {
         super.viewDidLoad()
         price.text = "87.45"
-        changeDollars.text = "0.34"
-        changePercent.text = "1.23"
-        marketCap.text = "13.5 B"
-        peRatio.text = "0.94"
-        betaValue.text = "0.95"
+        changeDol.text = "0.34"
+        changePercent.text = "(1.23%)"
+        marketCap.text = "Market Capitalization: 13.5 B"
+        peRatio.text = "P/E Ratio: 0.94"
+        betaValue.text = "Beta: 0.95"
         
         
     }

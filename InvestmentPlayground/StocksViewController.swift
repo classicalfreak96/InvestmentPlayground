@@ -38,11 +38,11 @@ class StocksViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     //EVERYTHING NEEDS TO BE CHANGED
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 0;
+        return 1
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+        return 2
     }
     
     
