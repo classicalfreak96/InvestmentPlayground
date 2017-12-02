@@ -93,6 +93,11 @@ class StocksViewController: UIViewController, UITableViewDelegate, UITableViewDa
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         equityInfo.equityList.removeAll()
         query = searchStocksBar.text!
+        if let text: String = query {
+            let trimmedString = text.trimmingCharacters(in: .whitespaces)
+            query = trimmedString
+        }
+        query = query.uppercased()
         equityInfo.searchEquity(function: "SMA", symbol: query, interval: "30min", time_period: "20")
         stocksTable.reloadData()
     }

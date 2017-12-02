@@ -64,8 +64,9 @@ class StocksDetailsViewController: UIViewController{
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        sortStocks(stockDic: stockHold[0].SMA)
         self.title = tickerName
-        price.text = "87.45"
+        price.text = String(describing: chronoStockPrice.last)
         changeDol.text = "0.34"
         changePercent.text = "(1.23%)"
         marketCap.text = "Market Capitalization: 13.5 B"
@@ -74,7 +75,6 @@ class StocksDetailsViewController: UIViewController{
         print("reached")
         print(tickerName)
         print(stockHold)
-        sortStocks(stockDic: stockHold[0].SMA)
         
     }
     
@@ -99,24 +99,7 @@ class StocksDetailsViewController: UIViewController{
             print(date)
             chronoStockPrice.append(price)
         }
-        //for (date, price) in stockDic {
-//            let date =
-//            for dat in testArray {
-//                let date = dateFormatter.date(from: dat)
-//                if let date = date {
-//                    convertedArray.append(date)
-//                }
-            //}
-//        let formatter = NSDateFormatter()
-//        formatter.dateFormat = "M/dd/yy, h:mm a"
-//        
-//        let sorted = foo.sort {
-//            formatter.dateFromString($0["DateTime"]!)!.compare(formatter.dateFromString($1["DateTime"]!)!) != .OrderedDescending
-//        }
-//        print("\(sorted)")
-//        }
-    
-}
+    }
 }
 
 

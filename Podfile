@@ -8,7 +8,7 @@ target 'InvestmentPlayground' do
   # Pods for InvestmentPlayground
   pod 'Firebase/Core'
   pod 'Firebase/Firestore'
-  pod 'Charts'
+
 
   target 'InvestmentPlaygroundTests' do
     inherit! :search_paths
