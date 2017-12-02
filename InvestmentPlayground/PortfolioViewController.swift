@@ -35,12 +35,15 @@ class PortfolioViewController: UIViewController, UITableViewDataSource, UITableV
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 2 //one to say change
+        return 1 //one to say change
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell { //help from https://www.ralfebert.de/tutorials/ios-swift-uitableviewcontroller/#data_swift_arrays
         let cell1 = tableView.dequeueReusableCell(withIdentifier: "portfolioCell", for: indexPath) as UITableViewCell
-        cell1.textLabel?.text = "\(stocks[indexPath.row].numShares) shares of \(stocks[indexPath.row].ticker)"
+        //cell1.textLabel?.text = "\(stocks[indexPath.row].numShares) shares of \(stocks[indexPath.row].ticker)"
+        print(stocks[indexPath.row].numShares)
+        cell1.textLabel?.text = stocks[indexPath.row].ticker + "(" + String(stocks[indexPath.row].numShares) + ")"
+        print(cell1.textLabel?.text)
         return cell1
     }
     
@@ -55,11 +58,9 @@ class PortfolioViewController: UIViewController, UITableViewDataSource, UITableV
                     for document in querySnapshot!.documents {
                         if let ticker = document.data()["ticker"] as? String {
                             if let numShares = document.data()["numShares"] as? Int {
-                                if let name = document.data()["name"] as? String {
-                                    if let midprice = document.data()["midprice"] as? [Float] {
-                                        self.stocks.append(Stock(name: name, midprice: midprice, ticker: ticker, numShares: numShares))
+                                if let SMA = document.data()["SMA"] as? [Date: Double] {
+                                        self.stocks.append(Stock(SMA: SMA, ticker: ticker, numShares: numShares))
                                     }
-                                }
                             }
                         }
                     }

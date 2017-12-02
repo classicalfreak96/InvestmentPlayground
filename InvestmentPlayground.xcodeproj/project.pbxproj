@@ -26,6 +26,7 @@
 		01A3C1A21FC0E6CE002E67A4 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 01A3C1A11FC0E6CE002E67A4 /* GoogleService-Info.plist */; };
 		08ED06623A768322AB40C196 /* Pods_InvestmentPlaygroundTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 182A177B566E933B378C27EF /* Pods_InvestmentPlaygroundTests.framework */; };
 		2B4C822E893ACD9ABD8F20C3 /* Pods_InvestmentPlaygroundUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 31A79F68E85BBE3265F66145 /* Pods_InvestmentPlaygroundUITests.framework */; };
+		A7CE76F11FD249E100ACF4A6 /* Register.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7CE76F01FD249E100ACF4A6 /* Register.swift */; };
 		CCF4E1E816B634C3B0E75181 /* Pods_InvestmentPlayground.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F7CADB862EFB4971022A577A /* Pods_InvestmentPlayground.framework */; };
 /* End PBXBuildFile section */
 
@@ -77,6 +78,7 @@
 		48E0B7802321968B30F2CE4F /* Pods-InvestmentPlaygroundTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-InvestmentPlaygroundTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-InvestmentPlaygroundTests/Pods-InvestmentPlaygroundTests.debug.xcconfig"; sourceTree = "<group>"; };
 		6D85090FFAAB4F3042C231A1 /* Pods-InvestmentPlaygroundUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-InvestmentPlaygroundUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-InvestmentPlaygroundUITests/Pods-InvestmentPlaygroundUITests.release.xcconfig"; sourceTree = "<group>"; };
 		A51C6619853E3C79F2E55FB8 /* Pods-InvestmentPlayground.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-InvestmentPlayground.debug.xcconfig"; path = "Pods/Target Support Files/Pods-InvestmentPlayground/Pods-InvestmentPlayground.debug.xcconfig"; sourceTree = "<group>"; };
+		A7CE76F01FD249E100ACF4A6 /* Register.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Register.swift; sourceTree = "<group>"; };
 		CE2CA5C8B4DDA6285EFAB413 /* Pods-InvestmentPlayground.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-InvestmentPlayground.release.xcconfig"; path = "Pods/Target Support Files/Pods-InvestmentPlayground/Pods-InvestmentPlayground.release.xcconfig"; sourceTree = "<group>"; };
 		F7CADB862EFB4971022A577A /* Pods_InvestmentPlayground.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_InvestmentPlayground.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -154,15 +156,16 @@
 				011EE9541FC1044C0095B9B8 /* LeadershipViewController.swift */,
 				011EE9561FC104530095B9B8 /* LoginViewController.swift */,
 				011EE9581FC104590095B9B8 /* PortfolioViewController.swift */,
-				011EE95C1FC104650095B9B8 /* StocksDetailsViewController.swift */,
-				011EE95E1FC1046E0095B9B8 /* StocksViewController.swift */,
 				011EE95A1FC104600095B9B8 /* stocks.swift */,
+				011EE95E1FC1046E0095B9B8 /* StocksViewController.swift */,
+				011EE95C1FC104650095B9B8 /* StocksDetailsViewController.swift */,
 				011EE9601FC104720095B9B8 /* SwiftyJson.swift */,
 				01A3C1751FC0DD87002E67A4 /* Main.storyboard */,
 				01A3C1781FC0DD87002E67A4 /* Assets.xcassets */,
 				01A3C17A1FC0DD88002E67A4 /* LaunchScreen.storyboard */,
 				01A3C1A11FC0E6CE002E67A4 /* GoogleService-Info.plist */,
 				01A3C17D1FC0DD88002E67A4 /* Info.plist */,
+				A7CE76F01FD249E100ACF4A6 /* Register.swift */,
 			);
 			path = InvestmentPlayground;
 			sourceTree = "<group>";
@@ -507,6 +510,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A7CE76F11FD249E100ACF4A6 /* Register.swift in Sources */,
 				011EE9571FC104530095B9B8 /* LoginViewController.swift in Sources */,
 				011EE95F1FC1046E0095B9B8 /* StocksViewController.swift in Sources */,
 				011EE9511FC1043C0095B9B8 /* GamesViewController.swift in Sources */,

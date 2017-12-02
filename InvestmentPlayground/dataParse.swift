@@ -27,17 +27,36 @@ class dataParse{ //change this for stock API
         
     }
     
-    func searchEquity (function: String, symbol: String, interval: String, time_period: String) -> Stock {
-        path = "https://www.alphavantage.co/query?function=" + function + "&symbol=" + symbol + "&interval=" + interval + "&time_period=" + time_period + "&apikey=TCAENU31I5Q6X2UU"
-        let results = getJSON(path: path)
+    func searchEquity (function: String, symbol: String, interval: String, time_period: String) {
         var tempStock = Stock()
-        tempStock.name = results["Meta Data"]["1: Symbol"].string!
-        print("name is: " + tempStock.name)
-        for result in results["Technical Analysis: MIDPRICE"] {
-            print(tempStock.name)
+        var validStock:Bool = true;
+        path = "https://www.alphavantage.co/query?function=" + function + "&symbol=" + symbol + "&interval=" + interval + "&time_period=" + time_period + "&series_type=close"+"&apikey=TCAENU31I5Q6X2UU"
+        print(path)
+        let results = getJSON(path: path)
+        for (key, value) in results {
+            if key == "Error Message" {
+                tempStock.ticker = "Invalid Stock Symbol"
+                validStock = false;
+            }
+        }
+        print(results)
+        if (validStock) {
+        tempStock.ticker = symbol
+        print("name is: " + tempStock.ticker)
+        for (date, SMA) in results["Technical Analysis: SMA"] {
+            print(date)
+            print(Double(SMA["SMA"].string!)!)
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "yyyy-MM-dd HH:mm"
+            let date1 = dateFormatter.date(from: date)
+            tempStock.SMA[date1!] = Double(SMA["SMA"].string!)!
+            print(date1!)
+        }
+        for result in tempStock.SMA {
             print(result)
         }
-        return tempStock
+        }
+        equityList.append(tempStock)
     }
     
     /*

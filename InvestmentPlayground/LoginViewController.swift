@@ -14,6 +14,10 @@ class LoginViewController: UIViewController {
     let db = Firestore.firestore()
     var stocks : [Stock] = []
     
+    @IBOutlet weak var usernameInput: UITextField!
+    
+    @IBOutlet weak var passwordInput: UITextField!
+    
     override func viewDidLoad() {
     }
     
@@ -23,23 +27,13 @@ class LoginViewController: UIViewController {
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-//        if (segue.identifier == "loginButton"){
+
         if (segue.identifier == "clickedPlay") {
             let nextVC:StocksViewController = (segue.destination as? StocksViewController)!
         }
-    }
-    
-    func addUser(username: String, password: String) {
-        var ref: DocumentReference? = nil
-        ref = db.collection("users").addDocument(data: [
-            "username": username,
-            "password": password
-        ]) { err in
-            if let err = err {
-                print("Error adding document: \(err)")
-            } else {
-                print("Document added with ID: \(ref!.documentID)")
-            }
+        else if (segue.identifier == "newUserButton"){
+            let nextVC:RegisterViewController = (segue.destination as? RegisterViewController)!
         }
     }
+    
 }
