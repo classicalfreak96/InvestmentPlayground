@@ -44,15 +44,10 @@ class StocksViewController: UIViewController, UITableViewDelegate, UITableViewDa
 //            let stock = equityInfo.equityList[indexPath.item]
             nextVC.tickerName = query
             nextVC.stockHold = equityInfo.equityList
-//            let  nextVC:movieDetailed = (segue.destination as?movieDetailed)!
-//            let selectedCell = sender as! UICollectionViewCell
-//            let indexPath = movies.indexPath(for: selectedCell)
-//            let movie = movieInfo.movieList[(indexPath?.row)!]
-//            nextVC.movIm = movie.poster_pic
-//            nextVC.movTitle = movie.title
-//            nextVC.movDesc = movie.overview
-//            nextVC.movRelDate = movie.release_date
-//            nextVC.movID = movie.ID
+            let (dollar, percent, volume) = equityInfo.pullStockData(ticker: query)
+            nextVC.dollar = dollar
+            nextVC.percent = percent
+            nextVC.volume = volume
         }
         
     }

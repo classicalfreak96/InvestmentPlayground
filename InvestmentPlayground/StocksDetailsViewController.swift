@@ -14,6 +14,9 @@ class StocksDetailsViewController: UIViewController{
     var stockHold:[Stock] = []
     var chronoStockPrice:[Double] = []
     var shares:Int = 0
+    var dollar:Double = 0
+    var percent:Double = 0
+    var volume:Int = 0
     
 
     @IBAction func addPortfolio(_ sender: Any) {
@@ -32,13 +35,6 @@ class StocksDetailsViewController: UIViewController{
                 self.stockHold[0].numShares = trimmedString!
                 print(self.stockHold[0].numShares)
             }
-//            print(Int(textField!.text!)!)
-//                        print("!!!!!")
- //           self.shares = Int((textField?.text)!)!
-
-            //textField.text gets you number of shares they would like to buy
-            //print("Text field: \(textField?.text)")
- //           print(self.shares)
         }))
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
         self.present(alert, animated: true, completion: nil)
@@ -66,10 +62,18 @@ class StocksDetailsViewController: UIViewController{
         super.viewDidLoad()
         sortStocks(stockDic: stockHold[0].SMA)
         self.title = tickerName
-        price.text = String(describing: chronoStockPrice.last)
-        changeDol.text = "0.34"
-        changePercent.text = "(1.23%)"
-        marketCap.text = "Market Capitalization: 13.5 B"
+        price.text = String(describing: chronoStockPrice.last!)
+        changeDol.text = "$" + String(format: "%.2f", dollar)
+        changePercent.text = String(format: "%.5f", percent) + "%"
+        if (percent < 0) {
+            changeDol.textColor = UIColor.red
+            changePercent.textColor = UIColor.red
+        }
+        else {
+            changeDol.textColor = UIColor.green
+            changePercent.textColor = UIColor.green
+        }
+        marketCap.text = "Market Cap: $" + String(volume * Int(chronoStockPrice.last!))
         peRatio.text = "P/E Ratio: 0.94"
         betaValue.text = "Beta: 0.95"
         print("reached")
@@ -100,6 +104,7 @@ class StocksDetailsViewController: UIViewController{
             chronoStockPrice.append(price)
         }
     }
+    
 }
 
 

@@ -31,7 +31,6 @@ class dataParse{ //change this for stock API
         var tempStock = Stock()
         var validStock:Bool = true;
         path = "https://www.alphavantage.co/query?function=" + function + "&symbol=" + symbol + "&interval=" + interval + "&time_period=" + time_period + "&series_type=close"+"&apikey=TCAENU31I5Q6X2UU"
-        print(path)
         let results = getJSON(path: path)
         for (key, value) in results {
             if key == "Error Message" {
@@ -39,26 +38,45 @@ class dataParse{ //change this for stock API
                 validStock = false;
             }
         }
-        print(results)
         if (validStock) {
         tempStock.ticker = symbol
         print("name is: " + tempStock.ticker)
         for (date, SMA) in results["Technical Analysis: SMA"] {
-            print(date)
-            print(Double(SMA["SMA"].string!)!)
             let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = "yyyy-MM-dd HH:mm"
             let date1 = dateFormatter.date(from: date)
             tempStock.SMA[date1!] = Double(SMA["SMA"].string!)!
-            print(date1!)
-        }
-        for result in tempStock.SMA {
-            print(result)
         }
         }
         equityList.append(tempStock)
     }
     
+    func pullStockData (ticker: String) -> (Double, Double, Int) {
+        var dateClose = [Date : (Double, Int)]()
+        var sortedClosePrice:[Double] = []
+        var sortedVolume:[Int] = []
+        let path = "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=" + ticker + "&apikey=TCAENU31I5Q6X2UU"
+        let results = getJSON(path: path)
+        print("TIME SERIES DAILY ")
+        for (key, value) in results["Time Series (Daily)"] {
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "yyyy-MM-dd"
+            let date1 = dateFormatter.date(from: key)
+            dateClose[date1!] = (Double(value["4. close"].string!)!, Int(value["5. volume"].string!)!)
+        }
+        let sorted = dateClose.sorted { $0.0 > $1.0 }
+        for (date, (price, volume)) in sorted {
+            print(date)
+            sortedClosePrice.append(price)
+            sortedVolume.append(volume)
+        }
+        print(sortedClosePrice[0])
+        print(sortedClosePrice[1])
+        let dollar:Double = sortedClosePrice[0] - sortedClosePrice[1]
+        let percent:Double = (sortedClosePrice[0] - sortedClosePrice[1])/sortedClosePrice[1]
+        return(dollar, percent, sortedVolume[0])
+    }
+
     /*
     var movieList: [movie] = []
     var path: String = ""
