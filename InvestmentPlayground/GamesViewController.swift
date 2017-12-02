@@ -32,7 +32,6 @@ class GamesViewController: UIViewController, UITableViewDataSource, UITableViewD
         if (segue.identifier == "clickedGame"){
             let  nextVC:LeadershipViewController = (segue.destination as?LeadershipViewController)!
         }
-        
     }
     
     //EVERYTHING NEEDS TO BE CHANGED
