@@ -13,6 +13,7 @@ class StocksDetailsViewController: UIViewController{
     var tickerName:String = ""
     var stockHold:[Stock] = []
     var chronoStockPrice:[Double] = []
+    var points:[CGPoint] = []
     var shares:Int = 0
     var dollar:Double = 0
     var percent:Double = 0
@@ -39,8 +40,9 @@ class StocksDetailsViewController: UIViewController{
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
         self.present(alert, animated: true, completion: nil)
     }
+
     
-    
+    @IBOutlet weak var graph: LineChart!
     
     @IBOutlet weak var price: UILabel!
     
@@ -55,8 +57,6 @@ class StocksDetailsViewController: UIViewController{
     @IBOutlet weak var peRatio: UILabel!
     
     @IBOutlet weak var betaValue: UILabel!
-    
-    @IBOutlet weak var graph: UIImageView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -76,10 +76,34 @@ class StocksDetailsViewController: UIViewController{
         marketCap.text = "Market Cap: $" + String(volume * Int(chronoStockPrice.last!))
         peRatio.text = "P/E Ratio: 0.94"
         betaValue.text = "Beta: 0.95"
-        print("reached")
-        print(tickerName)
-        print(stockHold)
         
+        
+        
+        
+        
+        
+//        let f: (CGFloat) -> CGPoint = {
+//            let noiseY = (CGFloat(arc4random_uniform(2)) * 2 - 1) * CGFloat(arc4random_uniform(4))
+//            let noiseX = (CGFloat(arc4random_uniform(2)) * 2 - 1) * CGFloat(arc4random_uniform(4))
+//            let b: CGFloat = 5
+//            let y = 2 * $0 + b + noiseY
+//            return CGPoint(x: $0 + noiseX, y: y)
+//        }
+//        
+//        let xs = [Int](1..<20)
+//        
+//        let points = xs.map(CGPoint(dictionaryRepresentation: {CGFloat($0 * 10)}))
+//        
+//        graph.deltaX = 20
+//        graph.deltaY = 30
+        var i:Int = 0
+        for price in chronoStockPrice {
+            var tempPoint = CGPoint(x: Double(i), y: price)
+            points.append(tempPoint)
+            i += 1
+        }
+        
+        graph.plot(points)
     }
     
     override func didReceiveMemoryWarning() {
