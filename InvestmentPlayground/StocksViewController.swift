@@ -13,7 +13,7 @@ class StocksViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     var equityInfo = dataParse()
     let db = Firestore.firestore()
-    var query:String = ""
+    var query: String = ""
     var stockHold:[Stock] = []
     
     @IBOutlet weak var stocksTable: UITableView!
@@ -27,8 +27,6 @@ class StocksViewController: UIViewController, UITableViewDelegate, UITableViewDa
         stocksTable.dataSource = self
         stocksTable.delegate = self
         stockHold = equityInfo.equityList
-        print("reached here")
-        
     }
     
     override func didReceiveMemoryWarning() {
