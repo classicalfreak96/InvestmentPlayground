@@ -15,6 +15,12 @@ class StocksViewController: UIViewController, UITableViewDelegate, UITableViewDa
     let db = Firestore.firestore()
     var query: String = ""
     var stockHold:[Stock] = []
+    var dollar:Double = 0
+    var percent:Double = 0
+    var volume:Int = 0
+    var open:Double = 0
+    var high:Double = 0
+    var low:Double = 0
     
     @IBOutlet weak var stocksTable: UITableView!
     
@@ -39,10 +45,12 @@ class StocksViewController: UIViewController, UITableViewDelegate, UITableViewDa
             let nextVC: StocksDetailsViewController = (segue.destination as?StocksDetailsViewController)!
             nextVC.tickerName = query
             nextVC.stockHold = equityInfo.equityList
-            let (dollar, percent, volume) = equityInfo.pullStockData(ticker: query)
             nextVC.dollar = dollar
             nextVC.percent = percent
             nextVC.volume = volume
+            nextVC.open = open
+            nextVC.high = high
+            nextVC.low = low
         }
         
     }
@@ -72,8 +80,7 @@ class StocksViewController: UIViewController, UITableViewDelegate, UITableViewDa
             query = trimmedString
         }
         query = query.uppercased()
-        let (dollar, percent, volume) = equityInfo.pullStockData(ticker: query)
-        //equityInfo.searchEquity(function: "SMA", symbol: query, interval: "daily", time_period: "100")
+        (dollar, percent, volume, open, high, low) = equityInfo.pullStockData(append: true, ticker: query)
         stocksTable.reloadData()
     }
     

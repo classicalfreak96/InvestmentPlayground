@@ -44,7 +44,7 @@ class dataParse{
         //print(path)
         let results = getJSON(path: path)
         //print(results)
-
+        
         if results.count == 0 {
             validStock = false;
             tempStock.ticker = "Invalid Stock Symbol"
@@ -72,25 +72,25 @@ class dataParse{
         }
         equityList.append(tempStock)
     }
-
-    func pullStockData (ticker: String) -> (Double, Double, Int) {
+    
+    func pullStockData (append: Bool, ticker: String) -> (Double, Double, Int, Double, Double, Double) {
         var tempStock = Stock()
         var validStock: Bool = true
-        var dateClose = [Date : (Double, Int)]()
+        var dateClose = [Date : (Double, Int, Double, Double, Double)]()
         var sortedClosePrice:[Double] = []
         var sortedVolume:[Int] = []
+        var sortedOpen:[Double] = []
+        var sortedHigh:[Double] = []
+        var sortedLow:[Double] = []
         let path = "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=" + ticker + "&apikey=" + "AA16SBF68AT9U5OS"
         let results = getJSON(path: path)
         print("TIME SERIES DAILY ")
         
         if results.count == 0 {
             validStock = false;
-            tempStock.ticker = "Invalid Stock Symbol"
         }
         for (key, _) in results {
             if key == "Error Message" {
-                print("Error message")
-                tempStock.ticker = "Invalid Stock Symbol"
                 validStock = false;
             }
         }
@@ -106,26 +106,27 @@ class dataParse{
                 if let unwrappedDate = date1 {
                     tempStock.SMA[unwrappedDate] = Double(value["4. close"].string!)!
                 }
+                dateClose[date1!] = (Double(value["4. close"].string!)!, Int(value["5. volume"].string!)!, Double(value["1. open"].string!)!, Double(value["2. high"].string!)!, Double(value["3. low"].string!)!)
             }
+            
+            let sorted = dateClose.sorted { $0.0 > $1.0 }
+            for (date, (price, volume, open, high, low)) in sorted {
+                //print(date)
+                sortedClosePrice.append(price)
+                sortedVolume.append(volume)
+                sortedOpen.append(open)
+                sortedHigh.append(high)
+                sortedLow.append(low)
+            }
+            //print(sortedClosePrice[0])
+            //print(sortedClosePrice[1])
+            let dollar:Double = sortedClosePrice[0] - sortedClosePrice[1]
+            let percent:Double = (sortedClosePrice[0] - sortedClosePrice[1])/sortedClosePrice[1]
+            if (append) {
+                equityList.append(tempStock)
+            }
+            return(dollar, percent, sortedVolume[0], sortedOpen[0], sortedHigh[0], sortedLow[0])
         }
-        
-        for (key, value) in results["Time Series (Daily)"] {
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "yyyy-MM-dd"
-            let date1 = dateFormatter.date(from: key)
-            dateClose[date1!] = (Double(value["4. close"].string!)!, Int(value["5. volume"].string!)!)
-        }
-        let sorted = dateClose.sorted { $0.0 > $1.0 }
-        for (date, (price, volume)) in sorted {
-            //print(date)
-            sortedClosePrice.append(price)
-            sortedVolume.append(volume)
-        }
-        //print(sortedClosePrice[0])
-        //print(sortedClosePrice[1])
-        let dollar:Double = sortedClosePrice[0] - sortedClosePrice[1]
-        let percent:Double = (sortedClosePrice[0] - sortedClosePrice[1])/sortedClosePrice[1]
-        equityList.append(tempStock)
-        return(dollar, percent, sortedVolume[0])
+        return(0,0,0,0,0,0)
     }
 }
