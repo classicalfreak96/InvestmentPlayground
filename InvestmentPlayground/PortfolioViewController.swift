@@ -80,10 +80,11 @@ class PortfolioViewController: UIViewController, UITableViewDataSource, UITableV
                     let username = UserDefaults.standard.string(forKey: "username")
                     if let user = username {
                         print("inside user = username")
-                        //self.addStock(username: user, ticker: self.tickerName, numShares: self.stockHold[0].numShares)
                     }
+                    let alert = UIAlertController(title: "Profit from selling " + self.stocks[indexPath.row].ticker, message: "You have made " + "12132312123", preferredStyle: .alert) //CHANGE "123123123123"
+                    alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                    self.present(alert, animated: true, completion: nil)
                 }
-                //self.performSegue(withIdentifier: "toPortfolioView", sender: self)
                 self.portfolioTable.reloadData()
             }))
 
@@ -103,6 +104,7 @@ class PortfolioViewController: UIViewController, UITableViewDataSource, UITableV
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell { //help from https://www.ralfebert.de/tutorials/ios-swift-uitableviewcontroller/#data_swift_arrays
         let cell1 = tableView.dequeueReusableCell(withIdentifier: "portfolioCell", for: indexPath) as UITableViewCell
         cell1.textLabel?.text = self.stocks[indexPath.row].ticker + "(" + String(self.stocks[indexPath.row].numShares) + ")"
+        
         return cell1
     }
     

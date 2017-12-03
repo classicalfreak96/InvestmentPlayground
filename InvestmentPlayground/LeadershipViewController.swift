@@ -40,8 +40,9 @@ class LeadershipViewController: UIViewController, UITableViewDelegate, UITableVi
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell { //help from https://www.ralfebert.de/tutorials/ios-swift-uitableviewcontroller/#data_swift_arrays
         
-        let cell1 = tableView.dequeueReusableCell(withIdentifier: "leaderCell", for: indexPath) as UITableViewCell
+        let cell1 = tableView.dequeueReusableCell(withIdentifier: "leaderCell") as! LeaderCell
         cell1.textLabel?.text = users[indexPath.row]
+        cell1.returnLabel.text = "+1.23%" //@MICHAEL: this should be calculated for users
         return cell1
     }
     
