@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import FirebaseFirestore
 
 class StocksDetailsViewController: UIViewController{
     
@@ -18,7 +19,8 @@ class StocksDetailsViewController: UIViewController{
     var dollar:Double = 0
     var percent:Double = 0
     var volume:Int = 0
-    
+    let db = Firestore.firestore()
+
 
     @IBAction func addPortfolio(_ sender: Any) {
         let alert = UIAlertController(title: "Buy " + tickerName + " stocks", message: "Enter number of shares: ", preferredStyle: .alert)
@@ -27,15 +29,17 @@ class StocksDetailsViewController: UIViewController{
         }
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { [weak alert] (_) in
             let textField = alert?.textFields![0] // Force unwrapping because we know it exists.
-            self.performSegue(withIdentifier: "toPortfolioView", sender: self)
-                        print("!!!!!")
             if let text: String = textField?.text {
-                print(text)
                 let trimmedString = Int(text.trimmingCharacters(in: .whitespaces))
-                print(trimmedString!)
                 self.stockHold[0].numShares = trimmedString!
-                print(self.stockHold[0].numShares)
+                //print(self.stockHold[0].numShares)
+                let username = UserDefaults.standard.string(forKey: "username")
+                if let user = username {
+                    print("inside user = username")
+                    self.addStock(username: user, ticker: self.tickerName, numShares: self.stockHold[0].numShares)
+                }
             }
+            self.performSegue(withIdentifier: "toPortfolioView", sender: self)
         }))
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
         self.present(alert, animated: true, completion: nil)
@@ -62,7 +66,14 @@ class StocksDetailsViewController: UIViewController{
         super.viewDidLoad()
         sortStocks(stockDic: stockHold[0].SMA)
         self.title = tickerName
-        price.text = String(describing: chronoStockPrice.last!)
+        if let unwrappedPrice = chronoStockPrice.last {
+            price.text = String(describing: unwrappedPrice)
+        }
+        else {
+            price.text = "000"
+        }
+        
+        //price.text = String(describing: chronoStockPrice.last!)
         changeDol.text = "$" + String(format: "%.2f", dollar)
         changePercent.text = String(format: "%.5f", percent) + "%"
         if (percent < 0) {
@@ -73,8 +84,10 @@ class StocksDetailsViewController: UIViewController{
             changeDol.textColor = UIColor.green
             changePercent.textColor = UIColor.green
         }
-        marketCap.text = "Market Cap: $" + String(volume * Int(chronoStockPrice.last!))
-        peRatio.text = "P/E Ratio: 0.94"
+        if let unwrapped = chronoStockPrice.last {
+            marketCap.text = "Market Cap: $" + String(volume * Int(unwrapped))
+        }
+            peRatio.text = "P/E Ratio: 0.94"
         betaValue.text = "Beta: 0.95"
         
         
@@ -114,6 +127,7 @@ class StocksDetailsViewController: UIViewController{
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
         if (segue.identifier == "toPortfolioView") {
+            print("segueing to the portfolio view")
             let nextVC:PortfolioViewController = (segue.destination as? PortfolioViewController)!
             nextVC.stocks.append(stockHold[0])
         }
@@ -122,10 +136,27 @@ class StocksDetailsViewController: UIViewController{
     
     func sortStocks (stockDic: [Date:Double]) {
         let sorted = stockDic.sorted { $0.0 < $1.0 }
-        print(sorted)
+        //print(sorted)
         for (date, price) in sorted {
-            print(date)
+            //print(date)
+            //print("Adding \(price) to chronoStockPrice")
             chronoStockPrice.append(price)
+        }
+    }
+    
+    // Ticker is the shorthand name for the stock (i.e. AAPL for Apple)
+    func addStock(username: String, ticker: String, numShares: Int) {
+        var ref: DocumentReference? = nil
+        ref = db.collection("stocks").addDocument(data: [
+            "username": username,
+            "ticker": ticker,
+            "numShares": numShares
+        ]) { err in
+            if let err = err {
+                print("Error adding document: \(err)")
+            } else {
+                print("Document added with ID: \(ref!.documentID)")
+            }
         }
     }
     
