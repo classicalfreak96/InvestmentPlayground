@@ -14,26 +14,30 @@ class RegisterViewController: UIViewController {
     let db = Firestore.firestore()
     var stocks : [Stock] = []
     
-    @IBOutlet weak var passwordInput: UITextField!
-    
+
     @IBOutlet weak var newUsername: UITextField!
 
-    @IBOutlet weak var newPassword: UITextField!
+    @IBOutlet weak var enter: UIButton!
     
   
     @IBAction func registerButton(_ sender: Any) {
         let newUsernameText: String = newUsername.text ?? ""
-        let newPasswordText: String = newPassword.text ?? ""
-        addUser(username: newUsernameText, password: newPasswordText)
-        let alertController = UIAlertController(title: "Registration Successful!", message: "Please login using new username and password", preferredStyle: .alert)
+        addUser(username: newUsernameText)
+        let alertController = UIAlertController(title: "Registration Successful", message: "Hello " + newUsernameText + "!", preferredStyle: .alert)
         let OKAction = UIAlertAction(title: "OK", style: .default){ action in
-            self.performSegue(withIdentifier: "toLoginView", sender: self)
+            let defaults = UserDefaults.standard
+            if let user = self.newUsername.text{
+                defaults.set(user, forKey: "username")
+            }
+            self.performSegue(withIdentifier: "enterGame", sender: self)
         }
         alertController.addAction(OKAction)
         self.present(alertController, animated: true)
     }
     
+    
     override func viewDidLoad() {
+
     }
     
     override func didReceiveMemoryWarning() {
@@ -43,11 +47,10 @@ class RegisterViewController: UIViewController {
     
 
     
-    func addUser(username: String, password: String) {
+    func addUser(username: String) {
         var ref: DocumentReference? = nil
         ref = db.collection("users").addDocument(data: [
             "username": username,
-            "password": password
         ]) { err in
             if let err = err {
                 print("Error adding document: \(err)")

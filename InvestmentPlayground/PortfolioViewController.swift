@@ -19,6 +19,8 @@ class PortfolioViewController: UIViewController, UITableViewDataSource, UITableV
     
     @IBOutlet weak var portfolioTable: UITableView!
     
+    @IBOutlet weak var cashLeft: UILabel!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         let username = UserDefaults.standard.string(forKey: "username")!
