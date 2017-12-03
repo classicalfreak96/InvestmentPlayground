@@ -37,6 +37,29 @@ class dataParse{
         
     }
     
+    func pullCurrentPrice(ticker: String) -> Double {
+        var sortedPrices:[Double] = []
+        var tempStock = Stock()
+        let path = "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=" + ticker + "&apikey=" + "AA16SBF68AT9U5OS"
+        let results = getJSON(path: path)
+        for (date, value) in results["Time Series (Daily)"] {
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "yyyy-MM-dd"
+            let date1 = dateFormatter.date(from: date)
+            if let unwrappedDate = date1 {
+                tempStock.SMA[unwrappedDate] = Double(value["4. close"].string!)!
+            }
+        }
+        let sorted = tempStock.SMA.sorted { $0.0 > $1.0 }
+        //print(sorted)
+        for (_ , price) in sorted {
+            //print(date)
+            //print("Adding \(price) to chronoStockPrice")
+            sortedPrices.append(price)
+        }
+        return sortedPrices[0]
+    }
+    
 //    func searchEquity (function: String, symbol: String, interval: String, time_period: String) {
 //        var tempStock = Stock()
 //        var validStock: Bool = true
@@ -118,8 +141,6 @@ class dataParse{
                 sortedHigh.append(high)
                 sortedLow.append(low)
             }
-            //print(sortedClosePrice[0])
-            //print(sortedClosePrice[1])
             let dollar:Double = sortedClosePrice[0] - sortedClosePrice[1]
             let percent:Double = (sortedClosePrice[0] - sortedClosePrice[1])/sortedClosePrice[1]
             if (append) {
