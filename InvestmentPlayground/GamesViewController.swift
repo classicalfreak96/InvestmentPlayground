@@ -48,7 +48,6 @@ class GamesViewController: UIViewController, UITableViewDataSource, UITableViewD
         return 1
     }
     
-    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell { //help from https://www.ralfebert.de/tutorials/ios-swift-uitableviewcontroller/#data_swift_arrays
         let cell1 = tableView.dequeueReusableCell(withIdentifier: "gameCell", for: indexPath) as UITableViewCell
         cell1.textLabel?.text = games[indexPath.row]

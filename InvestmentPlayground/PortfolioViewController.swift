@@ -13,6 +13,9 @@ class PortfolioViewController: UIViewController, UITableViewDataSource, UITableV
     
     let db = Firestore.firestore()
     var stocks: [Stock] = []
+    let dataParser = dataParse()
+    
+    @IBOutlet weak var portfolioValue: UILabel!
     
     @IBOutlet weak var portfolioTable: UITableView!
     
@@ -23,6 +26,9 @@ class PortfolioViewController: UIViewController, UITableViewDataSource, UITableV
         self.view.backgroundColor = .white
         portfolioTable.delegate = self
         portfolioTable.dataSource = self
+        //print(self.stocks)
+        calculatePortfolioValue()
+
     }
 
     override func didReceiveMemoryWarning() {
@@ -33,6 +39,19 @@ class PortfolioViewController: UIViewController, UITableViewDataSource, UITableV
     override func viewDidAppear(_ animated: Bool) {
         let username = UserDefaults.standard.string(forKey: "username")!
         getStocksForUser(username: username)
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let sdvc = segue.destination as! StocksDetailsViewController
+        let currentStock = stocks[(portfolioTable.indexPathForSelectedRow?.row)!]
+        sdvc.tickerName = currentStock.ticker
+        let dp = dataParse()
+        let (dollar, percent, volume) = dp.pullStockData(ticker: currentStock.ticker)
+        dp.searchEquity(function: "SMA", symbol: currentStock.ticker, interval: "daily", time_period: "100")
+        sdvc.stockHold = dp.equityList
+        sdvc.dollar = dollar
+        sdvc.percent = percent
+        sdvc.volume = volume
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -106,6 +125,14 @@ class PortfolioViewController: UIViewController, UITableViewDataSource, UITableV
                     self.portfolioTable.reloadData()
                 }
         }
+    }
+    
+    func calculatePortfolioValue() {
+        var totalVal = 0.0
+        
+        //for stock in self.stocks {
+        //    totalVal = totalVal + (stock.numShares)
+        //}
     }
     
 }

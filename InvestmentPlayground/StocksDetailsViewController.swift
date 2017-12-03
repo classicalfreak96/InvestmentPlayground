@@ -67,10 +67,10 @@ class StocksDetailsViewController: UIViewController{
         sortStocks(stockDic: stockHold[0].SMA)
         self.title = tickerName
         if let unwrappedPrice = chronoStockPrice.last {
-            price.text = String(describing: unwrappedPrice)
+            price.text = String(unwrappedPrice)
         }
         else {
-            price.text = "000"
+            price.text = "Price not found"
         }
         
         //price.text = String(describing: chronoStockPrice.last!)
@@ -87,7 +87,10 @@ class StocksDetailsViewController: UIViewController{
         if let unwrapped = chronoStockPrice.last {
             marketCap.text = "Market Cap: $" + String(volume * Int(unwrapped))
         }
-            peRatio.text = "P/E Ratio: 0.94"
+        else {
+            marketCap.text = "Market Cap: Not found :("
+        }
+        peRatio.text = "P/E Ratio: 0.94"
         betaValue.text = "Beta: 0.95"
         
         

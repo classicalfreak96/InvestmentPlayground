@@ -18,6 +18,7 @@
 		011EE95F1FC1046E0095B9B8 /* StocksViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 011EE95E1FC1046E0095B9B8 /* StocksViewController.swift */; };
 		011EE9611FC104720095B9B8 /* SwiftyJson.swift in Sources */ = {isa = PBXBuildFile; fileRef = 011EE9601FC104720095B9B8 /* SwiftyJson.swift */; };
 		012369041FD3A0C100463D91 /* RegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 012369031FD3A0C100463D91 /* RegisterViewController.swift */; };
+		013724DD1FD3C593007AF129 /* FindGamesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 013724DC1FD3C593007AF129 /* FindGamesController.swift */; };
 		01A3C1721FC0DD87002E67A4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A3C1711FC0DD87002E67A4 /* AppDelegate.swift */; };
 		01A3C1771FC0DD87002E67A4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 01A3C1751FC0DD87002E67A4 /* Main.storyboard */; };
 		01A3C1791FC0DD87002E67A4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 01A3C1781FC0DD87002E67A4 /* Assets.xcassets */; };
@@ -74,6 +75,7 @@
 		011EE95E1FC1046E0095B9B8 /* StocksViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StocksViewController.swift; sourceTree = "<group>"; };
 		011EE9601FC104720095B9B8 /* SwiftyJson.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftyJson.swift; sourceTree = "<group>"; };
 		012369031FD3A0C100463D91 /* RegisterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
+		013724DC1FD3C593007AF129 /* FindGamesController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FindGamesController.swift; sourceTree = "<group>"; };
 		01A3C16E1FC0DD87002E67A4 /* InvestmentPlayground.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = InvestmentPlayground.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		01A3C1711FC0DD87002E67A4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		01A3C1761FC0DD87002E67A4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -155,6 +157,7 @@
 			children = (
 				01A3C1711FC0DD87002E67A4 /* AppDelegate.swift */,
 				011EE94E1FC1042B0095B9B8 /* dataParse.swift */,
+				013724DC1FD3C593007AF129 /* FindGamesController.swift */,
 				011EE9501FC1043C0095B9B8 /* GamesViewController.swift */,
 				011EE9521FC104410095B9B8 /* GroupsViewController.swift */,
 				011EE9541FC1044C0095B9B8 /* LeadershipViewController.swift */,
@@ -533,6 +536,7 @@
 				011EE9571FC104530095B9B8 /* LoginViewController.swift in Sources */,
 				011EE95F1FC1046E0095B9B8 /* StocksViewController.swift in Sources */,
 				011EE9511FC1043C0095B9B8 /* GamesViewController.swift in Sources */,
+				013724DD1FD3C593007AF129 /* FindGamesController.swift in Sources */,
 				011EE94F1FC1042B0095B9B8 /* dataParse.swift in Sources */,
 				011EE95D1FC104650095B9B8 /* StocksDetailsViewController.swift in Sources */,
 				01A3C1721FC0DD87002E67A4 /* AppDelegate.swift in Sources */,

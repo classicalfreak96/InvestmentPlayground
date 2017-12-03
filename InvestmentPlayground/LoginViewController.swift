@@ -27,6 +27,7 @@ class LoginViewController: UIViewController {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if (segue.identifier == "loginButton") {
+            // 
             let defaults = UserDefaults.standard
             if let user = usernameInput.text {
                 defaults.set(user, forKey: "username")
