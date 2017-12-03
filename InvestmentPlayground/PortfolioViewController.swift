@@ -13,6 +13,9 @@ class PortfolioViewController: UIViewController, UITableViewDataSource, UITableV
     
     let db = Firestore.firestore()
     var stocks: [Stock] = []
+    let dataParser = dataParse()
+    
+    @IBOutlet weak var portfolioValue: UILabel!
     
     @IBOutlet weak var portfolioTable: UITableView!
     
@@ -25,7 +28,8 @@ class PortfolioViewController: UIViewController, UITableViewDataSource, UITableV
         self.view.backgroundColor = .white
         portfolioTable.delegate = self
         portfolioTable.dataSource = self
-        print(self.stocks)
+        //print(self.stocks)
+        calculatePortfolioValue()
     }
 
     override func didReceiveMemoryWarning() {
@@ -80,6 +84,14 @@ class PortfolioViewController: UIViewController, UITableViewDataSource, UITableV
                     self.portfolioTable.reloadData()
                 }
         }
+    }
+    
+    func calculatePortfolioValue() {
+        var totalVal = 0.0
+        
+        //for stock in self.stocks {
+        //    totalVal = totalVal + (stock.numShares)
+        //}
     }
     
 }

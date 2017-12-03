@@ -37,6 +37,7 @@ class LoginViewController: UIViewController {
         }
  */
         if (segue.identifier == "loginButton") {
+            // 
             let defaults = UserDefaults.standard
             if let user = usernameInput.text {
                 defaults.set(user, forKey: "username")
