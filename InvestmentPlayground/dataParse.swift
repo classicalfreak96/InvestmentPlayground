@@ -13,7 +13,10 @@ class dataParse{
     
     var path: String = ""
     var equityList: [Stock] = []
-    
+    // Michael's api key
+    let apiKey = "80FQBZRZNE3Z1FA0"
+    // just in case
+    let harrisonsKey = "TCAENU31I5Q6X2UU"
     private func getJSON(path: String) -> JSON {
         guard let url = URL(string: path) else { return JSON.null }
         do {
@@ -30,7 +33,7 @@ class dataParse{
     func searchEquity (function: String, symbol: String, interval: String, time_period: String) {
         var tempStock = Stock()
         var validStock:Bool = true;
-        path = "https://www.alphavantage.co/query?function=" + function + "&symbol=" + symbol + "&interval=" + interval + "&time_period=" + time_period + "&series_type=close"+"&apikey=TCAENU31I5Q6X2UU"
+        path = "https://www.alphavantage.co/query?function=" + function + "&symbol=" + symbol + "&interval=" + interval + "&time_period=" + time_period + "&series_type=close"+"&apikey=" + apiKey
         let results = getJSON(path: path)
         for (key, value) in results {
             if key == "Error Message" {
@@ -55,7 +58,7 @@ class dataParse{
         var dateClose = [Date : (Double, Int)]()
         var sortedClosePrice:[Double] = []
         var sortedVolume:[Int] = []
-        let path = "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=" + ticker + "&apikey=TCAENU31I5Q6X2UU"
+        let path = "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=" + ticker + "&apikey=" + apiKey
         let results = getJSON(path: path)
         print("TIME SERIES DAILY ")
         for (key, value) in results["Time Series (Daily)"] {

@@ -28,7 +28,6 @@
 		A05BCDC96B0C686A884D5E35 /* Pods_InvestmentPlaygroundUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7644FED744343A9689563A45 /* Pods_InvestmentPlaygroundUITests.framework */; };
 		A7C63A731FD34D1100AE2541 /* lineChartExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7C63A721FD34D1100AE2541 /* lineChartExtensions.swift */; };
 		A7C63A751FD34E3400AE2541 /* lineChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7C63A741FD34E3400AE2541 /* lineChart.swift */; };
-		A7CE76F11FD249E100ACF4A6 /* Register.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7CE76F01FD249E100ACF4A6 /* Register.swift */; };
 		F82736F127495E76E509FEB9 /* Pods_InvestmentPlaygroundTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B1475F2DFB1A10CB5A1E30F3 /* Pods_InvestmentPlaygroundTests.framework */; };
 /* End PBXBuildFile section */
 
@@ -93,7 +92,6 @@
 		A33E7CBC84D7B313E4A51B6F /* Pods-InvestmentPlaygroundTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-InvestmentPlaygroundTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-InvestmentPlaygroundTests/Pods-InvestmentPlaygroundTests.release.xcconfig"; sourceTree = "<group>"; };
 		A7C63A721FD34D1100AE2541 /* lineChartExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = lineChartExtensions.swift; sourceTree = "<group>"; };
 		A7C63A741FD34E3400AE2541 /* lineChart.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = lineChart.swift; sourceTree = "<group>"; };
-		A7CE76F01FD249E100ACF4A6 /* Register.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Register.swift; sourceTree = "<group>"; };
 		B1475F2DFB1A10CB5A1E30F3 /* Pods_InvestmentPlaygroundTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_InvestmentPlaygroundTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CC39A51B3B609D44D324550F /* Pods_InvestmentPlayground.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_InvestmentPlayground.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DBE97BBF3A6FF44E5FE0AFFF /* Pods-InvestmentPlaygroundUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-InvestmentPlaygroundUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-InvestmentPlaygroundUITests/Pods-InvestmentPlaygroundUITests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -169,7 +167,6 @@
 				01A3C17A1FC0DD88002E67A4 /* LaunchScreen.storyboard */,
 				01A3C1A11FC0E6CE002E67A4 /* GoogleService-Info.plist */,
 				01A3C17D1FC0DD88002E67A4 /* Info.plist */,
-				A7CE76F01FD249E100ACF4A6 /* Register.swift */,
 				A7C63A721FD34D1100AE2541 /* lineChartExtensions.swift */,
 				A7C63A741FD34E3400AE2541 /* lineChart.swift */,
 			);
@@ -530,7 +527,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A7CE76F11FD249E100ACF4A6 /* Register.swift in Sources */,
 				011EE9571FC104530095B9B8 /* LoginViewController.swift in Sources */,
 				011EE95F1FC1046E0095B9B8 /* StocksViewController.swift in Sources */,
 				011EE9511FC1043C0095B9B8 /* GamesViewController.swift in Sources */,

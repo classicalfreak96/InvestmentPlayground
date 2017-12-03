@@ -69,21 +69,7 @@ class StocksViewController: UIViewController, UITableViewDelegate, UITableViewDa
         return cell1
     }
     
-    // Ticker is the shorthand name for the stock (i.e. AAPL for Apple)
-    func addStock(username: String, ticker: String, numShares: Int) {
-        var ref: DocumentReference? = nil
-        ref = db.collection("stocks").addDocument(data: [
-            "username": username,
-            "ticker": ticker,
-            "numShares": numShares
-        ]) { err in
-            if let err = err {
-                print("Error adding document: \(err)")
-            } else {
-                print("Document added with ID: \(ref!.documentID)")
-            }
-        }
-    }
+
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         equityInfo.equityList.removeAll()
