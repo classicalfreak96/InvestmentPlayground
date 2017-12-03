@@ -19,6 +19,8 @@ class GamesViewController: UIViewController, UITableViewDataSource, UITableViewD
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        let username = UserDefaults.standard.string(forKey: "username")!
+        getGamesForUser(username: username)
         gamesTable.dataSource = self
         gamesTable.delegate = self
     }
@@ -29,12 +31,15 @@ class GamesViewController: UIViewController, UITableViewDataSource, UITableViewD
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if (segue.identifier == "clickedGame"){
-            let  nextVC:LeadershipViewController = (segue.destination as?LeadershipViewController)!
-        }
+        let lvc = segue.destination as? LeadershipViewController
+        lvc?.game = games[(gamesTable.indexPathForSelectedRow?.row)!]
     }
     
-    //EVERYTHING NEEDS TO BE CHANGED
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let lvc = LeadershipViewController()
+        lvc.game = games[indexPath.row]
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return games.count
     }
@@ -56,6 +61,7 @@ class GamesViewController: UIViewController, UITableViewDataSource, UITableViewD
                 if let err = err {
                     print("Error getting documents: \(err)")
                 } else {
+                    self.games = []
                     for document in querySnapshot!.documents {
                         if let title = document.data()["title"] as? String {
                             self.games.append(title)

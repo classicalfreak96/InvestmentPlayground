@@ -21,32 +21,26 @@ class PortfolioViewController: UIViewController, UITableViewDataSource, UITableV
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        let username = UserDefaults.standard.string(forKey: "username")
-        if let user = username {
-            getStocksForUser(username: user)
-        }
+        let username = UserDefaults.standard.string(forKey: "username")!
+        getStocksForUser(username: username)
         self.view.backgroundColor = .white
         portfolioTable.delegate = self
         portfolioTable.dataSource = self
         //print(self.stocks)
         calculatePortfolioValue()
+
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    // This might not need to be here
     
     override func viewDidAppear(_ animated: Bool) {
-        let username = UserDefaults.standard.string(forKey: "username")
-        if let user = username {
-            getStocksForUser(username: user)
-        }
+        let username = UserDefaults.standard.string(forKey: "username")!
+        getStocksForUser(username: username)
     }
     
-    
-    //EVERYTHING NEEDS TO BE CHANGED
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return stocks.count
     }
@@ -57,10 +51,7 @@ class PortfolioViewController: UIViewController, UITableViewDataSource, UITableV
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell { //help from https://www.ralfebert.de/tutorials/ios-swift-uitableviewcontroller/#data_swift_arrays
         let cell1 = tableView.dequeueReusableCell(withIdentifier: "portfolioCell", for: indexPath) as UITableViewCell
-        //cell1.textLabel?.text = "\(stocks[indexPath.row].numShares) shares of \(stocks[indexPath.row].ticker)"
-        print(stocks[indexPath.row].numShares)
         cell1.textLabel?.text = stocks[indexPath.row].ticker + "(" + String(stocks[indexPath.row].numShares) + ")"
-        print(cell1.textLabel?.text)
         return cell1
     }
     
@@ -72,12 +63,11 @@ class PortfolioViewController: UIViewController, UITableViewDataSource, UITableV
                 if let err = err {
                     print("Error getting documents: \(err)")
                 } else {
+                    self.stocks = []
                     for document in querySnapshot!.documents {
                         if let ticker = document.data()["ticker"] as? String {
                             if let numShares = document.data()["numShares"] as? Int {
-                                if let SMA = document.data()["SMA"] as? [Date: Double] {
-                                    self.stocks.append(Stock(SMA: SMA, ticker: ticker, numShares: numShares))
-                                }
+                                self.stocks.append(Stock(SMA: [:], ticker: ticker, numShares: numShares))
                             }
                         }
                     }

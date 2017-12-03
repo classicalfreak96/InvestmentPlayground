@@ -26,16 +26,6 @@ class LoginViewController: UIViewController {
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-/*
-        if (segue.identifier == "clickedPlay") {
-            let defaults = UserDefaults.standard
-            let nextVC:StocksViewController = (segue.destination as? StocksViewController)!
-        }
- 
-        else if (segue.identifier == "newUserButton"){
-            let nextVC:RegisterViewController = (segue.destination as? RegisterViewController)!
-        }
- */
         if (segue.identifier == "loginButton") {
             // 
             let defaults = UserDefaults.standard

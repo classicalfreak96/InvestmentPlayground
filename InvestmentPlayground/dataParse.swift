@@ -94,6 +94,7 @@ class dataParse{
         let percent:Double = (sortedClosePrice[0] - sortedClosePrice[1])/sortedClosePrice[1]
         return(dollar, percent, sortedVolume[0])
     }
+
     func pullCurrentPrice(ticker: String) -> Double {
         let path = "https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=" + ticker + "&interval=1min&apikey=" + harrisonsKey
         
@@ -162,4 +163,5 @@ class dataParse{
         return #imageLiteral(resourceName: "not-found")
     }
      */
+
 }

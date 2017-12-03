@@ -12,6 +12,7 @@ import FirebaseFirestore
 class GroupsViewController: UIViewController{
     
     let db = Firestore.firestore()
+    @IBOutlet weak var newGameTextField: UITextField!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -22,11 +23,18 @@ class GroupsViewController: UIViewController{
         // Dispose of any resources that can be recreated.
     }
     
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if (segue.identifier == "clickedPlay"){
-            let nextVC:GamesViewController = (segue.destination as? GamesViewController)!
-        }
+    @IBAction func clickedPlay(_ sender: Any) {
+            if let gameName = newGameTextField.text {
+                let username = UserDefaults.standard.string(forKey: "username")!
+                addGame(title: gameName)
+                joinGame(title: gameName, username: username)
+            }
+            else {
+                print("nameless")
+                return
+            }
     }
+    
     
     func joinGame(title: String, username: String) {
         var ref: DocumentReference? = nil
