@@ -72,7 +72,8 @@ class StocksViewController: UIViewController, UITableViewDelegate, UITableViewDa
             query = trimmedString
         }
         query = query.uppercased()
-        equityInfo.searchEquity(function: "SMA", symbol: query, interval: "daily", time_period: "100")
+        let (dollar, percent, volume) = equityInfo.pullStockData(ticker: query)
+        //equityInfo.searchEquity(function: "SMA", symbol: query, interval: "daily", time_period: "100")
         stocksTable.reloadData()
     }
     
