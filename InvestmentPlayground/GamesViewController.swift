@@ -19,8 +19,15 @@ class GamesViewController: UIViewController, UITableViewDataSource, UITableViewD
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        let username = UserDefaults.standard.string(forKey: "username") ?? "NickD"
+        getGamesForUser(username: username)
         gamesTable.dataSource = self
         gamesTable.delegate = self
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        let username = UserDefaults.standard.string(forKey: "username") ?? "NickD"
+        getGamesForUser(username: username)
     }
     
     override func didReceiveMemoryWarning() {
@@ -29,12 +36,21 @@ class GamesViewController: UIViewController, UITableViewDataSource, UITableViewD
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if (segue.identifier == "clickedGame"){
-            let  nextVC:LeadershipViewController = (segue.destination as?LeadershipViewController)!
+        let lvc = segue.destination as? LeadershipViewController
+        lvc?.game = games[(gamesTable.indexPathForSelectedRow?.row)!]
+        if segue.identifier == "clickedGame" {
+            let nextVC: LeadershipViewController = (segue.destination as? LeadershipViewController)!
         }
     }
     
-    //EVERYTHING NEEDS TO BE CHANGED
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        print("selected")
+        let lvc = LeadershipViewController()
+        //let lvc = self.storyboard?.instantiateViewController(withIdentifier: "LeadershipViewController") as? LeadershipViewController
+        lvc.game = games[indexPath.row]
+        //navigationController?.pushViewController(lvc, animated: true)
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return games.count
     }
@@ -56,6 +72,7 @@ class GamesViewController: UIViewController, UITableViewDataSource, UITableViewD
                 if let err = err {
                     print("Error getting documents: \(err)")
                 } else {
+                    self.games = []
                     for document in querySnapshot!.documents {
                         if let title = document.data()["title"] as? String {
                             self.games.append(title)
