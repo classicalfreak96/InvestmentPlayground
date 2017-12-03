@@ -18,16 +18,29 @@ class PortfolioViewController: UIViewController, UITableViewDataSource, UITableV
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        let username = UserDefaults.standard.string(forKey: "username")
+        if let user = username {
+            getStocksForUser(username: user)
+        }
         self.view.backgroundColor = .white
         portfolioTable.delegate = self
         portfolioTable.dataSource = self
-        getStocksForUser(username: "NickD")
+        print(self.stocks)
     }
-    
+
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    // This might not need to be here
+    
+    override func viewDidAppear(_ animated: Bool) {
+        let username = UserDefaults.standard.string(forKey: "username")
+        if let user = username {
+            getStocksForUser(username: user)
+        }
+    }
+    
     
     //EVERYTHING NEEDS TO BE CHANGED
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -59,8 +72,8 @@ class PortfolioViewController: UIViewController, UITableViewDataSource, UITableV
                         if let ticker = document.data()["ticker"] as? String {
                             if let numShares = document.data()["numShares"] as? Int {
                                 if let SMA = document.data()["SMA"] as? [Date: Double] {
-                                        self.stocks.append(Stock(SMA: SMA, ticker: ticker, numShares: numShares))
-                                    }
+                                    self.stocks.append(Stock(SMA: SMA, ticker: ticker, numShares: numShares))
+                                }
                             }
                         }
                     }
