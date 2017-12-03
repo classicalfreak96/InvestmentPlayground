@@ -152,12 +152,9 @@ class dataParse{
             sortedPrice.append(price)
             sortedDate.append(date)
         }
-        print(sortedPrice.last)
-        print(sortedDate.last)
-        if let returnVal = sortedPrice.last {
-            return returnVal
-        }
-        return 0.0
+        print(sortedPrice[0])
+        print(sortedDate[0])
+        return sortedPrice[0]
 
     }
 
