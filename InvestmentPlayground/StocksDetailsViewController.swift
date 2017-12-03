@@ -87,12 +87,7 @@ class StocksDetailsViewController: UIViewController{
             changeDol.textColor = UIColor.green
             changePercent.textColor = UIColor.green
         }
-        if let unwrapped = chronoStockPrice.last {
-            marketCap.text = "Market Cap: $" + String(volume * Int(unwrapped))
-        }
-        else {
-            marketCap.text = "Market Cap: Not found :("
-        }
+        marketCap.text = ""
         peRatio.text = "High: " + String(high)
         betaValue.text = "Low: " + String(low)
         
