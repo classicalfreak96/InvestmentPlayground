@@ -46,8 +46,7 @@ class PortfolioViewController: UIViewController, UITableViewDataSource, UITableV
         let currentStock = stocks[(portfolioTable.indexPathForSelectedRow?.row)!]
         sdvc.tickerName = currentStock.ticker
         let dp = dataParse()
-        let (dollar, percent, volume, open, high, low) = dp.pullStockData(append: false, ticker: currentStock.ticker)
-        dp.searchEquity(function: "SMA", symbol: currentStock.ticker, interval: "daily", time_period: "100")
+        let (dollar, percent, volume, open, high, low) = dp.pullStockData(append: true, ticker: currentStock.ticker)
         sdvc.stockHold = dp.equityList
         sdvc.dollar = dollar
         sdvc.percent = percent

@@ -37,41 +37,41 @@ class dataParse{
         
     }
     
-    func searchEquity (function: String, symbol: String, interval: String, time_period: String) {
-        var tempStock = Stock()
-        var validStock: Bool = true
-        path = "https://www.alphavantage.co/query?function=" + function + "&symbol=" + symbol + "&interval=" + interval + "&time_period=" + time_period + "&series_type=close"+"&apikey=" + "AA16SBF68AT9U5OS"
-        //print(path)
-        let results = getJSON(path: path)
-        //print(results)
-        
-        if results.count == 0 {
-            validStock = false;
-            tempStock.ticker = "Invalid Stock Symbol"
-        }
-        for (key, _) in results {
-            if key == "Error Message" {
-                print("Error message")
-                tempStock.ticker = "Invalid Stock Symbol"
-                validStock = false;
-            }
-        }
-        if (validStock) {
-            tempStock.ticker = symbol
-            print("name is: " + tempStock.ticker)
-            print("technical analysis")
-            print(results["Technical Analysis: SMA"])
-            for (date, SMA) in results["Technical Analysis: SMA"] {
-                let dateFormatter = DateFormatter()
-                dateFormatter.dateFormat = "yyyy-MM-dd"
-                let date1 = dateFormatter.date(from: date)
-                if let unwrappedDate = date1 {
-                    tempStock.SMA[unwrappedDate] = Double(SMA["SMA"].string!)!
-                }
-            }
-        }
-        equityList.append(tempStock)
-    }
+//    func searchEquity (function: String, symbol: String, interval: String, time_period: String) {
+//        var tempStock = Stock()
+//        var validStock: Bool = true
+//        path = "https://www.alphavantage.co/query?function=" + function + "&symbol=" + symbol + "&interval=" + interval + "&time_period=" + time_period + "&series_type=close"+"&apikey=" + "AA16SBF68AT9U5OS"
+//        //print(path)
+//        let results = getJSON(path: path)
+//        //print(results)
+//        
+//        if results.count == 0 {
+//            validStock = false;
+//            tempStock.ticker = "Invalid Stock Symbol"
+//        }
+//        for (key, _) in results {
+//            if key == "Error Message" {
+//                print("Error message")
+//                tempStock.ticker = "Invalid Stock Symbol"
+//                validStock = false;
+//            }
+//        }
+//        if (validStock) {
+//            tempStock.ticker = symbol
+//            print("name is: " + tempStock.ticker)
+//            print("technical analysis")
+//            print(results["Technical Analysis: SMA"])
+//            for (date, SMA) in results["Technical Analysis: SMA"] {
+//                let dateFormatter = DateFormatter()
+//                dateFormatter.dateFormat = "yyyy-MM-dd"
+//                let date1 = dateFormatter.date(from: date)
+//                if let unwrappedDate = date1 {
+//                    tempStock.SMA[unwrappedDate] = Double(SMA["SMA"].string!)!
+//                }
+//            }
+//        }
+//        equityList.append(tempStock)
+//    }
     
     func pullStockData (append: Bool, ticker: String) -> (Double, Double, Int, Double, Double, Double) {
         var tempStock = Stock()
