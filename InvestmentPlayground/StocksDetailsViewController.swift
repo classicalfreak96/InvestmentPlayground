@@ -19,9 +19,6 @@ class StocksDetailsViewController: UIViewController{
     var dollar:Double = 0
     var percent:Double = 0
     var volume:Int = 0
-    var open:Double = 0
-    var high:Double = 0
-    var low:Double = 0
     let db = Firestore.firestore()
 
 
@@ -76,7 +73,6 @@ class StocksDetailsViewController: UIViewController{
             price.text = "Price not found"
         }
         
-        //price.text = String(describing: chronoStockPrice.last!)
         changeDol.text = "$" + String(format: "%.2f", dollar)
         changePercent.text = String(format: "%.5f", percent) + "%"
         if (percent < 0) {
@@ -93,9 +89,8 @@ class StocksDetailsViewController: UIViewController{
         else {
             marketCap.text = "Market Cap: Not found :("
         }
-        peRatio.text = "High: " + String(high)
-        betaValue.text = "Low: " + String(low)
-        
+        peRatio.text = "P/E Ratio: 0.94"
+        betaValue.text = "Beta: 0.95"
         
         var i: Int = 0
         for price in chronoStockPrice {

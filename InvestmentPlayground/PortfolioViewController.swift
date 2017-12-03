@@ -14,6 +14,7 @@ class PortfolioViewController: UIViewController, UITableViewDataSource, UITableV
     let db = Firestore.firestore()
     var stocks: [Stock] = []
     let dataParser = dataParse()
+    var totalPortfolioValue: Double = 0.0
     
     @IBOutlet weak var portfolioValue: UILabel!
     
@@ -26,9 +27,9 @@ class PortfolioViewController: UIViewController, UITableViewDataSource, UITableV
         self.view.backgroundColor = .white
         portfolioTable.delegate = self
         portfolioTable.dataSource = self
-        //print(self.stocks)
-        calculatePortfolioValue()
-
+        
+        dataParser.pullCurrentPrice(ticker: "AAPL")
+        //calculatePortfolioValue()
     }
 
     override func didReceiveMemoryWarning() {
@@ -46,15 +47,12 @@ class PortfolioViewController: UIViewController, UITableViewDataSource, UITableV
         let currentStock = stocks[(portfolioTable.indexPathForSelectedRow?.row)!]
         sdvc.tickerName = currentStock.ticker
         let dp = dataParse()
-        let (dollar, percent, volume, open, high, low) = dp.pullStockData(append: false, ticker: currentStock.ticker)
+        let (dollar, percent, volume) = dp.pullStockData(ticker: currentStock.ticker)
         dp.searchEquity(function: "SMA", symbol: currentStock.ticker, interval: "daily", time_period: "100")
         sdvc.stockHold = dp.equityList
         sdvc.dollar = dollar
         sdvc.percent = percent
         sdvc.volume = volume
-        sdvc.open = open
-        sdvc.high = high
-        sdvc.low = low
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -135,9 +133,11 @@ class PortfolioViewController: UIViewController, UITableViewDataSource, UITableV
     func calculatePortfolioValue() {
         var totalVal = 0.0
         
-        //for stock in self.stocks {
-        //    totalVal = totalVal + (stock.numShares)
-        //}
+        for stock in self.stocks {
+            totalVal = totalVal + (Double(stock.numShares) * dataParser.pullCurrentPrice(ticker: stock.ticker))
+        }
+        totalPortfolioValue = totalVal
+        portfolioValue.text = String(totalPortfolioValue)
     }
     
 }

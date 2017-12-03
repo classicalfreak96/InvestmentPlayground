@@ -13,6 +13,8 @@ class dataParse{
     
     var path: String = ""
     var equityList: [Stock] = []
+    /* We have multiple api keys because we were getting rate limited */
+    
     // Michael's api key
     let apiKey = "80FQBZRZNE3Z1FA0"
     // just in case
@@ -44,7 +46,7 @@ class dataParse{
         //print(path)
         let results = getJSON(path: path)
         //print(results)
-        
+
         if results.count == 0 {
             validStock = false;
             tempStock.ticker = "Invalid Stock Symbol"
@@ -72,25 +74,25 @@ class dataParse{
         }
         equityList.append(tempStock)
     }
-    
-    func pullStockData (append: Bool, ticker: String) -> (Double, Double, Int, Double, Double, Double) {
+
+    func pullStockData (ticker: String) -> (Double, Double, Int) {
         var tempStock = Stock()
         var validStock: Bool = true
-        var dateClose = [Date : (Double, Int, Double, Double, Double)]()
+        var dateClose = [Date : (Double, Int)]()
         var sortedClosePrice:[Double] = []
         var sortedVolume:[Int] = []
-        var sortedOpen:[Double] = []
-        var sortedHigh:[Double] = []
-        var sortedLow:[Double] = []
         let path = "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=" + ticker + "&apikey=" + "AA16SBF68AT9U5OS"
         let results = getJSON(path: path)
         print("TIME SERIES DAILY ")
         
         if results.count == 0 {
             validStock = false;
+            tempStock.ticker = "Invalid Stock Symbol"
         }
         for (key, _) in results {
             if key == "Error Message" {
+                print("Error message")
+                tempStock.ticker = "Invalid Stock Symbol"
                 validStock = false;
             }
         }
@@ -106,27 +108,59 @@ class dataParse{
                 if let unwrappedDate = date1 {
                     tempStock.SMA[unwrappedDate] = Double(value["4. close"].string!)!
                 }
-                dateClose[date1!] = (Double(value["4. close"].string!)!, Int(value["5. volume"].string!)!, Double(value["1. open"].string!)!, Double(value["2. high"].string!)!, Double(value["3. low"].string!)!)
             }
-            
-            let sorted = dateClose.sorted { $0.0 > $1.0 }
-            for (date, (price, volume, open, high, low)) in sorted {
-                //print(date)
-                sortedClosePrice.append(price)
-                sortedVolume.append(volume)
-                sortedOpen.append(open)
-                sortedHigh.append(high)
-                sortedLow.append(low)
-            }
-            //print(sortedClosePrice[0])
-            //print(sortedClosePrice[1])
-            let dollar:Double = sortedClosePrice[0] - sortedClosePrice[1]
-            let percent:Double = (sortedClosePrice[0] - sortedClosePrice[1])/sortedClosePrice[1]
-            if (append) {
-                equityList.append(tempStock)
-            }
-            return(dollar, percent, sortedVolume[0], sortedOpen[0], sortedHigh[0], sortedLow[0])
         }
-        return(0,0,0,0,0,0)
+        
+        for (key, value) in results["Time Series (Daily)"] {
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "yyyy-MM-dd"
+            let date1 = dateFormatter.date(from: key)
+            dateClose[date1!] = (Double(value["4. close"].string!)!, Int(value["5. volume"].string!)!)
+        }
+        let sorted = dateClose.sorted { $0.0 > $1.0 }
+        for (date, (price, volume)) in sorted {
+            //print(date)
+            sortedClosePrice.append(price)
+            sortedVolume.append(volume)
+        }
+
+        let dollar:Double = sortedClosePrice[0] - sortedClosePrice[1]
+        let percent:Double = (sortedClosePrice[0] - sortedClosePrice[1])/sortedClosePrice[1]
+        equityList.append(tempStock)
+        return(dollar, percent, sortedVolume[0])
     }
+
+
+    func pullCurrentPrice(ticker: String) -> Double {
+        let path = "https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=" + ticker + "&interval=1min&apikey=" + harrisonsKey
+        
+        let results = getJSON(path: path)
+        let intraDayPrices = results["Time Series (1min)"]
+        
+        // make an array to get the close
+        var closingPrices = [Date : Double]()
+        for (key, value) in intraDayPrices {
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+            let date1 = dateFormatter.date(from: key)
+            closingPrices[date1!] = Double(value["4. close"].string!)!
+        }
+        let sortedByDate = closingPrices.sorted {$0.0 < $1.0 }
+        var sortedPrice:[Double] = []
+        var sortedDate:[Date] = []
+        for (date, price) in sortedByDate {
+            sortedPrice.append(price)
+            sortedDate.append(date)
+        }
+        print(sortedPrice.last)
+        print(sortedDate.last)
+        if let returnVal = sortedPrice.last {
+            return returnVal
+        }
+        return 0.0
+
+    }
+
+
+
 }
