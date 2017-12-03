@@ -41,23 +41,11 @@ class LeadershipViewController: UIViewController, UITableViewDelegate, UITableVi
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell { //help from https://www.ralfebert.de/tutorials/ios-swift-uitableviewcontroller/#data_swift_arrays
         
         let cell1 = tableView.dequeueReusableCell(withIdentifier: "leaderCell") as! LeaderCell
-        cell1.rankingLabel.text = "#" + String(indexPath.row + 1)
-        cell1.nameLabel.text = users[indexPath.row]
-        var portfolioReturn = 1.234 //@MICHAEL: this should be calculated for users or pulled from database
-        if (portfolioReturn < 0) {
-            cell1.returnLabel.textColor = UIColor.red
-            cell1.returnLabel.text = "-" + String(format: "%.2f", portfolioReturn) + "%"
-        }
-        else {
-            cell1.returnLabel.textColor = UIColor.green
-            cell1.returnLabel.text = "+" + String(format: "%.2f", portfolioReturn) + "%"
-        }
+        cell1.textLabel?.text = users[indexPath.row]
+        cell1.returnLabel.text = "+1.23%" //@MICHAEL: this should be calculated for users
         return cell1
     }
     
-    func sortPortfolioReturn(){
-        //pull users portfolios from database and sort here
-    }
     // This function pulls all of the stocks for a given user and reloads
     // the table with the tickers of the stocks
     func getUsersForGame(title: String) {
@@ -75,6 +63,4 @@ class LeadershipViewController: UIViewController, UITableViewDelegate, UITableVi
                 }
         }
     }
-    
-    
 }

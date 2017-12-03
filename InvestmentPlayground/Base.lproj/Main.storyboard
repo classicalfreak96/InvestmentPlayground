@@ -422,6 +422,7 @@
         <!--Find Games Controller-->
         <scene sceneID="C3u-fC-cey">
             <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="xzT-Bu-Tlk" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <tableViewController id="Rgc-Pd-T8r" userLabel="Find Games Controller" customClass="FindGamesViewController" customModule="InvestmentPlayground" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="diX-iW-HBY">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
@@ -453,7 +454,6 @@
                         <outlet property="searchBar" destination="YUx-1O-fiG" id="3io-8p-spw"/>
                     </connections>
                 </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="xzT-Bu-Tlk" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1588" y="2678"/>
         </scene>
@@ -569,25 +569,9 @@
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="#1" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HHo-9x-wue">
-                                                    <rect key="frame" x="22" y="11" width="26" height="21"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Username" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ov3-Ga-bT5">
-                                                    <rect key="frame" x="56" y="11" width="238" height="21"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
                                             </subviews>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <outlet property="nameLabel" destination="ov3-Ga-bT5" id="L5Z-Kw-FKl"/>
-                                            <outlet property="rankingLabel" destination="HHo-9x-wue" id="nn8-4B-LBK"/>
                                             <outlet property="returnLabel" destination="XrC-4z-bYI" id="MI1-zP-BSD"/>
                                         </connections>
                                     </tableViewCell>
@@ -600,7 +584,7 @@
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Leaderboard" id="oqY-cB-ZQy"/>
+                    <navigationItem key="navigationItem" title="Leaders Board" id="oqY-cB-ZQy"/>
                     <connections>
                         <outlet property="leadershipTable" destination="ofD-kn-s6Y" id="4l4-zi-WbG"/>
                     </connections>

@@ -71,7 +71,7 @@ class StocksViewController: UIViewController, UITableViewDelegate, UITableViewDa
         return cell1
     }
     
-
+    
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         equityInfo.equityList.removeAll()
@@ -85,7 +85,7 @@ class StocksViewController: UIViewController, UITableViewDelegate, UITableViewDa
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        if searchText.isEmpty{                                                                                                                                                    
+        if searchText.isEmpty{
             equityInfo.equityList.removeAll()
             stockHold = equityInfo.equityList
             

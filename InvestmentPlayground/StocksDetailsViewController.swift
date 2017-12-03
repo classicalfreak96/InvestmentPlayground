@@ -23,8 +23,8 @@ class StocksDetailsViewController: UIViewController{
     var high:Double = 0
     var low:Double = 0
     let db = Firestore.firestore()
-
-
+    
+    
     @IBAction func addPortfolio(_ sender: Any) {
         let alert = UIAlertController(title: "Buy " + tickerName + " stocks", message: "Enter number of shares: ", preferredStyle: .alert)
         alert.addTextField { (textField) in
@@ -47,7 +47,7 @@ class StocksDetailsViewController: UIViewController{
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
         self.present(alert, animated: true, completion: nil)
     }
-
+    
     
     @IBOutlet weak var graph: LineChart!
     
@@ -56,7 +56,7 @@ class StocksDetailsViewController: UIViewController{
     @IBOutlet weak var ticker: UINavigationBar!
     
     @IBOutlet weak var changeDol: UILabel!
-
+    
     @IBOutlet weak var changePercent: UILabel!
     
     @IBOutlet weak var marketCap: UILabel!
@@ -114,7 +114,7 @@ class StocksDetailsViewController: UIViewController{
             let nextVC:PortfolioViewController = (segue.destination as? PortfolioViewController)!
             nextVC.stocks.append(stockHold[0])
         }
-
+        
     }
     
     func sortStocks (stockDic: [Date:Double]) {
@@ -144,6 +144,5 @@ class StocksDetailsViewController: UIViewController{
     }
     
 }
-
 
 
