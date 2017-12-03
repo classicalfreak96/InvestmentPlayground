@@ -38,10 +38,7 @@ class StocksViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if (segue.identifier == "clickedStock"){
-            let  nextVC:StocksDetailsViewController = (segue.destination as?StocksDetailsViewController)!
-//            let selectedCell = sender as! UITableViewCell
-//            let indexPath = stockHold.indexPath(for: selectedCell)
-//            let stock = equityInfo.equityList[indexPath.item]
+            let nextVC: StocksDetailsViewController = (segue.destination as?StocksDetailsViewController)!
             nextVC.tickerName = query
             nextVC.stockHold = equityInfo.equityList
             let (dollar, percent, volume) = equityInfo.pullStockData(ticker: query)

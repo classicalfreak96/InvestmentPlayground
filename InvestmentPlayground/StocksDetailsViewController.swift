@@ -67,7 +67,7 @@ class StocksDetailsViewController: UIViewController{
         sortStocks(stockDic: stockHold[0].SMA)
         self.title = tickerName
         if let unwrappedPrice = chronoStockPrice.last {
-            price.text = String(describing: unwrappedPrice)
+            price.text = String(unwrappedPrice)
         }
         else {
             price.text = "Price not found"
