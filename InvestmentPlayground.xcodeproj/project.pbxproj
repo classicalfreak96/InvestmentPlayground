@@ -25,6 +25,7 @@
 		01A3C1921FC0DD88002E67A4 /* InvestmentPlaygroundUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A3C1911FC0DD88002E67A4 /* InvestmentPlaygroundUITests.swift */; };
 		01A3C1A21FC0E6CE002E67A4 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 01A3C1A11FC0E6CE002E67A4 /* GoogleService-Info.plist */; };
 		13CF37EFEA96ED9D4115E945 /* Pods_InvestmentPlayground.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC39A51B3B609D44D324550F /* Pods_InvestmentPlayground.framework */; };
+		684A05941FD380F500536675 /* RegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 684A05931FD380F500536675 /* RegisterViewController.swift */; };
 		A05BCDC96B0C686A884D5E35 /* Pods_InvestmentPlaygroundUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7644FED744343A9689563A45 /* Pods_InvestmentPlaygroundUITests.framework */; };
 		A7C63A731FD34D1100AE2541 /* lineChartExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7C63A721FD34D1100AE2541 /* lineChartExtensions.swift */; };
 		A7C63A751FD34E3400AE2541 /* lineChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7C63A741FD34E3400AE2541 /* lineChart.swift */; };
@@ -88,6 +89,7 @@
 		0F8FB653E7D8703EBFC0A719 /* Pods-InvestmentPlayground.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-InvestmentPlayground.release.xcconfig"; path = "Pods/Target Support Files/Pods-InvestmentPlayground/Pods-InvestmentPlayground.release.xcconfig"; sourceTree = "<group>"; };
 		377D0505C79A84D55C1E6557 /* Pods-InvestmentPlaygroundTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-InvestmentPlaygroundTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-InvestmentPlaygroundTests/Pods-InvestmentPlaygroundTests.debug.xcconfig"; sourceTree = "<group>"; };
 		461DD79C1C67EAF13355FF2D /* Pods-InvestmentPlaygroundUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-InvestmentPlaygroundUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-InvestmentPlaygroundUITests/Pods-InvestmentPlaygroundUITests.release.xcconfig"; sourceTree = "<group>"; };
+		684A05931FD380F500536675 /* RegisterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
 		7644FED744343A9689563A45 /* Pods_InvestmentPlaygroundUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_InvestmentPlaygroundUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A33E7CBC84D7B313E4A51B6F /* Pods-InvestmentPlaygroundTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-InvestmentPlaygroundTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-InvestmentPlaygroundTests/Pods-InvestmentPlaygroundTests.release.xcconfig"; sourceTree = "<group>"; };
 		A7C63A721FD34D1100AE2541 /* lineChartExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = lineChartExtensions.swift; sourceTree = "<group>"; };
@@ -158,6 +160,7 @@
 				011EE9541FC1044C0095B9B8 /* LeadershipViewController.swift */,
 				011EE9561FC104530095B9B8 /* LoginViewController.swift */,
 				011EE9581FC104590095B9B8 /* PortfolioViewController.swift */,
+				684A05931FD380F500536675 /* RegisterViewController.swift */,
 				011EE95A1FC104600095B9B8 /* stocks.swift */,
 				011EE95E1FC1046E0095B9B8 /* StocksViewController.swift */,
 				011EE95C1FC104650095B9B8 /* StocksDetailsViewController.swift */,
@@ -536,6 +539,7 @@
 				011EE9591FC104590095B9B8 /* PortfolioViewController.swift in Sources */,
 				011EE9531FC104410095B9B8 /* GroupsViewController.swift in Sources */,
 				011EE9551FC1044C0095B9B8 /* LeadershipViewController.swift in Sources */,
+				684A05941FD380F500536675 /* RegisterViewController.swift in Sources */,
 				A7C63A751FD34E3400AE2541 /* lineChart.swift in Sources */,
 				A7C63A731FD34D1100AE2541 /* lineChartExtensions.swift in Sources */,
 				011EE95B1FC104600095B9B8 /* stocks.swift in Sources */,

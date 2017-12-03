@@ -35,6 +35,7 @@ class dataParse{
         var validStock:Bool = true;
         path = "https://www.alphavantage.co/query?function=" + function + "&symbol=" + symbol + "&interval=" + interval + "&time_period=" + time_period + "&series_type=close"+"&apikey=" + apiKey
         let results = getJSON(path: path)
+        print(results)
         for (key, value) in results {
             if key == "Error Message" {
                 tempStock.ticker = "Invalid Stock Symbol"
@@ -45,10 +46,14 @@ class dataParse{
         tempStock.ticker = symbol
         print("name is: " + tempStock.ticker)
         for (date, SMA) in results["Technical Analysis: SMA"] {
+            //print("SMA: \(SMA)")
             let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = "yyyy-MM-dd HH:mm"
             let date1 = dateFormatter.date(from: date)
-            tempStock.SMA[date1!] = Double(SMA["SMA"].string!)!
+            if let unwrappedDate = date1 {
+                print("inside unwrapped date")
+                tempStock.SMA[unwrappedDate] = Double(SMA["SMA"].string!)!
+            }
         }
         }
         equityList.append(tempStock)

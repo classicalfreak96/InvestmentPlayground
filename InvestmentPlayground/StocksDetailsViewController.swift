@@ -32,9 +32,10 @@ class StocksDetailsViewController: UIViewController{
             if let text: String = textField?.text {
                 let trimmedString = Int(text.trimmingCharacters(in: .whitespaces))
                 self.stockHold[0].numShares = trimmedString!
-                print(self.stockHold[0].numShares)
+                //print(self.stockHold[0].numShares)
                 let username = UserDefaults.standard.string(forKey: "username")
                 if let user = username {
+                    print("inside user = username")
                     self.addStock(username: user, ticker: self.tickerName, numShares: self.stockHold[0].numShares)
                 }
             }
@@ -65,7 +66,14 @@ class StocksDetailsViewController: UIViewController{
         super.viewDidLoad()
         sortStocks(stockDic: stockHold[0].SMA)
         self.title = tickerName
-        price.text = String(describing: chronoStockPrice.last!)
+        if let unwrappedPrice = chronoStockPrice.last {
+            price.text = String(describing: unwrappedPrice)
+        }
+        else {
+            price.text = "000"
+        }
+        
+        //price.text = String(describing: chronoStockPrice.last!)
         changeDol.text = "$" + String(format: "%.2f", dollar)
         changePercent.text = String(format: "%.5f", percent) + "%"
         if (percent < 0) {
@@ -76,8 +84,10 @@ class StocksDetailsViewController: UIViewController{
             changeDol.textColor = UIColor.green
             changePercent.textColor = UIColor.green
         }
-        marketCap.text = "Market Cap: $" + String(volume * Int(chronoStockPrice.last!))
-        peRatio.text = "P/E Ratio: 0.94"
+        if let unwrapped = chronoStockPrice.last {
+            marketCap.text = "Market Cap: $" + String(volume * Int(unwrapped))
+        }
+            peRatio.text = "P/E Ratio: 0.94"
         betaValue.text = "Beta: 0.95"
         
         
@@ -126,9 +136,10 @@ class StocksDetailsViewController: UIViewController{
     
     func sortStocks (stockDic: [Date:Double]) {
         let sorted = stockDic.sorted { $0.0 < $1.0 }
-        print(sorted)
+        //print(sorted)
         for (date, price) in sorted {
-            print(date)
+            //print(date)
+            //print("Adding \(price) to chronoStockPrice")
             chronoStockPrice.append(price)
         }
     }
