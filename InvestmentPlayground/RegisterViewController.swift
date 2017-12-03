@@ -17,13 +17,14 @@ class RegisterViewController: UIViewController {
     @IBOutlet weak var passwordInput: UITextField!
     
     @IBOutlet weak var newUsername: UITextField!
-    
-    
+
     @IBOutlet weak var newPassword: UITextField!
     
   
     @IBAction func registerButton(_ sender: Any) {
-        addUser(username: newUsername.text!, password: newPassword.text!)
+        let newUsernameText: String = newUsername.text ?? ""
+        let newPasswordText: String = newPassword.text ?? ""
+        addUser(username: newUsernameText, password: newPasswordText)
         let alertController = UIAlertController(title: "Registration Successful!", message: "Please login using new username and password", preferredStyle: .alert)
         let OKAction = UIAlertAction(title: "OK", style: .default){ action in
             self.performSegue(withIdentifier: "toLoginView", sender: self)
