@@ -25,6 +25,15 @@ class GamesViewController: UIViewController, UITableViewDataSource, UITableViewD
         gamesTable.delegate = self
     }
     
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        let username = UserDefaults.standard.string(forKey: "username")!
+        getGamesForUser(username: username)
+        gamesTable.dataSource = self
+        gamesTable.delegate = self
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
