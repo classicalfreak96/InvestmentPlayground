@@ -38,8 +38,8 @@ class LineChart: UIView {
     @IBInspectable var labelFontSize: CGFloat = 10
     
     var axisLineWidth: CGFloat = 1
-    var deltaX: CGFloat = 10
-    var deltaY: CGFloat = 10
+    var deltaX: CGFloat = 150
+    var deltaY: CGFloat = 15
     var xMax: CGFloat = 100
     var yMax: CGFloat = 100
     var xMin: CGFloat = 0
