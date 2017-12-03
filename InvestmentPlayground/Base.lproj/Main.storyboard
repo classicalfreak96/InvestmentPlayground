@@ -393,6 +393,13 @@
                                     <outlet property="delegate" destination="BOk-dR-ZVX" id="uPl-z3-YzE"/>
                                 </connections>
                             </tableView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eso-Lr-hyr">
+                                <rect key="frame" x="166" y="72" width="42" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
@@ -405,6 +412,7 @@
                     <navigationItem key="navigationItem" title="Portfolio" id="rKK-FS-6t6"/>
                     <connections>
                         <outlet property="portfolioTable" destination="eCt-xX-QE9" id="ryI-im-AnI"/>
+                        <outlet property="portfolioValue" destination="eso-Lr-hyr" id="DQb-IH-mcM"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="npL-pu-FPg" sceneMemberID="firstResponder"/>
