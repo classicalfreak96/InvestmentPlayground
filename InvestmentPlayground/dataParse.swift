@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-class dataParse{ //change this for stock API
+class dataParse{
     
     var path: String = ""
     var equityList: [Stock] = []

@@ -24,7 +24,7 @@ class GroupsViewController: UIViewController{
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if (segue.identifier == "clickedPlay"){
-            let nextVC:GamesViewController = (segue.destination as?GamesViewController)!
+            let nextVC:GamesViewController = (segue.destination as? GamesViewController)!
         }
     }
     

@@ -12,7 +12,6 @@ import FirebaseFirestore
 class LoginViewController: UIViewController {
     
     let db = Firestore.firestore()
-    var stocks : [Stock] = []
     
     @IBOutlet weak var usernameInput: UITextField!
     
@@ -25,7 +24,6 @@ class LoginViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 /*
@@ -45,5 +43,4 @@ class LoginViewController: UIViewController {
             }
         }
     }
-    
 }

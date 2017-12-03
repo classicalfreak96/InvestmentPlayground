@@ -79,7 +79,7 @@ class StocksViewController: UIViewController, UITableViewDelegate, UITableViewDa
             query = trimmedString
         }
         query = query.uppercased()
-        equityInfo.searchEquity(function: "SMA", symbol: query, interval: "30min", time_period: "20")
+        equityInfo.searchEquity(function: "SMA", symbol: query, interval: "daily", time_period: "100")
         stocksTable.reloadData()
     }
     

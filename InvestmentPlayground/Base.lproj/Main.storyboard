@@ -77,9 +77,9 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tpm-41-YUX">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tpm-41-YUX" customClass="LineChart" customModule="InvestmentPlayground" customModuleProvider="target">
                                 <rect key="frame" x="16" y="86" width="343" height="247"/>
-                                <color key="backgroundColor" red="1" green="0.91823328010000005" blue="0.14685867180000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="backgroundColor" red="0.070585197720000006" green="0.36187219939999998" blue="0.60808613580000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="247" id="cEf-cx-DtE"/>
                                     <constraint firstAttribute="width" constant="343" id="sPf-hk-phb"/>
@@ -146,6 +146,7 @@
                         <outlet property="betaValue" destination="i55-fq-TnZ" id="7af-l0-u1f"/>
                         <outlet property="changeDol" destination="gMg-wt-EZW" id="GgV-rU-ir8"/>
                         <outlet property="changePercent" destination="aJl-TY-JRI" id="JKe-2Z-PZa"/>
+                        <outlet property="graph" destination="tpm-41-YUX" id="ESE-xd-ybi"/>
                         <outlet property="marketCap" destination="Uh0-sD-0lc" id="cc0-iG-B9X"/>
                         <outlet property="peRatio" destination="dPN-2U-YDT" id="CIX-Hn-SGx"/>
                         <outlet property="price" destination="7Tg-VY-2dQ" id="Td8-gp-8ig"/>
@@ -385,7 +386,7 @@
                                         <rect key="frame" x="0.0" y="28" width="343" height="45"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="jJ6-PD-c4y" id="HiH-1n-Q62">
-                                            <rect key="frame" x="0.0" y="0.0" width="343" height="44"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="343" height="45"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
