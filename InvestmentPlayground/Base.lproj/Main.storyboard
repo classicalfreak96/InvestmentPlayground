@@ -372,7 +372,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="45" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="eCt-xX-QE9" userLabel="Portfolio Table">
-                                <rect key="frame" x="16" y="72" width="343" height="538"/>
+                                <rect key="frame" x="16" y="28" width="343" height="631"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="5" reuseIdentifier="portfolioCell" rowHeight="45" id="jJ6-PD-c4y" userLabel="portfolioCell">
@@ -498,9 +498,6 @@
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
-                                        <connections>
-                                            <segue destination="BOk-dR-ZVX" kind="show" id="DTQ-TZ-mH4"/>
-                                        </connections>
                                     </tableViewCell>
                                 </prototypes>
                                 <connections>
@@ -670,7 +667,7 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="3K2-yd-KCh"/>
-        <segue reference="DTQ-TZ-mH4"/>
+        <segue reference="tCh-5e-Caj"/>
         <segue reference="DZC-fz-G35"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -35,6 +35,19 @@ class PortfolioViewController: UIViewController, UITableViewDataSource, UITableV
         getStocksForUser(username: username)
     }
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let sdvc = segue.destination as! StocksDetailsViewController
+        let currentStock = stocks[(portfolioTable.indexPathForSelectedRow?.row)!]
+        sdvc.tickerName = currentStock.ticker
+        let dp = dataParse()
+        let (dollar, percent, volume) = dp.pullStockData(ticker: currentStock.ticker)
+        dp.searchEquity(function: "SMA", symbol: currentStock.ticker, interval: "daily", time_period: "100")
+        sdvc.stockHold = dp.equityList
+        sdvc.dollar = dollar
+        sdvc.percent = percent
+        sdvc.volume = volume
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return stocks.count
     }

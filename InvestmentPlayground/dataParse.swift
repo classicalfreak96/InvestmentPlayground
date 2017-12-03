@@ -32,7 +32,7 @@ class dataParse{
     
     func searchEquity (function: String, symbol: String, interval: String, time_period: String) {
         var tempStock = Stock()
-        var validStock:Bool = true;
+        var validStock: Bool = true
         path = "https://www.alphavantage.co/query?function=" + function + "&symbol=" + symbol + "&interval=" + interval + "&time_period=" + time_period + "&series_type=close"+"&apikey=" + "AA16SBF68AT9U5OS"
         print(path)
         let results = getJSON(path: path)
@@ -42,7 +42,7 @@ class dataParse{
             validStock = false;
             tempStock.ticker = "Invalid Stock Symbol"
         }
-        for (key, value) in results {
+        for (key, _) in results {
             if key == "Error Message" {
                 print("Error message")
                 tempStock.ticker = "Invalid Stock Symbol"
