@@ -25,7 +25,7 @@ class GroupsViewController: UIViewController{
     
     @IBAction func clickedPlay(_ sender: Any) {
             if let gameName = newGameTextField.text {
-                let username = UserDefaults.standard.string(forKey: "username") ?? "NickD"
+                let username = UserDefaults.standard.string(forKey: "username")!
                 addGame(title: gameName)
                 joinGame(title: gameName, username: username)
             }

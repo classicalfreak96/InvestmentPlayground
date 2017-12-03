@@ -382,6 +382,9 @@
                                             <rect key="frame" x="0.0" y="0.0" width="343" height="44.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <segue destination="agl-jd-Fl7" kind="show" id="DZC-fz-G35"/>
+                                        </connections>
                                     </tableViewCell>
                                 </prototypes>
                                 <connections>
@@ -474,7 +477,6 @@
         <!--Leadership Board-->
         <scene sceneID="rJz-Xz-8oh">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="kSy-R3-tLj" sceneMemberID="firstResponder"/>
                 <viewController title="Leadership Board" id="CyF-2I-oTw" customClass="LeadershipViewController" customModule="InvestmentPlayground" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="nH5-OM-Hkn"/>
@@ -514,6 +516,7 @@
                         <outlet property="leadershipTable" destination="ofD-kn-s6Y" id="4l4-zi-WbG"/>
                     </connections>
                 </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="kSy-R3-tLj" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2416.8000000000002" y="1208.5457271364319"/>
         </scene>
@@ -668,5 +671,6 @@
     <inferredMetricsTieBreakers>
         <segue reference="3K2-yd-KCh"/>
         <segue reference="DTQ-TZ-mH4"/>
+        <segue reference="DZC-fz-G35"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -109,7 +109,7 @@ class StocksDetailsViewController: UIViewController{
 //        
 //        graph.deltaX = 20
 //        graph.deltaY = 30
-        var i:Int = 0
+        var i: Int = 0
         for price in chronoStockPrice {
             var tempPoint = CGPoint(x: Double(i), y: price)
             points.append(tempPoint)

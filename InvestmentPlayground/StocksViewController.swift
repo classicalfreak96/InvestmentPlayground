@@ -52,7 +52,6 @@ class StocksViewController: UIViewController, UITableViewDelegate, UITableViewDa
         
     }
     
-    //EVERYTHING NEEDS TO BE CHANGED
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return equityInfo.equityList.count
     }
@@ -73,8 +72,7 @@ class StocksViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         equityInfo.equityList.removeAll()
-        query = searchStocksBar.text!
-        if let text: String = query {
+        if let text: String = searchStocksBar.text {
             let trimmedString = text.trimmingCharacters(in: .whitespaces)
             query = trimmedString
         }
