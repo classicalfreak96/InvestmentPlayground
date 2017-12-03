@@ -87,7 +87,7 @@ class StocksDetailsViewController: UIViewController{
             changeDol.textColor = UIColor.green
             changePercent.textColor = UIColor.green
         }
-        marketCap.text = ""
+        marketCap.text = "Open: " + String(open)
         peRatio.text = "High: " + String(high)
         betaValue.text = "Low: " + String(low)
         

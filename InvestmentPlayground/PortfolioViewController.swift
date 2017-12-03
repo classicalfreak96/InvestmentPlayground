@@ -56,6 +56,9 @@ class PortfolioViewController: UIViewController, UITableViewDataSource, UITableV
         sdvc.dollar = dollar
         sdvc.percent = percent
         sdvc.volume = volume
+        sdvc.open = open
+        sdvc.high = high
+        sdvc.low = low
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
