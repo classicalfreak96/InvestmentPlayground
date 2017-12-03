@@ -46,12 +46,15 @@ class PortfolioViewController: UIViewController, UITableViewDataSource, UITableV
         let currentStock = stocks[(portfolioTable.indexPathForSelectedRow?.row)!]
         sdvc.tickerName = currentStock.ticker
         let dp = dataParse()
-        let (dollar, percent, volume) = dp.pullStockData(ticker: currentStock.ticker)
+        let (dollar, percent, volume, open, high, low) = dp.pullStockData(append: false, ticker: currentStock.ticker)
         dp.searchEquity(function: "SMA", symbol: currentStock.ticker, interval: "daily", time_period: "100")
         sdvc.stockHold = dp.equityList
         sdvc.dollar = dollar
         sdvc.percent = percent
         sdvc.volume = volume
+        sdvc.open = open
+        sdvc.high = high
+        sdvc.low = low
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -74,10 +77,9 @@ class PortfolioViewController: UIViewController, UITableViewDataSource, UITableV
                 if let text: String = textField?.text {
                     let trimmedString = Int(text.trimmingCharacters(in: .whitespaces))
                     self.stocks[indexPath.row].numShares = self.stocks[indexPath.row].numShares - trimmedString!
-                    //NEEDS TO UPDATE STOCK IN DATABASE WITH NEW NUMBER OF STOCKS
-                    let username = UserDefaults.standard.string(forKey: "username")
-                    if username != nil {
-                    }
+                    let alert = UIAlertController(title: "Profit from selling " + self.stocks[indexPath.row].ticker, message: "You have made " + "12132312123", preferredStyle: .alert) //CHANGE "123123123123"
+                    alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                    self.present(alert, animated: true, completion: nil)
                 }
                 self.portfolioTable.reloadData()
             }))
@@ -98,6 +100,7 @@ class PortfolioViewController: UIViewController, UITableViewDataSource, UITableV
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell { //help from https://www.ralfebert.de/tutorials/ios-swift-uitableviewcontroller/#data_swift_arrays
         let cell1 = tableView.dequeueReusableCell(withIdentifier: "portfolioCell", for: indexPath) as UITableViewCell
         cell1.textLabel?.text = self.stocks[indexPath.row].ticker + "(" + String(self.stocks[indexPath.row].numShares) + ")"
+        
         return cell1
     }
     

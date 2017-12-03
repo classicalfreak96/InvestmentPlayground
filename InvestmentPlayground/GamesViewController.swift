@@ -9,7 +9,7 @@
 import UIKit
 import FirebaseFirestore
 
-class GamesViewController: UIViewController, UITableViewDataSource, UITableViewDelegate{
+class GamesViewController: UIViewController, UITableViewDataSource, UITableViewDelegate{ //games they are currently in
     
     let db = Firestore.firestore()
     

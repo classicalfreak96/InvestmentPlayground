@@ -38,7 +38,7 @@ class LineChart: UIView {
     @IBInspectable var labelFontSize: CGFloat = 10
     
     var axisLineWidth: CGFloat = 1
-    var deltaX: CGFloat = 150
+    var deltaX: CGFloat = 10
     var deltaY: CGFloat = 15
     var xMax: CGFloat = 100
     var yMax: CGFloat = 100
@@ -89,7 +89,8 @@ class LineChart: UIView {
         xMax = ceil(xs.max()! / deltaX) * deltaX
         yMax = ceil(ys.max()! / deltaY) * deltaY
         xMin = floor(xs.min()! / deltaX) * deltaX
-        yMin = floor(ys.min()! / deltaY) * deltaY
+        //yMin = floor(ys.min()! / deltaY) * deltaY
+        yMin = 0
         setTransform(minX: xMin, maxX: xMax, minY: yMin, maxY: yMax)
     }
     
