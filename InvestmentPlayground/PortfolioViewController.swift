@@ -28,7 +28,7 @@ class PortfolioViewController: UIViewController, UITableViewDataSource, UITableV
         portfolioTable.delegate = self
         portfolioTable.dataSource = self
         
-        dataParser.pullCurrentPrice(ticker: "AAPL")
+        //dataParser.pullCurrentPrice(ticker: "AAPL")
         //calculatePortfolioValue()
     }
 
@@ -79,11 +79,22 @@ class PortfolioViewController: UIViewController, UITableViewDataSource, UITableV
             alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { [weak alert] (_) in
                 let textField = alert?.textFields![0] // Force unwrapping because we know it exists.
                 if let text: String = textField?.text {
-                    let trimmedString = Int(text.trimmingCharacters(in: .whitespaces))
-                    self.stocks[indexPath.row].numShares = self.stocks[indexPath.row].numShares - trimmedString!
-                    let alert = UIAlertController(title: "Profit from selling " + self.stocks[indexPath.row].ticker, message: "You have made " + "12132312123", preferredStyle: .alert) //CHANGE "123123123123"
-                    alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-                    self.present(alert, animated: true, completion: nil)
+                    var trimmedString = Int(text.trimmingCharacters(in: .whitespaces))
+                    if trimmedString == nil {
+                        trimmedString = 0
+                    }
+                    if (self.stocks[indexPath.row].numShares - trimmedString! < 0) {
+                        let alert = UIAlertController(title: "NO", message: "You cannot sell more stocks than you have", preferredStyle: .alert)
+                        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                        self.present(alert, animated: true, completion: nil)
+                    }
+                    else {
+                        self.stocks[indexPath.row].numShares = self.stocks[indexPath.row].numShares - trimmedString!
+                        let alert = UIAlertController(title: "Profit from selling " + self.stocks[indexPath.row].ticker, message: "You have made " + "12132312123", preferredStyle: .alert) //CHANGE "123123123123"
+                        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                        self.present(alert, animated: true, completion: nil)
+
+                    }
                 }
                 self.portfolioTable.reloadData()
             }))

@@ -5,6 +5,7 @@
 //  Created by Michelle Xu on 12/2/17.
 //  Copyright © 2017 Nick DesMarais. All rights reserved.
 //
+//code partially adapted from https://medium.com/@tstenerson/lets-make-a-line-chart-in-swift-3-5e819e6c1a00 royalty-free
 
 import Foundation
 import UIKit
