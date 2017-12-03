@@ -33,23 +33,32 @@ class dataParse{
     func searchEquity (function: String, symbol: String, interval: String, time_period: String) {
         var tempStock = Stock()
         var validStock:Bool = true;
-        path = "https://www.alphavantage.co/query?function=" + function + "&symbol=" + symbol + "&interval=" + interval + "&time_period=" + time_period + "&series_type=close"+"&apikey=" + apiKey
+        path = "https://www.alphavantage.co/query?function=" + function + "&symbol=" + symbol + "&interval=" + interval + "&time_period=" + time_period + "&series_type=close"+"&apikey=" + "AA16SBF68AT9U5OS"
+        print(path)
         let results = getJSON(path: path)
+        print(results)
+        if results.count == 0 {
+            validStock = false;
+            tempStock.ticker = "Invalid Stock Symbol"
+        }
         for (key, value) in results {
             if key == "Error Message" {
+                print("Error message")
                 tempStock.ticker = "Invalid Stock Symbol"
                 validStock = false;
             }
         }
         if (validStock) {
-        tempStock.ticker = symbol
-        print("name is: " + tempStock.ticker)
-        for (date, SMA) in results["Technical Analysis: SMA"] {
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "yyyy-MM-dd HH:mm"
-            let date1 = dateFormatter.date(from: date)
-            tempStock.SMA[date1!] = Double(SMA["SMA"].string!)!
-        }
+            tempStock.ticker = symbol
+            print("name is: " + tempStock.ticker)
+            print("technical analysis")
+            print(results["Technical Analysis: SMA"])
+            for (date, SMA) in results["Technical Analysis: SMA"] {
+                let dateFormatter = DateFormatter()
+                dateFormatter.dateFormat = "yyyy-MM-dd"
+                let date1 = dateFormatter.date(from: date)
+                tempStock.SMA[date1!] = Double(SMA["SMA"].string!)!
+            }
         }
         equityList.append(tempStock)
     }
@@ -58,8 +67,9 @@ class dataParse{
         var dateClose = [Date : (Double, Int)]()
         var sortedClosePrice:[Double] = []
         var sortedVolume:[Int] = []
-        let path = "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=" + ticker + "&apikey=" + apiKey
+        let path = "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=" + ticker + "&apikey=" + "AA16SBF68AT9U5OS"
         let results = getJSON(path: path)
+        print(results)
         print("TIME SERIES DAILY ")
         for (key, value) in results["Time Series (Daily)"] {
             let dateFormatter = DateFormatter()
