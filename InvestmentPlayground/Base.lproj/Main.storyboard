@@ -272,7 +272,7 @@
         <scene sceneID="Xli-7F-RfH">
             <objects>
                 <navigationController title="Games Navigation" automaticallyAdjustsScrollViewInsets="NO" id="SNU-fS-3JV" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Games" image="games" selectedImage="games" id="mp4-Ru-U69"/>
+                    <tabBarItem key="tabBarItem" title="Current Games" image="games" selectedImage="games" id="mp4-Ru-U69"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="Rym-Xs-QcB">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
@@ -422,7 +422,6 @@
         <!--Find Games Controller-->
         <scene sceneID="C3u-fC-cey">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="xzT-Bu-Tlk" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <tableViewController id="Rgc-Pd-T8r" userLabel="Find Games Controller" customClass="FindGamesViewController" customModule="InvestmentPlayground" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="diX-iW-HBY">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
@@ -454,14 +453,15 @@
                         <outlet property="searchBar" destination="YUx-1O-fiG" id="3io-8p-spw"/>
                     </connections>
                 </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="xzT-Bu-Tlk" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1588" y="2678"/>
         </scene>
-        <!--Item-->
+        <!--Find Games-->
         <scene sceneID="dde-Fm-VVF">
             <objects>
                 <navigationController id="3a8-82-dEy" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Item" id="gcJ-wI-QuN"/>
+                    <tabBarItem key="tabBarItem" title="Find Games" image="list-simple-7" selectedImage="list-simple-7" id="gcJ-wI-QuN"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="nFe-nj-qwr">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -472,7 +472,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="LUr-HT-wPK" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="709" y="2679"/>
+            <point key="canvasLocation" x="750" y="2678"/>
         </scene>
         <!--Discover Stocks-->
         <scene sceneID="dxr-xn-fuA">
@@ -726,6 +726,7 @@
     <resources>
         <image name="games" width="29" height="29"/>
         <image name="groups" width="29" height="29"/>
+        <image name="list-simple-7" width="30" height="30"/>
         <image name="portfolio" width="29" height="29"/>
         <image name="search" width="29" height="29"/>
     </resources>

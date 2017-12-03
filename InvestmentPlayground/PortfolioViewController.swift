@@ -64,7 +64,6 @@ class PortfolioViewController: UIViewController, UITableViewDataSource, UITableV
     
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]?{
         let sell = UITableViewRowAction(style: .normal, title: "Sell") {(action, indexpath) in
-            print("CAN SELL")
             let alert = UIAlertController(title: "Sell " + self.stocks[indexPath.row].ticker + " stocks", message: "Enter number of shares: ", preferredStyle: .alert)
             alert.addTextField { (textField) in
                 textField.text = " "
@@ -76,14 +75,10 @@ class PortfolioViewController: UIViewController, UITableViewDataSource, UITableV
                     let trimmedString = Int(text.trimmingCharacters(in: .whitespaces))
                     self.stocks[indexPath.row].numShares = self.stocks[indexPath.row].numShares - trimmedString!
                     //NEEDS TO UPDATE STOCK IN DATABASE WITH NEW NUMBER OF STOCKS
-                    //print(self.stockHold[0].numShares)
                     let username = UserDefaults.standard.string(forKey: "username")
-                    if let user = username {
-                        print("inside user = username")
-                        //self.addStock(username: user, ticker: self.tickerName, numShares: self.stockHold[0].numShares)
+                    if username != nil {
                     }
                 }
-                //self.performSegue(withIdentifier: "toPortfolioView", sender: self)
                 self.portfolioTable.reloadData()
             }))
 
