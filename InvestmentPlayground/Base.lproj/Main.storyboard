@@ -30,7 +30,7 @@
                                 </items>
                             </navigationBar>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Uh0-sD-0lc">
-                                <rect key="frame" x="67" y="432.5" width="240" height="21"/>
+                                <rect key="frame" x="67" y="388.5" width="240" height="21"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="21" id="ZrP-2z-uZg"/>
                                     <constraint firstAttribute="width" constant="240" id="lP7-d7-pdY"/>
@@ -40,7 +40,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gMg-wt-EZW">
-                                <rect key="frame" x="229" y="352" width="111" height="21"/>
+                                <rect key="frame" x="229" y="308" width="111" height="21"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="111" id="M3P-VO-uJV"/>
                                     <constraint firstAttribute="height" constant="21" id="P8j-G4-Z4a"/>
@@ -50,7 +50,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dPN-2U-YDT">
-                                <rect key="frame" x="67" y="458" width="240" height="21"/>
+                                <rect key="frame" x="67" y="414" width="240" height="21"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="240" id="CIM-bS-zYD"/>
                                     <constraint firstAttribute="height" constant="21" id="hRk-d4-zXN"/>
@@ -60,7 +60,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eT8-Rv-wCD">
-                                <rect key="frame" x="67" y="555" width="240" height="30"/>
+                                <rect key="frame" x="67" y="511" width="240" height="123"/>
                                 <state key="normal" title="ADD TO PORTFOLIO"/>
                                 <connections>
                                     <action selector="addPortfolio:" destination="agl-jd-Fl7" eventType="touchUpInside" id="bzg-Xj-ww4"/>
@@ -68,7 +68,7 @@
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="i55-fq-TnZ">
-                                <rect key="frame" x="67" y="487" width="240" height="21"/>
+                                <rect key="frame" x="67" y="443" width="240" height="21"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="240" id="Jyv-LJ-6dA"/>
                                     <constraint firstAttribute="height" constant="21" id="pOn-0Z-n1T"/>
@@ -78,7 +78,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tpm-41-YUX" customClass="LineChart" customModule="InvestmentPlayground" customModuleProvider="target">
-                                <rect key="frame" x="16" y="86" width="343" height="247"/>
+                                <rect key="frame" x="16" y="42" width="343" height="247"/>
                                 <color key="backgroundColor" red="0.070585197720000006" green="0.36187219939999998" blue="0.60808613580000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="247" id="cEf-cx-DtE"/>
@@ -86,7 +86,7 @@
                                 </constraints>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="10" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7Tg-VY-2dQ">
-                                <rect key="frame" x="67" y="386" width="65.5" height="32.5"/>
+                                <rect key="frame" x="67" y="342" width="65.5" height="32.5"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="65.5" id="UPc-rp-ryS"/>
                                     <constraint firstAttribute="height" constant="32.5" id="fuZ-IO-yLf"/>
@@ -96,7 +96,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aJl-TY-JRI">
-                                <rect key="frame" x="67" y="352" width="111" height="21"/>
+                                <rect key="frame" x="67" y="308" width="111" height="21"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="111" id="5GQ-kP-Nds"/>
                                     <constraint firstAttribute="height" constant="21" id="ogT-7c-W3m"/>
@@ -422,14 +422,20 @@
         <!--Find Games Controller-->
         <scene sceneID="C3u-fC-cey">
             <objects>
-                <tableViewController id="Rgc-Pd-T8r" userLabel="Find Games Controller" sceneMemberID="viewController">
+                <placeholder placeholderIdentifier="IBFirstResponder" id="xzT-Bu-Tlk" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <tableViewController id="Rgc-Pd-T8r" userLabel="Find Games Controller" customClass="FindGamesViewController" customModule="InvestmentPlayground" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="diX-iW-HBY">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <searchBar key="tableHeaderView" contentMode="redraw" id="YUx-1O-fiG">
+                            <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                            <textInputTraits key="textInputTraits"/>
+                        </searchBar>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="aod-he-Vll">
-                                <rect key="frame" x="0.0" y="28" width="375" height="44"/>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="gameCell" id="aod-he-Vll">
+                                <rect key="frame" x="0.0" y="72" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="aod-he-Vll" id="4Fi-kP-H5T">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
@@ -442,11 +448,14 @@
                             <outlet property="delegate" destination="Rgc-Pd-T8r" id="m36-di-BxL"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Root View Controller" id="MSy-PU-2Ln"/>
+                    <navigationItem key="navigationItem" title="Find Games" id="MSy-PU-2Ln"/>
+                    <connections>
+                        <outlet property="gamesTable" destination="diX-iW-HBY" id="Rf0-5l-Gy2"/>
+                        <outlet property="searchBar" destination="YUx-1O-fiG" id="3io-8p-spw"/>
+                    </connections>
                 </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="xzT-Bu-Tlk" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1656" y="2679"/>
+            <point key="canvasLocation" x="1588" y="2678"/>
         </scene>
         <!--Item-->
         <scene sceneID="dde-Fm-VVF">
