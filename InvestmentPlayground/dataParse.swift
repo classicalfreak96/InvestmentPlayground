@@ -74,12 +74,41 @@ class dataParse{
     }
 
     func pullStockData (ticker: String) -> (Double, Double, Int) {
+        var tempStock = Stock()
+        var validStock: Bool = true
         var dateClose = [Date : (Double, Int)]()
         var sortedClosePrice:[Double] = []
         var sortedVolume:[Int] = []
         let path = "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=" + ticker + "&apikey=" + "AA16SBF68AT9U5OS"
         let results = getJSON(path: path)
         print("TIME SERIES DAILY ")
+        
+        if results.count == 0 {
+            validStock = false;
+            tempStock.ticker = "Invalid Stock Symbol"
+        }
+        for (key, _) in results {
+            if key == "Error Message" {
+                print("Error message")
+                tempStock.ticker = "Invalid Stock Symbol"
+                validStock = false;
+            }
+        }
+        if (validStock) {
+            tempStock.ticker = ticker
+            print("name is: " + tempStock.ticker)
+            print("technical analysis")
+            print(results["Time Series (Daily)"])
+            for (date, value) in results["Time Series (Daily)"] {
+                let dateFormatter = DateFormatter()
+                dateFormatter.dateFormat = "yyyy-MM-dd"
+                let date1 = dateFormatter.date(from: date)
+                if let unwrappedDate = date1 {
+                    tempStock.SMA[unwrappedDate] = Double(value["4. close"].string!)!
+                }
+            }
+        }
+        
         for (key, value) in results["Time Series (Daily)"] {
             let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = "yyyy-MM-dd"
@@ -96,21 +125,7 @@ class dataParse{
         //print(sortedClosePrice[1])
         let dollar:Double = sortedClosePrice[0] - sortedClosePrice[1]
         let percent:Double = (sortedClosePrice[0] - sortedClosePrice[1])/sortedClosePrice[1]
+        equityList.append(tempStock)
         return(dollar, percent, sortedVolume[0])
-    }
-
-    func pullCurrentPrice(ticker: String) -> Double {
-        let path = "https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=" + ticker + "&interval=1min&apikey=" + harrisonsKey
-        
-        let results = getJSON(path: path)
-        let intraDayPrices = results["Time Series (1min)"]
-        // TODO: Get the current time, round it down to the nearest minute, and index into the dictionary
-        // in the form "2017-12-01 16:00:00"
-        
-        // after that, call this method in calculatePortfolioValue
-        // let currentPrice = intraDayPrices[time]
-        
-        // also change this return value
-        return 0.0
     }
 }
