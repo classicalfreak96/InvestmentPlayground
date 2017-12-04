@@ -86,6 +86,8 @@ class LineChart: UIView {
     func setAxisRange(forPoints points: [CGPoint]) {
         guard !points.isEmpty else {return}
         
+        setDeltaRange(points: points)
+        
         let xs = points.map() {$0.x}
         let ys = points.map() {$0.y}
         
@@ -101,6 +103,15 @@ class LineChart: UIView {
         print("yMaxAbs is: " + String(describing: yMaxAbs))
         print("yMinAbs is: " + String(describing: yMinAbs))
         setTransform(minX: xMin, maxX: xMax, minY: yMin, maxY: yMax)
+    }
+    
+    func setDeltaRange(points: [CGPoint]) {
+        
+        let ys = points.map() {$0.y}
+        
+        if ((ys.max()! - ys.min()!) > 100) {
+            deltaY = 70
+        }
     }
     
     func setTransform(minX: CGFloat, maxX: CGFloat, minY: CGFloat, maxY: CGFloat) {
@@ -213,7 +224,8 @@ class LineChart: UIView {
         
         for point in points{
             print("point: " + String(describing: point.y))
-            let newY = point.y - ((yMinAbs/(yMaxAbs-yMinAbs)) * (yMaxAbs - point.y))
+//            let newY = point.y - ((yMinAbs/(yMaxAbs-yMinAbs)) * (yMaxAbs - point.y))
+            let newY = point.y - ((yMin/(yMax-yMin)) * (yMax - point.y))
             //let newY = yMinAbs + ((point.y/yMaxAbs) * yMinAbs)
             tempPoints.append(CGPoint.init(x: point.x, y: newY))
         }

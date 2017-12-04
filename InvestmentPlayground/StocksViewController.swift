@@ -71,6 +71,7 @@ class StocksViewController: UIViewController, UITableViewDelegate, UITableViewDa
             nextVC.open = open
             nextVC.high = high
             nextVC.low = low
+            nextVC.stockPrice = equityInfo.pullCurrentPrice(ticker: query)
         }
     }
     
