@@ -222,8 +222,8 @@
                         <segue destination="uom-ii-skK" kind="relationship" relationship="viewControllers" id="u7Y-xg-7CH"/>
                         <segue destination="umd-uh-79D" kind="relationship" relationship="viewControllers" id="lzU-1b-eKA"/>
                         <segue destination="SNU-fS-3JV" kind="relationship" relationship="viewControllers" id="stx-zW-gtA"/>
-                        <segue destination="3zN-9j-TrS" kind="relationship" relationship="viewControllers" id="IZA-nb-H4l"/>
                         <segue destination="3a8-82-dEy" kind="relationship" relationship="viewControllers" id="1Zk-Je-5Eh"/>
+                        <segue destination="3zN-9j-TrS" kind="relationship" relationship="viewControllers" id="IZA-nb-H4l"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HuB-VB-40B" sceneMemberID="firstResponder"/>
