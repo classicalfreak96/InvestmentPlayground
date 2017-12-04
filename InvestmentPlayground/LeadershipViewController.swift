@@ -21,6 +21,7 @@ class LeadershipViewController: UIViewController, UITableViewDelegate, UITableVi
         super.viewDidLoad()
         if game != "" {
             getUsersForGame(title: game)
+            sortUsers()
         }
         leadershipTable.dataSource = self
         leadershipTable.delegate = self
@@ -74,6 +75,11 @@ class LeadershipViewController: UIViewController, UITableViewDelegate, UITableVi
                     }
                     self.leadershipTable.reloadData()
                 }
+        }
+    }
+    func sortUsers() {
+        for user in self.users {
+            db.collection
         }
     }
 }
