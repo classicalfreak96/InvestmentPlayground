@@ -19,16 +19,15 @@ class RegisterViewController: UIViewController {
 
     @IBOutlet weak var enter: UIButton!
     
-  
     @IBAction func registerButton(_ sender: Any) {
         let newUsernameText: String = newUsername.text ?? ""
         addUser(username: newUsernameText)
+        let defaults = UserDefaults.standard
+        if let user = self.newUsername.text {
+            defaults.set(user, forKey: "username")
+        }
         let alertController = UIAlertController(title: "Registration Successful", message: "Hello " + newUsernameText + "!", preferredStyle: .alert)
         let OKAction = UIAlertAction(title: "OK", style: .default){ action in
-            let defaults = UserDefaults.standard
-            if let user = self.newUsername.text{
-                defaults.set(user, forKey: "username")
-            }
             self.performSegue(withIdentifier: "enterGame", sender: self)
         }
         alertController.addAction(OKAction)
@@ -50,17 +49,14 @@ class RegisterViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-
-    
     func addUser(username: String) {
-        var ref: DocumentReference? = nil
-        ref = db.collection("users").addDocument(data: [
-            "username": username,
+        db.collection("users").document(username).setData([
+            "username": username, "cash": 10000.0
         ]) { err in
             if let err = err {
                 print("Error adding document: \(err)")
             } else {
-                print("Document added with ID: \(ref!.documentID)")
+                print("Document added with ID: \(username)")
             }
         }
     }

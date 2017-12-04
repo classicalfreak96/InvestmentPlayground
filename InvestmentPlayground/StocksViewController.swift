@@ -122,10 +122,14 @@ class StocksViewController: UIViewController, UITableViewDelegate, UITableViewDa
                             }
                         }
                     }
-                    if !stockShareDict.isEmpty {
-                        defaults.set(stockShareDict, forKey: "userStocks")
+                    // if nothing is in the stock dictionary, put an empty string in there
+                    // to avoid unwrapping a nil optional
+                    if stockShareDict.isEmpty {
+                        stockShareDict[""] = 0
                     }
+                    defaults.set(stockShareDict, forKey: "userStocks")
                 }
         }
+
     }
 }
