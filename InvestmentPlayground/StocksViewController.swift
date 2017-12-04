@@ -72,7 +72,6 @@ class StocksViewController: UIViewController, UITableViewDelegate, UITableViewDa
     }
     
     
-    
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         equityInfo.equityList.removeAll()
         if let text: String = searchStocksBar.text {

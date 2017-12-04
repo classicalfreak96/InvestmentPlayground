@@ -25,11 +25,11 @@ class PortfolioViewController: UIViewController, UITableViewDataSource, UITableV
         let username = UserDefaults.standard.string(forKey: "username")!
         getStocksForUser(username: username)
         self.view.backgroundColor = .white
+        
         portfolioTable.delegate = self
         portfolioTable.dataSource = self
         
-        dataParser.pullCurrentPrice(ticker: "AAPL")
-        //calculatePortfolioValue()
+        calculatePortfolioValue()
     }
 
     override func didReceiveMemoryWarning() {
@@ -46,13 +46,13 @@ class PortfolioViewController: UIViewController, UITableViewDataSource, UITableV
         let sdvc = segue.destination as! StocksDetailsViewController
         let currentStock = stocks[(portfolioTable.indexPathForSelectedRow?.row)!]
         sdvc.tickerName = currentStock.ticker
-        let dp = dataParse()
+        //let dp = dataParse()
         /*
         let (dollar, percent, volume) = dp.pullStockData(ticker: currentStock.ticker)
         dp.searchEquity(function: "SMA", symbol: currentStock.ticker, interval: "daily", time_period: "100")
         */
-        let (dollar, percent, volume, open, high, low) = dp.pullStockData(append: true, ticker: currentStock.ticker)
-        sdvc.stockHold = dp.equityList
+        let (dollar, percent, volume, open, high, low) = dataParser.pullStockData(append: true, ticker: currentStock.ticker)
+        sdvc.stockHold = dataParser.equityList
         sdvc.dollar = dollar
         sdvc.percent = percent
         sdvc.volume = volume
@@ -131,12 +131,13 @@ class PortfolioViewController: UIViewController, UITableViewDataSource, UITableV
     
     func calculatePortfolioValue() {
         var totalVal = 0.0
-        
+        print("Stocks: \(self.stocks)")
         for stock in self.stocks {
-            totalVal = totalVal + (Double(stock.numShares) * dataParser.pullCurrentPrice(ticker: stock.ticker))
+            var stockValue = Double(stock.numShares) * dataParser.pullCurrentPrice(ticker:stock.ticker)
+            print(stockValue)
         }
         totalPortfolioValue = totalVal
-        portfolioValue.text = String(totalPortfolioValue)
+        self.portfolioValue.text = String(totalPortfolioValue)
     }
     
 }
