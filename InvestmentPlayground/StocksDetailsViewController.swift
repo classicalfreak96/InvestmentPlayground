@@ -78,7 +78,7 @@ class StocksDetailsViewController: UIViewController{
         
         //price.text = String(describing: chronoStockPrice.last!)
         changeDol.text = "$" + String(format: "%.2f", dollar)
-        changePercent.text = String(format: "%.5f", percent) + "%"
+        changePercent.text = "(" + String(format: "%.5f", percent) + "%" + ")"
         if (percent < 0) {
             changeDol.textColor = UIColor.red
             changePercent.textColor = UIColor.red

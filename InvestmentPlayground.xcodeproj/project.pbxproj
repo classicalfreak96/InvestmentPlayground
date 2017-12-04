@@ -11,7 +11,6 @@
 		011EE9511FC1043C0095B9B8 /* GamesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 011EE9501FC1043C0095B9B8 /* GamesViewController.swift */; };
 		011EE9531FC104410095B9B8 /* GroupsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 011EE9521FC104410095B9B8 /* GroupsViewController.swift */; };
 		011EE9551FC1044C0095B9B8 /* LeadershipViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 011EE9541FC1044C0095B9B8 /* LeadershipViewController.swift */; };
-		011EE9571FC104530095B9B8 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 011EE9561FC104530095B9B8 /* LoginViewController.swift */; };
 		011EE9591FC104590095B9B8 /* PortfolioViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 011EE9581FC104590095B9B8 /* PortfolioViewController.swift */; };
 		011EE95B1FC104600095B9B8 /* stocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 011EE95A1FC104600095B9B8 /* stocks.swift */; };
 		011EE95D1FC104650095B9B8 /* StocksDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 011EE95C1FC104650095B9B8 /* StocksDetailsViewController.swift */; };
@@ -69,7 +68,6 @@
 		011EE9501FC1043C0095B9B8 /* GamesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GamesViewController.swift; sourceTree = "<group>"; };
 		011EE9521FC104410095B9B8 /* GroupsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroupsViewController.swift; sourceTree = "<group>"; };
 		011EE9541FC1044C0095B9B8 /* LeadershipViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LeadershipViewController.swift; sourceTree = "<group>"; };
-		011EE9561FC104530095B9B8 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		011EE9581FC104590095B9B8 /* PortfolioViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PortfolioViewController.swift; sourceTree = "<group>"; };
 		011EE95A1FC104600095B9B8 /* stocks.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = stocks.swift; sourceTree = "<group>"; };
 		011EE95C1FC104650095B9B8 /* StocksDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StocksDetailsViewController.swift; sourceTree = "<group>"; };
@@ -163,7 +161,6 @@
 				011EE9501FC1043C0095B9B8 /* GamesViewController.swift */,
 				011EE9521FC104410095B9B8 /* GroupsViewController.swift */,
 				011EE9541FC1044C0095B9B8 /* LeadershipViewController.swift */,
-				011EE9561FC104530095B9B8 /* LoginViewController.swift */,
 				011EE9581FC104590095B9B8 /* PortfolioViewController.swift */,
 				012369031FD3A0C100463D91 /* RegisterViewController.swift */,
 				011EE95A1FC104600095B9B8 /* stocks.swift */,
@@ -536,7 +533,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				011EE9571FC104530095B9B8 /* LoginViewController.swift in Sources */,
 				011EE95F1FC1046E0095B9B8 /* StocksViewController.swift in Sources */,
 				011EE9511FC1043C0095B9B8 /* GamesViewController.swift in Sources */,
 				013724DD1FD3C593007AF129 /* FindGamesViewController.swift in Sources */,
