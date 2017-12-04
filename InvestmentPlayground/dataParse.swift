@@ -119,9 +119,6 @@ class dataParse{
         }
         if (validStock) {
             tempStock.ticker = ticker
-            print("name is: " + tempStock.ticker)
-            print("technical analysis")
-            print(results["Time Series (Daily)"])
             for (date, value) in results["Time Series (Daily)"] {
                 let dateFormatter = DateFormatter()
                 dateFormatter.dateFormat = "yyyy-MM-dd"
