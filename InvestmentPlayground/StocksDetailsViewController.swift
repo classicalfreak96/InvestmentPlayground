@@ -94,7 +94,7 @@ class StocksDetailsViewController: UIViewController{
         
         var i: Int = 0
         for price in chronoStockPrice {
-            var tempPoint = CGPoint(x: Double(i), y: price)
+            let tempPoint = CGPoint(x: Double(i), y: price)
             points.append(tempPoint)
             i += 1
         }
@@ -117,13 +117,13 @@ class StocksDetailsViewController: UIViewController{
     
     func sortStocks (stockDic: [Date:Double]) {
         let sorted = stockDic.sorted { $0.0 < $1.0 }
-        for (date, price) in sorted {
+        for (_, price) in sorted {
             chronoStockPrice.append(price)
         }
     }
     
     // Ticker is the shorthand name for the stock (i.e. AAPL for Apple)
-    // This will add a stock if it exists and update it otherwise
+    // This will update the stock
     func updateStock(username: String, ticker: String, numShares: Int) {
         db.collection("stocks").document("\(username)-\(ticker)").updateData([
             "username": username,
