@@ -48,6 +48,7 @@ class PortfolioViewController: UIViewController, UITableViewDataSource, UITableV
         sdvc.tickerName = currentStock.ticker
         let (dollar, percent, volume, open, high, low) = dataParser.pullStockData(append: true, ticker: currentStock.ticker)
         sdvc.stockHold = dataParser.equityList
+        sdvc.stockPrice = dataParser.pullCurrentPrice(ticker: currentStock.ticker)
         sdvc.dollar = dollar
         sdvc.percent = percent
         sdvc.volume = volume
