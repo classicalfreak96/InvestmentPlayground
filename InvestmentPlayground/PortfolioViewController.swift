@@ -32,11 +32,7 @@ class PortfolioViewController: UIViewController, UITableViewDataSource, UITableV
         portfolioTable.delegate = self
         portfolioTable.dataSource = self
         calculatePortfolioValue()
-<<<<<<< HEAD
-        
-        print("printing the userdefaults dictionary")
-=======
->>>>>>> a0772c751daa8a6828db93e0528e2e9631bb98a2
+
     }
 
     override func didReceiveMemoryWarning() {
@@ -160,6 +156,7 @@ class PortfolioViewController: UIViewController, UITableViewDataSource, UITableV
         }
         totalPortfolioValue = totalVal
         self.portfolioValue.text = String(totalPortfolioValue)
+    }
     }
     
     // Ticker is the shorthand name for the stock (i.e. AAPL for Apple)
