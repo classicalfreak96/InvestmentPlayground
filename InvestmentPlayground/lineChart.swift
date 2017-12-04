@@ -45,6 +45,8 @@ class LineChart: UIView {
     var yMax: CGFloat = 100
     var xMin: CGFloat = 0
     var yMin: CGFloat = 0
+    var yMaxAbs: CGFloat = 0
+    var yMinAbs: CGFloat = 0
     
     var data: [CGPoint]?
     
@@ -90,8 +92,10 @@ class LineChart: UIView {
         xMax = ceil(xs.max()! / deltaX) * deltaX
         yMax = ceil(ys.max()! / deltaY) * deltaY
         xMin = floor(xs.min()! / deltaX) * deltaX
-        //yMin = floor(ys.min()! / deltaY) * deltaY
-        yMin = 0
+        yMin = floor(ys.min()! / deltaY) * deltaY
+        yMaxAbs = ys.max()!
+        yMinAbs = ys.min()!
+        //yMin = 0
         setTransform(minX: xMin, maxX: xMax, minY: yMin, maxY: yMax)
     }
     
@@ -103,7 +107,7 @@ class LineChart: UIView {
         let yOffset = yLabelSize.width + 5
         
         let xScale = (bounds.width - yOffset - xLabelSize.width/2 - 2)/(maxX-minX)
-        let yScale = (bounds.height - xOffset - yLabelSize.height/2 - 2)/(maxY-minY)
+        let yScale = (bounds.height - xOffset - yLabelSize.height/2 - 2)/(maxY)
         
         chartTransform = CGAffineTransform(a: xScale, b: 0, c: 0, d: -yScale, tx: yOffset, ty: bounds.height - xOffset)
         
@@ -122,7 +126,7 @@ class LineChart: UIView {
         let thinnerLines = CGMutablePath()
         
         let xAxisPoints = [CGPoint(x: xMin, y:0), CGPoint(x: xMax, y: 0)]
-        let yAxisPoints = [CGPoint(x: 0, y: yMin), CGPoint(x:0, y: yMax)]
+        let yAxisPoints = [CGPoint(x: 0, y: 0), CGPoint(x:0, y: yMax)]
         
         thickerLines.addLines(between: xAxisPoints, transform: t)
         thickerLines.addLines(between: yAxisPoints, transform: t)
@@ -130,7 +134,7 @@ class LineChart: UIView {
         for x in stride(from: xMin, through: xMax, by: deltaX) {
             
             let tickPoints = showInnerLines ?
-                [CGPoint(x: x, y: yMin).applying(t), CGPoint(x: x, y: yMax).applying(t)] :
+                [CGPoint(x: x, y: 0).applying(t), CGPoint(x: x, y: yMax).applying(t)] :
                 [CGPoint(x: x, y: 0).applying(t), CGPoint(x: x, y: 0).applying(t).adding(y: -5)]
             
             
@@ -162,10 +166,10 @@ class LineChart: UIView {
             if y != yMin {
                 let label = "\(Int(y))" as NSString
                 let labelSize = "\(Int(y))".size(withSystemFontSize: labelFontSize)
+                print("labelDrawPointY: " + String(describing: y))
                 let labelDrawPoint = CGPoint(x: 0, y: y).applying(t)
                     .adding(x: -labelSize.width - 1)
                     .adding(y: -labelSize.height/2)
-                
                 label.draw(at: labelDrawPoint,
                            withAttributes:
                     [NSFontAttributeName: UIFont.systemFont(ofSize: labelFontSize),
@@ -187,25 +191,32 @@ class LineChart: UIView {
     }
     
     func plot(_ points: [CGPoint]) {
+        var tempPoints:[CGPoint] = []
         lineLayer.path = nil
         circlesLayer.path = nil
         data = nil
         
         guard !points.isEmpty else {return}
         
-        self.data = points
-        
         if self.chartTransform == nil {
             setAxisRange(forPoints: points)
         }
         
+        self.data = points
+        
+        for point in points{
+            let newY = point.y - ((yMinAbs/(yMaxAbs-yMinAbs)) * (yMaxAbs - point.y))
+            tempPoints.append(CGPoint.init(x: point.x, y: newY))
+            print("newY: " + String(describing: newY))
+        }
+        
         let linePath = CGMutablePath()
-        linePath.addLines(between: points, transform: chartTransform!)
+        linePath.addLines(between: tempPoints, transform: chartTransform!)
         
         lineLayer.path = linePath
         
         if showPoints {
-            circlesLayer.path = circles(atPoints: points, withTransform: chartTransform!)
+            circlesLayer.path = circles(atPoints: tempPoints, withTransform: chartTransform!)
         }
     }
     

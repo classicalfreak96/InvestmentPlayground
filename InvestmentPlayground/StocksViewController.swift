@@ -14,14 +14,15 @@ class StocksViewController: UIViewController, UITableViewDelegate, UITableViewDa
     var equityInfo = dataParse()
     let db = Firestore.firestore()
     var query: String = ""
-    var stockHold: [Stock] = []
-    var dollar: Double = 0
-    var percent: Double = 0
-    var volume: Int = 0
-    var open: Double = 0
-    var high: Double = 0
-    var low: Double = 0
-    
+    var stockHold:[Stock] = []
+    var dollar:Double = 0
+    var percent:Double = 0
+    var volume:Int = 0
+    var open:Double = 0
+    var high:Double = 0
+    var low:Double = 0
+    var currentUserStocks: [Stock] = []
+
     @IBOutlet weak var stocksTable: UITableView!
     
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
@@ -33,6 +34,25 @@ class StocksViewController: UIViewController, UITableViewDelegate, UITableViewDa
         stocksTable.dataSource = self
         stocksTable.delegate = self
         stockHold = equityInfo.equityList
+        getUsersStocks()
+    }
+    
+    func getUsersStocks() {
+        let user = UserDefaults.standard.string(forKey: "username")
+        if let unwrappedUser = user {
+            getStocksForUser(username: user!)
+        }
+        //let defaults = UserDefaults.standard
+        /*
+        for stock in self.currentUserStocks {
+            stockShareDict[stock.ticker] = stock.numShares
+        }
+        if !stockShareDict.isEmpty {
+            defaults.set(stockShareDict, forKey: "userStocks")
+        }
+ */
+
+        
     }
     
     override func didReceiveMemoryWarning() {
@@ -52,7 +72,6 @@ class StocksViewController: UIViewController, UITableViewDelegate, UITableViewDa
             nextVC.high = high
             nextVC.low = low
         }
-        
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -91,4 +110,33 @@ class StocksViewController: UIViewController, UITableViewDelegate, UITableViewDa
         }
     }
     
+    
+    // This function pulls all of the stocks for a given user and reloads
+    // the table with the tickers of the stocks
+    
+    // This method may be better suited for dataParse, as it's already in PortfolioViewController
+    // But i edited it a little to return the stocks
+    func getStocksForUser(username: String) {
+        self.db.collection("stocks").whereField("username", isEqualTo: username)
+            .getDocuments() { [unowned self] (querySnapshot, err) in
+                if let err = err {
+                    print("Error getting documents: \(err)")
+                } else {
+                    let defaults = UserDefaults.standard
+                    var stockShareDict:[String: Int] = [:]
+                    self.currentUserStocks = []
+                    for document in querySnapshot!.documents {
+                        if let ticker = document.data()["ticker"] as? String {
+                            if let numShares = document.data()["numShares"] as? Int {
+                                self.currentUserStocks.append(Stock(SMA: [:], ticker: ticker, numShares: numShares))
+                                stockShareDict[ticker] = numShares
+                            }
+                        }
+                    }
+                    if !stockShareDict.isEmpty {
+                        defaults.set(stockShareDict, forKey: "userStocks")
+                    }
+                }
+        }
+    }
 }
