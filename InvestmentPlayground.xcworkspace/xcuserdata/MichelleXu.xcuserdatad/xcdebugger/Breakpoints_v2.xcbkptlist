@@ -88,12 +88,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "InvestmentPlayground/lineChart.swift"
-            timestampString = "533945789.171056"
+            timestampString = "534051032.308642"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "99"
-            endingLineNumber = "99"
-            landmarkName = "setTransform(minX:maxX:minY:maxY:)"
+            startingLineNumber = "103"
+            endingLineNumber = "103"
+            landmarkName = "setAxisRange(forPoints:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -104,12 +104,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "InvestmentPlayground/lineChart.swift"
-            timestampString = "533945789.171056"
+            timestampString = "534051032.308642"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "112"
-            endingLineNumber = "112"
-            landmarkName = "draw(_:)"
+            startingLineNumber = "116"
+            endingLineNumber = "116"
+            landmarkName = "setTransform(minX:maxX:minY:maxY:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

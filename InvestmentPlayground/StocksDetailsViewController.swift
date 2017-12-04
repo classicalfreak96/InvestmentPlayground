@@ -69,12 +69,13 @@ class StocksDetailsViewController: UIViewController{
         super.viewDidLoad()
         sortStocks(stockDic: stockHold[0].SMA)
         self.title = tickerName
-        if let unwrappedPrice = chronoStockPrice.last {
-            price.text = String(unwrappedPrice)
-        }
-        else {
-            price.text = "Price not found"
-        }
+//        if let unwrappedPrice = chronoStockPrice.last {
+//            price.text = String(unwrappedPrice)
+//        }
+        price.text = String(chronoStockPrice[0])
+//        else {
+//            price.text = "Price not found"
+//        }
         
         //price.text = String(describing: chronoStockPrice.last!)
         changeDol.text = "$" + String(format: "%.2f", dollar)
@@ -116,7 +117,7 @@ class StocksDetailsViewController: UIViewController{
     }
     
     func sortStocks (stockDic: [Date:Double]) {
-        let sorted = stockDic.sorted { $0.0 < $1.0 }
+        let sorted = stockDic.sorted { $0.0 > $1.0 }
         for (_, price) in sorted {
             chronoStockPrice.append(price)
         }
