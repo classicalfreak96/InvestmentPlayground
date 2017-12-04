@@ -92,32 +92,9 @@ class LeadershipViewController: UIViewController, UITableViewDelegate, UITableVi
     
     
     func sortUsers() {
-        
         for user in self.users {
             userPortfolioValues[user] = calcPortfolioValue(user: user)
         }
-        /*
-        // taken from https://stackoverflow.com/questions/24090016/sort-dictionary-by-values-in-swift
-        // I don't understand what it does
-        
-        //userPortfolioValues.keys.sorted(by: {$0 > $1}).flatMap({userPortfolioValues[$0]})
-        
-        // bad sorting algorithm
-        for (outerName, outerValue) in userPortfolioValues {
-            var minimum = 1000000.0
-            var minName = ""
-            for (name, value) in userPortfolioValues {
-                if value < minimum && !self.sortedUsers.contains(name){
-                    minimum = value
-                    minName = name
-                }
-            }
-            self.sortedUsers.append(minName)
-        }
-        print("Sorted users: \(self.sortedUsers)")
-        // print("User Portfolio Values: \(userPortfolioValues)")
-        */
-        let sortedKeys = Array(userPortfolioValues.keys).sorted
     }
     
     func calcPortfolioValue(user: String) -> Double{
@@ -141,32 +118,12 @@ class LeadershipViewController: UIViewController, UITableViewDelegate, UITableVi
                 }
             }
         }
-//         bad sorting algorithm
-//        for (_, _) in userPortfolioValues {
-//            var minimum = 1000000.0
-//            var minName = ""
-//            for (name, value) in userPortfolioValues {
-//                if value < minimum && !self.sortedUsers.contains(name){
-//                    minimum = value
-//                    minName = name
-//                }
-//            }
-//            self.sortedUsers.append(minName)
-//        }
-//        print("Sorted users: \(self.sortedUsers)")
-//        return totalPortfolioValue
 
         let tuplesArray = userPortfolioValues.sorted{ $0.value > $1.value }
-        print("------------")
         self.sortedUsers = []
         for (name, portValue) in tuplesArray{
-            print(name, portValue)
             self.sortedUsers.append(name)
         }
-        print("------------")
-        
-        
-        print("Sorted users: \(self.sortedUsers)")
         return totalPortfolioValue
         
     }
@@ -212,30 +169,6 @@ class LeadershipViewController: UIViewController, UITableViewDelegate, UITableVi
             let portfolioValue = self.calcPortfolioValue(user: username)
             self.userPortfolioValues[username] = portfolioValue
             self.leadershipTable.reloadData()
-            
-//             bad sorting algorithm
-//            for (_, outerValue) in self.userPortfolioValues {
-//                var minimum = 1000000.0
-//                var minName = ""
-//                for (name, value) in self.userPortfolioValues {
-//                    if value < minimum && !self.sortedUsers.contains(name){
-//                        minimum = value
-//                        minName = name
-//                    }
-//                }
-//                self.sortedUsers.append(minName)
-//            }
-//            print("Sorted users: \(self.sortedUsers)")
-            let tuplesArray = self.userPortfolioValues.sorted{ $0.value > $1.value }
-            print("!!!!!!!!!")
-//            for (name, portValue) in tuplesArray{
-//                print(name, portValue)
-//                self.sortedUsers.append(name)
-//            }
-//            print("!!!!!!!!!")
-//            
-//            
-//            print("Sorted users: \(self.sortedUsers)")
         }
     }
     

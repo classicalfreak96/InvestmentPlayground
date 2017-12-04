@@ -55,10 +55,7 @@ class dataParse{
             }
         }
         let sorted = tempStock.SMA.sorted { $0.0 > $1.0 }
-        //print(sorted)
         for (_ , price) in sorted {
-            //print(date)
-            //print("Adding \(price) to chronoStockPrice")
             sortedPrices.append(price)
         }
         if sortedPrices.count == 0 {
