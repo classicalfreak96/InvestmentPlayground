@@ -21,6 +21,7 @@ class LeadershipViewController: UIViewController, UITableViewDelegate, UITableVi
     var userPortfolioValues: [String:Double] = [:]
     var userCashValues: [String:Double] = [:]
     var sortedUsers:[String] = []
+    //var tuplesArray: [(name: String, value: Double] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -54,13 +55,13 @@ class LeadershipViewController: UIViewController, UITableViewDelegate, UITableVi
         cell1.nameLabel.text = self.sortedUsers[indexPath.row]
         cell1.rankingLabel.text = "#" + String(indexPath.row + 1)
         if let returnPort = self.userPortfolioValues[sortedUsers[indexPath.row]] {
-            if (returnPort < 0) {
+            if (returnPort < 10000) {
                 cell1.returnLabel.textColor = UIColor.red
-                cell1.returnLabel.text = "$" + String(returnPort)
+                cell1.returnLabel.text = "$" + String(format: "%.2f", returnPort)
             }
             else {
                 cell1.returnLabel.textColor = UIColor.green
-                cell1.returnLabel.text = "$" + String(returnPort)
+                cell1.returnLabel.text = "$" + String(format: "%.2f", returnPort)
             }
         }
 
@@ -91,11 +92,11 @@ class LeadershipViewController: UIViewController, UITableViewDelegate, UITableVi
     
     
     func sortUsers() {
-        /*
+        
         for user in self.users {
             userPortfolioValues[user] = calcPortfolioValue(user: user)
         }
-        
+        /*
         // taken from https://stackoverflow.com/questions/24090016/sort-dictionary-by-values-in-swift
         // I don't understand what it does
         
@@ -141,31 +142,32 @@ class LeadershipViewController: UIViewController, UITableViewDelegate, UITableVi
             }
         }
 //         bad sorting algorithm
-        for (_, _) in userPortfolioValues {
-            var minimum = 1000000.0
-            var minName = ""
-            for (name, value) in userPortfolioValues {
-                if value < minimum && !self.sortedUsers.contains(name){
-                    minimum = value
-                    minName = name
-                }
-            }
-            self.sortedUsers.append(minName)
-        }
-        print("Sorted users: \(self.sortedUsers)")
-        return totalPortfolioValue
-
-//        let tuplesArray = userPortfolioValues.sorted{ $0.value > $1.value }
-//        print("------------")
-//        for (name, portValue) in tuplesArray{
-//            print(name, portValue)
-//            self.sortedUsers.append(name)
+//        for (_, _) in userPortfolioValues {
+//            var minimum = 1000000.0
+//            var minName = ""
+//            for (name, value) in userPortfolioValues {
+//                if value < minimum && !self.sortedUsers.contains(name){
+//                    minimum = value
+//                    minName = name
+//                }
+//            }
+//            self.sortedUsers.append(minName)
 //        }
-//        print("------------")
-//        
-//        
 //        print("Sorted users: \(self.sortedUsers)")
 //        return totalPortfolioValue
+
+        let tuplesArray = userPortfolioValues.sorted{ $0.value > $1.value }
+        print("------------")
+        self.sortedUsers = []
+        for (name, portValue) in tuplesArray{
+            print(name, portValue)
+            self.sortedUsers.append(name)
+        }
+        print("------------")
+        
+        
+        print("Sorted users: \(self.sortedUsers)")
+        return totalPortfolioValue
         
     }
 
@@ -212,19 +214,28 @@ class LeadershipViewController: UIViewController, UITableViewDelegate, UITableVi
             self.leadershipTable.reloadData()
             
 //             bad sorting algorithm
-            for (_, outerValue) in self.userPortfolioValues {
-                var minimum = 1000000.0
-                var minName = ""
-                for (name, value) in self.userPortfolioValues {
-                    if value < minimum && !self.sortedUsers.contains(name){
-                        minimum = value
-                        minName = name
-                    }
-                }
-                self.sortedUsers.append(minName)
-            }
-            print("Sorted users: \(self.sortedUsers)")
-
+//            for (_, outerValue) in self.userPortfolioValues {
+//                var minimum = 1000000.0
+//                var minName = ""
+//                for (name, value) in self.userPortfolioValues {
+//                    if value < minimum && !self.sortedUsers.contains(name){
+//                        minimum = value
+//                        minName = name
+//                    }
+//                }
+//                self.sortedUsers.append(minName)
+//            }
+//            print("Sorted users: \(self.sortedUsers)")
+            let tuplesArray = self.userPortfolioValues.sorted{ $0.value > $1.value }
+            print("!!!!!!!!!")
+//            for (name, portValue) in tuplesArray{
+//                print(name, portValue)
+//                self.sortedUsers.append(name)
+//            }
+//            print("!!!!!!!!!")
+//            
+//            
+//            print("Sorted users: \(self.sortedUsers)")
         }
     }
     
