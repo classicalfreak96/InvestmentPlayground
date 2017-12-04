@@ -86,6 +86,8 @@ class LineChart: UIView {
     func setAxisRange(forPoints points: [CGPoint]) {
         guard !points.isEmpty else {return}
         
+        setDeltaRange(points: points)
+        
         let xs = points.map() {$0.x}
         let ys = points.map() {$0.y}
         
@@ -96,7 +98,20 @@ class LineChart: UIView {
         yMaxAbs = ys.max()!
         yMinAbs = ys.min()!
         //yMin = 0
+        print("yMax is: " + String(describing: yMax))
+        print("yMin is: " + String(describing: yMin))
+        print("yMaxAbs is: " + String(describing: yMaxAbs))
+        print("yMinAbs is: " + String(describing: yMinAbs))
         setTransform(minX: xMin, maxX: xMax, minY: yMin, maxY: yMax)
+    }
+    
+    func setDeltaRange(points: [CGPoint]) {
+        
+        let ys = points.map() {$0.y}
+        
+        if ((ys.max()! - ys.min()!) > 100) {
+            deltaY = 70
+        }
     }
     
     func setTransform(minX: CGFloat, maxX: CGFloat, minY: CGFloat, maxY: CGFloat) {
@@ -154,7 +169,7 @@ class LineChart: UIView {
             }
         }
         
-        for y in stride(from: yMin, through: yMax, by: deltaY) {
+        for y in stride(from: 0, through: yMax, by: deltaY) {
         
             let tickPoints = showInnerLines ?
                 [CGPoint(x: xMin, y: y).applying(t), CGPoint(x: xMax, y: y).applying(t)] :
@@ -163,10 +178,13 @@ class LineChart: UIView {
             
             thinnerLines.addLines(between: tickPoints)
             
-            if y != yMin {
-                let label = "\(Int(y))" as NSString
-                let labelSize = "\(Int(y))".size(withSystemFontSize: labelFontSize)
-                print("labelDrawPointY: " + String(describing: y))
+//            if y != 0 {
+                //print("y is: " + String(describing: y))
+                let tempY = yMin + (((y)/yMax) * (yMax - yMin))
+                print("tempY is: " + String(describing: tempY))
+                let label = "\(Int(tempY))" as NSString
+                let labelSize = "\(Int(tempY))".size(withSystemFontSize: labelFontSize)
+                //print("labelDrawPointY: " + String(describing: y))
                 let labelDrawPoint = CGPoint(x: 0, y: y).applying(t)
                     .adding(x: -labelSize.width - 1)
                     .adding(y: -labelSize.height/2)
@@ -174,7 +192,7 @@ class LineChart: UIView {
                            withAttributes:
                     [NSFontAttributeName: UIFont.systemFont(ofSize: labelFontSize),
                      NSForegroundColorAttributeName: axisColor])
-            }
+//            }
         }
         
         context.setStrokeColor(axisColor.cgColor)
@@ -205,9 +223,11 @@ class LineChart: UIView {
         self.data = points
         
         for point in points{
-            let newY = point.y - ((yMinAbs/(yMaxAbs-yMinAbs)) * (yMaxAbs - point.y))
+            print("point: " + String(describing: point.y))
+//            let newY = point.y - ((yMinAbs/(yMaxAbs-yMinAbs)) * (yMaxAbs - point.y))
+            let newY = point.y - ((yMin/(yMax-yMin)) * (yMax - point.y))
+            //let newY = yMinAbs + ((point.y/yMaxAbs) * yMinAbs)
             tempPoints.append(CGPoint.init(x: point.x, y: newY))
-            print("newY: " + String(describing: newY))
         }
         
         let linePath = CGMutablePath()

@@ -17,6 +17,7 @@ class StocksDetailsViewController: UIViewController{
     var points:[CGPoint] = []
     var shares:Int = 0
     var dollar:Double = 0
+    var stockPrice:Double = 0
     var percent:Double = 0
     var volume:Int = 0
     var open:Double = 0
@@ -34,10 +35,17 @@ class StocksDetailsViewController: UIViewController{
             let textField = alert?.textFields![0] // Force unwrapping because we know it exists.
             if let text: String = textField?.text {
                 let trimmedString = Int(text.trimmingCharacters(in: .whitespaces))
-                self.stockHold[0].numShares = trimmedString!
-                let username = UserDefaults.standard.string(forKey: "username")
-                if let user = username {
-                    self.updateStock(username: user, ticker: self.tickerName, numShares: self.stockHold[0].numShares)
+
+                if let numShares = trimmedString {
+                    self.stockHold[0].numShares = numShares
+                    let username = UserDefaults.standard.string(forKey: "username")
+                    if let user = username {
+                        self.buyStock(username: user, ticker: self.tickerName, numShares: self.stockHold[0].numShares)
+                    }
+                }
+                else {
+                    let noNumberAlert = UIAlertController(title: "Error", message: "Please enter a valid number", preferredStyle: .alert)
+                    self.present(noNumberAlert, animated: true, completion: nil)
                 }
             }
             self.performSegue(withIdentifier: "toPortfolioView", sender: self)
@@ -67,14 +75,7 @@ class StocksDetailsViewController: UIViewController{
         super.viewDidLoad()
         sortStocks(stockDic: stockHold[0].SMA)
         self.title = tickerName
-        if let unwrappedPrice = chronoStockPrice.last {
-            price.text = String(unwrappedPrice)
-        }
-        else {
-            price.text = "Price not found"
-        }
-        
-        //price.text = String(describing: chronoStockPrice.last!)
+        price.text = "$" + String(chronoStockPrice[0])
         changeDol.text = "$" + String(format: "%.2f", dollar)
         changePercent.text = "(" + String(format: "%.5f", percent) + "%" + ")"
         if (percent < 0) {
@@ -85,10 +86,10 @@ class StocksDetailsViewController: UIViewController{
             changeDol.textColor = UIColor.green
             changePercent.textColor = UIColor.green
         }
+        price.text = String(stockPrice)
         marketCap.text = "Open: " + String(open)
         peRatio.text = "High: " + String(high)
         betaValue.text = "Low: " + String(low)
-        
         
         var i: Int = 0
         for price in chronoStockPrice {
@@ -122,11 +123,26 @@ class StocksDetailsViewController: UIViewController{
     
     // Ticker is the shorthand name for the stock (i.e. AAPL for Apple)
     // This will update the stock
-    func updateStock(username: String, ticker: String, numShares: Int) {
-        db.collection("stocks").document("\(username)-\(ticker)").updateData([
+    func buyStock(username: String, ticker: String, numShares: Int) {
+        let stockDict: [String:Int] = UserDefaults.standard.value(forKey: "userStocks") as! [String : Int]
+        // The amount they buy will come in, so we need to retrieve
+        // how much they already have (if they already own it) in 
+        // order to update the value correctly
+        var newNumShares: Int
+        if let oldShareNumber = stockDict[ticker] {
+            newNumShares = numShares + oldShareNumber
+        }
+        else {
+            newNumShares = numShares
+        }
+        let defaults = UserDefaults.standard
+        var stockShareDict:[String: Int] = defaults.value(forKey: "userStocks") as! [String:Int]
+        stockShareDict[ticker] = newNumShares
+        defaults.set(stockShareDict, forKey: "userStocks")
+        db.collection("stocks").document("\(username)-\(ticker)").setData([
             "username": username,
             "ticker": ticker,
-            "numShares": numShares
+            "numShares": newNumShares
         ]) { err in
             if let err = err {
                 print("Error adding document: \(err)")
@@ -134,10 +150,6 @@ class StocksDetailsViewController: UIViewController{
                 print("Document successfully written!")
             }
         }
-        let defaults = UserDefaults.standard
-        var stockShareDict:[String: Int] = defaults.value(forKey: "userStocks") as! [String:Int]
-        stockShareDict[ticker] = numShares
-        defaults.set(stockShareDict, forKey: "userStocks")
     }
 }
 

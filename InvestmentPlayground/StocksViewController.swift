@@ -39,12 +39,10 @@ class StocksViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     func getUsersStocks() {
         let user = UserDefaults.standard.string(forKey: "username")
-        
-        if let unwrappedUser = user {
+
+        if user != nil {
             getStocksForUser(username: user!)
         }
-
-        
     }
     
     override func didReceiveMemoryWarning() {
@@ -63,6 +61,7 @@ class StocksViewController: UIViewController, UITableViewDelegate, UITableViewDa
             nextVC.open = open
             nextVC.high = high
             nextVC.low = low
+            nextVC.stockPrice = equityInfo.pullCurrentPrice(ticker: query)
         }
     }
     
