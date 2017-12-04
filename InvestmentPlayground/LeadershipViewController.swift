@@ -16,7 +16,7 @@ class LeadershipViewController: UIViewController, UITableViewDelegate, UITableVi
     var game: String = ""
     var users: [String] = []
     let db = Firestore.firestore()
-    
+    let dp = dataParse()
     override func viewDidLoad() {
         super.viewDidLoad()
         if game != "" {
@@ -47,7 +47,9 @@ class LeadershipViewController: UIViewController, UITableViewDelegate, UITableVi
         cell1.rankingLabel.textColor = UIColor(red: 182, green: 192, blue: 210, alpha: 1.0)
         cell1.nameLabel.text = users[indexPath.row]
         cell1.rankingLabel.text = "#" + String(indexPath.row + 1)
+        
         let returnPort = 1.23 //@MICHAEL: this should be calculated for users
+        
         if ( returnPort < 0) {
             cell1.returnLabel.textColor = UIColor.red
             cell1.returnLabel.text = "-" + String(returnPort) + "%"
@@ -78,8 +80,39 @@ class LeadershipViewController: UIViewController, UITableViewDelegate, UITableVi
         }
     }
     func sortUsers() {
+        var userPortfolioValues:[String:Double] = [:]
         for user in self.users {
-            db.collection
+            let currUserStocks = getStocksForUser(username: user)
+            for stock in currUserStocks {
+                let currPrice = dp.pullCurrentPrice(ticker: stock.ticker)
+                
+            }
+            
         }
     }
+    
+    
+    // This function pulls all of the stocks for a given user and reloads
+    // the table with the tickers of the stocks
+    func getStocksForUser(username: String) -> [Stock] {
+        var stocks:[Stock] = []
+        self.db.collection("stocks").whereField("username", isEqualTo: username)
+            .getDocuments() { [unowned self] (querySnapshot, err) in
+                if let err = err {
+                    print("Error getting documents: \(err)")
+                } else {
+                    for document in querySnapshot!.documents {
+                        if let ticker = document.data()["ticker"] as? String {
+                            if let numShares = document.data()["numShares"] as? Int {
+                                if numShares > 0 {
+                                    stocks.append(Stock(SMA: [:], ticker: ticker, numShares: numShares))
+                                }
+                            }
+                        }
+                    }
+                }
+        }
+        return stocks
+    }
+    
 }
