@@ -30,6 +30,10 @@ class FindGamesViewController: UITableViewController, UISearchBarDelegate {
         searchBar.delegate = self
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        retrieveGames()
+    }
+    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if activeSearch {
             return filteredGames.count

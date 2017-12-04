@@ -40,11 +40,11 @@ class dataParse{
     func pullCurrentPrice(ticker: String) -> Double {
         var sortedPrices:[Double] = []
         var tempStock = Stock()
-        let path = "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=" + ticker + "&apikey=" + "AA16SBF68AT9U5OS"
+        let path = "https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=" + ticker + "&interval=1min&apikey=" + fourthApiKey
         let results = getJSON(path: path)
-        for (date, value) in results["Time Series (Daily)"] {
+        for (date, value) in results["Time Series (1min)"] {
             let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "yyyy-MM-dd"
+            dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
             let date1 = dateFormatter.date(from: date)
             if let unwrappedDate = date1 {
                 tempStock.SMA[unwrappedDate] = Double(value["4. close"].string!)!

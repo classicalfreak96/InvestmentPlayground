@@ -39,6 +39,7 @@ class StocksViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     func getUsersStocks() {
         let user = UserDefaults.standard.string(forKey: "username")
+
         if user != nil {
             getStocksForUser(username: user!)
         }
@@ -60,6 +61,7 @@ class StocksViewController: UIViewController, UITableViewDelegate, UITableViewDa
             nextVC.open = open
             nextVC.high = high
             nextVC.low = low
+            nextVC.stockPrice = equityInfo.pullCurrentPrice(ticker: query)
         }
     }
     

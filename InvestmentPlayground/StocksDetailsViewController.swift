@@ -18,6 +18,7 @@ class StocksDetailsViewController: UIViewController{
     var points: [CGPoint] = []
     var shares: Int = 0
     var dollar: Double = 0
+    var stockPrice: Double = 0
     var percent: Double = 0
     var volume: Int = 0
     var open: Double = 0
@@ -35,6 +36,7 @@ class StocksDetailsViewController: UIViewController{
             let textField = alert?.textFields![0] // Force unwrapping because we know it exists.
             if let text: String = textField?.text {
                 let trimmedString = Int(text.trimmingCharacters(in: .whitespaces))
+
                 if let numShares = trimmedString {
                     self.stockHold[0].numShares = numShares
                     let username = UserDefaults.standard.string(forKey: "username")
@@ -86,6 +88,7 @@ class StocksDetailsViewController: UIViewController{
             changeDol.textColor = UIColor.green
             changePercent.textColor = UIColor.green
         }
+        price.text = String(stockPrice)
         marketCap.text = "Open: " + String(open)
         peRatio.text = "High: " + String(high)
         betaValue.text = "Low: " + String(low)
@@ -114,7 +117,7 @@ class StocksDetailsViewController: UIViewController{
     }
     
     func sortStocks (stockDic: [Date:Double]) {
-        let sorted = stockDic.sorted { $0.0 > $1.0 }
+        let sorted = stockDic.sorted { $0.0 < $1.0 }
         for (_, price) in sorted {
             chronoStockPrice.append(price)
         }
