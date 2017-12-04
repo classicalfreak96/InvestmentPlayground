@@ -7,6 +7,7 @@
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="Unknown constraint types" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -266,7 +267,7 @@
         <scene sceneID="Xli-7F-RfH">
             <objects>
                 <navigationController title="Games Navigation" automaticallyAdjustsScrollViewInsets="NO" id="SNU-fS-3JV" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Games" image="games" selectedImage="games" id="mp4-Ru-U69"/>
+                    <tabBarItem key="tabBarItem" title="Current Games" image="games" selectedImage="games" id="mp4-Ru-U69"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="Rym-Xs-QcB">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
@@ -463,11 +464,11 @@
             </objects>
             <point key="canvasLocation" x="1588" y="2678"/>
         </scene>
-        <!--Item-->
+        <!--Find Games-->
         <scene sceneID="dde-Fm-VVF">
             <objects>
                 <navigationController id="3a8-82-dEy" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Item" id="gcJ-wI-QuN"/>
+                    <tabBarItem key="tabBarItem" title="Find Games" image="list-simple-7" selectedImage="list-simple-7" id="gcJ-wI-QuN"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="nFe-nj-qwr">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -478,7 +479,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="LUr-HT-wPK" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="709" y="2679"/>
+            <point key="canvasLocation" x="750" y="2678"/>
         </scene>
         <!--Discover Stocks-->
         <scene sceneID="dxr-xn-fuA">
@@ -579,41 +580,23 @@
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-2.3%" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XrC-4z-bYI">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="-2.3%" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XrC-4z-bYI">
                                                     <rect key="frame" x="309" y="11" width="45" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="#1" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HHo-9x-wue">
-                                                    <rect key="frame" x="22" y="11" width="18" height="21"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <color key="textColor" red="0.71372549019999998" green="0.75294117650000003" blue="0.82352941180000006" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Username" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ov3-Ga-bT5">
-                                                    <rect key="frame" x="48" y="11" width="79" height="21"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <color key="textColor" red="0.71372549019999998" green="0.75294117650000003" blue="0.82352941180000006" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
                                             </subviews>
                                             <color key="backgroundColor" red="0.27058823529999998" green="0.32156862749999998" blue="0.40784313729999999" alpha="1" colorSpace="calibratedRGB"/>
                                             <constraints>
-                                                <constraint firstItem="HHo-9x-wue" firstAttribute="leading" secondItem="7uP-c2-gy1" secondAttribute="leadingMargin" constant="14" id="8rj-sl-AJL"/>
-                                                <constraint firstItem="ov3-Ga-bT5" firstAttribute="top" secondItem="7uP-c2-gy1" secondAttribute="topMargin" constant="3" id="FwN-xd-DOS"/>
-                                                <constraint firstItem="HHo-9x-wue" firstAttribute="top" secondItem="7uP-c2-gy1" secondAttribute="topMargin" constant="3" id="JRE-C9-KYb"/>
-                                                <constraint firstItem="ov3-Ga-bT5" firstAttribute="leading" secondItem="HHo-9x-wue" secondAttribute="trailing" constant="8" id="NMT-Ix-bNs"/>
+                                                <constraint firstAttribute="leading" secondItem="7uP-c2-gy1" secondAttribute="leadingMargin" constant="14" id="8rj-sl-AJL"/>
+                                                <constraint firstAttribute="top" secondItem="7uP-c2-gy1" secondAttribute="topMargin" constant="3" id="FwN-xd-DOS"/>
+                                                <constraint firstAttribute="top" secondItem="7uP-c2-gy1" secondAttribute="topMargin" constant="3" id="JRE-C9-KYb"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="XrC-4z-bYI" secondAttribute="trailing" constant="13" id="Vw9-bE-rji"/>
-                                                <constraint firstItem="ov3-Ga-bT5" firstAttribute="bottom" secondItem="HHo-9x-wue" secondAttribute="bottom" id="ajD-YU-PwG"/>
-                                                <constraint firstAttribute="bottomMargin" secondItem="HHo-9x-wue" secondAttribute="bottom" constant="4" id="utv-J5-Gg5"/>
-                                                <constraint firstItem="XrC-4z-bYI" firstAttribute="bottom" secondItem="ov3-Ga-bT5" secondAttribute="bottom" id="w2G-Vt-i6b"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" red="0.27058823529999998" green="0.32156862749999998" blue="0.40784313729999999" alpha="1" colorSpace="calibratedRGB"/>
                                         <connections>
-                                            <outlet property="nameLabel" destination="ov3-Ga-bT5" id="L5Z-Kw-FKl"/>
-                                            <outlet property="rankingLabel" destination="HHo-9x-wue" id="nn8-4B-LBK"/>
                                             <outlet property="returnLabel" destination="XrC-4z-bYI" id="MI1-zP-BSD"/>
                                         </connections>
                                     </tableViewCell>
@@ -632,7 +615,7 @@
                             <constraint firstAttribute="trailing" secondItem="ofD-kn-s6Y" secondAttribute="trailing" id="nXN-L5-59d"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Leaderboard" id="oqY-cB-ZQy"/>
+                    <navigationItem key="navigationItem" title="Leaders Board" id="oqY-cB-ZQy"/>
                     <connections>
                         <outlet property="leadershipTable" destination="ofD-kn-s6Y" id="4l4-zi-WbG"/>
                     </connections>
@@ -703,6 +686,7 @@
     <resources>
         <image name="games" width="29" height="29"/>
         <image name="groups" width="29" height="29"/>
+        <image name="list-simple-7" width="30" height="30"/>
         <image name="portfolio" width="29" height="29"/>
         <image name="search" width="29" height="29"/>
     </resources>

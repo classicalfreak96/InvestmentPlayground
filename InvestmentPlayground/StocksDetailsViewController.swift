@@ -19,9 +19,12 @@ class StocksDetailsViewController: UIViewController{
     var dollar:Double = 0
     var percent:Double = 0
     var volume:Int = 0
+    var open:Double = 0
+    var high:Double = 0
+    var low:Double = 0
     let db = Firestore.firestore()
-
-
+    
+    
     @IBAction func addPortfolio(_ sender: Any) {
         let alert = UIAlertController(title: "Buy " + tickerName + " stocks", message: "Enter number of shares: ", preferredStyle: .alert)
         alert.addTextField { (textField) in
@@ -44,7 +47,7 @@ class StocksDetailsViewController: UIViewController{
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
         self.present(alert, animated: true, completion: nil)
     }
-
+    
     
     @IBOutlet weak var graph: LineChart!
     
@@ -53,7 +56,7 @@ class StocksDetailsViewController: UIViewController{
     @IBOutlet weak var ticker: UINavigationBar!
     
     @IBOutlet weak var changeDol: UILabel!
-
+    
     @IBOutlet weak var changePercent: UILabel!
     
     @IBOutlet weak var marketCap: UILabel!
@@ -84,34 +87,11 @@ class StocksDetailsViewController: UIViewController{
             changeDol.textColor = UIColor.green
             changePercent.textColor = UIColor.green
         }
-        if let unwrapped = chronoStockPrice.last {
-            marketCap.text = "Market Cap: $" + String(volume * Int(unwrapped))
-        }
-        else {
-            marketCap.text = "Market Cap: Not found :("
-        }
-        peRatio.text = "P/E Ratio: 0.94"
-        betaValue.text = "Beta: 0.95"
+        marketCap.text = "Open: " + String(open)
+        peRatio.text = "High: " + String(high)
+        betaValue.text = "Low: " + String(low)
         
         
-        
-        
-        
-        
-//        let f: (CGFloat) -> CGPoint = {
-//            let noiseY = (CGFloat(arc4random_uniform(2)) * 2 - 1) * CGFloat(arc4random_uniform(4))
-//            let noiseX = (CGFloat(arc4random_uniform(2)) * 2 - 1) * CGFloat(arc4random_uniform(4))
-//            let b: CGFloat = 5
-//            let y = 2 * $0 + b + noiseY
-//            return CGPoint(x: $0 + noiseX, y: y)
-//        }
-//        
-//        let xs = [Int](1..<20)
-//        
-//        let points = xs.map(CGPoint(dictionaryRepresentation: {CGFloat($0 * 10)}))
-//        
-//        graph.deltaX = 20
-//        graph.deltaY = 30
         var i: Int = 0
         for price in chronoStockPrice {
             var tempPoint = CGPoint(x: Double(i), y: price)
@@ -134,7 +114,7 @@ class StocksDetailsViewController: UIViewController{
             let nextVC:PortfolioViewController = (segue.destination as? PortfolioViewController)!
             nextVC.stocks.append(stockHold[0])
         }
-
+        
     }
     
     func sortStocks (stockDic: [Date:Double]) {
@@ -164,6 +144,5 @@ class StocksDetailsViewController: UIViewController{
     }
     
 }
-
 
 
