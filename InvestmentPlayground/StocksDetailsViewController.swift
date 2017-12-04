@@ -36,20 +36,27 @@ class StocksDetailsViewController: UIViewController{
             let textField = alert?.textFields![0] // Force unwrapping because we know it exists.
             if let text: String = textField?.text {
                 let trimmedString = Int(text.trimmingCharacters(in: .whitespaces))
-
                 if let numShares = trimmedString {
+                    if numShares <= 0 {
+                        let nonPositiveNumberAlert = UIAlertController(title: "Error", message: "Please enter a positive number", preferredStyle: .alert)
+                        nonPositiveNumberAlert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                        self.present(nonPositiveNumberAlert, animated: true, completion: nil)
+                    }
                     self.stockHold[0].numShares = numShares
                     let username = UserDefaults.standard.string(forKey: "username")
                     if let user = username {
-                        self.buyStock(username: user, ticker: self.tickerName, numShares: self.stockHold[0].numShares)
+                        let success = self.buyStock(username: user, ticker: self.tickerName, numShares: self.stockHold[0].numShares)
+                        if success {
+                            self.performSegue(withIdentifier: "toPortfolioView", sender: self)
+                        }
                     }
                 }
                 else {
                     let noNumberAlert = UIAlertController(title: "Error", message: "Please enter a valid number", preferredStyle: .alert)
+                    noNumberAlert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
                     self.present(noNumberAlert, animated: true, completion: nil)
                 }
             }
-            self.performSegue(withIdentifier: "toPortfolioView", sender: self)
         }))
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
         self.present(alert, animated: true, completion: nil)
@@ -125,7 +132,17 @@ class StocksDetailsViewController: UIViewController{
     
     // Ticker is the shorthand name for the stock (i.e. AAPL for Apple)
     // This will update the stock
-    func buyStock(username: String, ticker: String, numShares: Int) {
+    func buyStock(username: String, ticker: String, numShares: Int) -> Bool {
+        let dp = dataParse()
+        let currentPrice = dp.pullCurrentPrice(ticker: ticker)
+        let newCashValue = userCashValue - (currentPrice * Double(numShares))
+        let alert = UIAlertController(title: "Error", message: "You don't have enough money to buy \(numShares) of \(ticker).", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        if newCashValue < 0 {
+            self.present(alert, animated: true)
+            return false
+        }
+        
         var stockShareDict: [String:Int] = UserDefaults.standard.value(forKey: "userStocks") as! [String : Int]
         
         // The amount they buy will come in, so we need to retrieve
@@ -154,10 +171,9 @@ class StocksDetailsViewController: UIViewController{
                 print("Document successfully written!")
             }
         }
-        let dp = dataParse()
-        let currentPrice = dp.pullCurrentPrice(ticker: stockHold[0].ticker)
-        let newCashValue = userCashValue - (currentPrice * Double(numShares))
+
         setCashValue(username: username, newCashValue: newCashValue)
+        return true
     }
             
     func getCashValue(username: String) {

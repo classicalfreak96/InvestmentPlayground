@@ -37,15 +37,14 @@ class GroupsViewController: UIViewController{
     
     
     func joinGame(title: String, username: String) {
-        var ref: DocumentReference? = nil
-        ref = db.collection("gameMembers").addDocument(data: [
+        db.collection("gameMembers").document("\(username)-\(title)").setData([
             "title": title,
             "username": username
         ]) { err in
             if let err = err {
                 print("Error adding document: \(err)")
             } else {
-                print("Document added with ID: \(ref!.documentID)")
+                print("Document added with ID: \(username)-\(title)")
             }
         }
     }
