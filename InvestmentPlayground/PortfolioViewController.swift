@@ -24,7 +24,9 @@ class PortfolioViewController: UIViewController, UITableViewDataSource, UITableV
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        let defaults = UserDefaults.standard
         let username = UserDefaults.standard.string(forKey: "username")!
+        
         getStocksForUser(username: username)
         self.view.backgroundColor = .white
         
@@ -33,7 +35,6 @@ class PortfolioViewController: UIViewController, UITableViewDataSource, UITableV
         calculatePortfolioValue()
         
         print("printing the userdefaults dictionary")
-        print(UserDefaults.standard.value(forKey: "userStocks"))
     }
 
     override func didReceiveMemoryWarning() {
@@ -151,11 +152,16 @@ class PortfolioViewController: UIViewController, UITableViewDataSource, UITableV
     
     func calculatePortfolioValue() {
         var totalVal = 0.0
-        var stockDict:[String:Int] = UserDefaults.standard.value(forKey: "userStocks") as! [String : Int]
-        for (ticker, numShares) in stockDict {
-            var stockValue = Double(numShares) * dataParser.pullCurrentPrice(ticker:ticker)
-            print("stockValue: \(stockValue)")
-            totalVal += stockValue
+        let defaults = UserDefaults.standard
+        if let stockDict:[String:Int] = defaults.value(forKey: "userStocks") as! [String: Int]
+        {
+            for (ticker, numShares) in stockDict {
+                if ticker != "" {
+                    var stockValue = Double(numShares) * dataParser.pullCurrentPrice(ticker:ticker)
+                    print("stockValue: \(stockValue)")
+                    totalVal += stockValue
+                }
+            }
         }
         totalPortfolioValue = totalVal
         self.portfolioValue.text = String(totalPortfolioValue)

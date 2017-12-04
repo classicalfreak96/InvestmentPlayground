@@ -23,12 +23,10 @@ class RegisterViewController: UIViewController {
     @IBAction func registerButton(_ sender: Any) {
         let newUsernameText: String = newUsername.text ?? ""
         addUser(username: newUsernameText)
+        let defaults = UserDefaults.standard
+        defaults.set(newUsernameText, forKey: "username")
         let alertController = UIAlertController(title: "Registration Successful", message: "Hello " + newUsernameText + "!", preferredStyle: .alert)
         let OKAction = UIAlertAction(title: "OK", style: .default){ action in
-            let defaults = UserDefaults.standard
-            if let user = self.newUsername.text{
-                defaults.set(user, forKey: "username")
-            }
             self.performSegue(withIdentifier: "enterGame", sender: self)
         }
         alertController.addAction(OKAction)

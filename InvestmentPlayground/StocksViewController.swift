@@ -39,18 +39,10 @@ class StocksViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     func getUsersStocks() {
         let user = UserDefaults.standard.string(forKey: "username")
+        
         if let unwrappedUser = user {
             getStocksForUser(username: user!)
         }
-        //let defaults = UserDefaults.standard
-        /*
-        for stock in self.currentUserStocks {
-            stockShareDict[stock.ticker] = stock.numShares
-        }
-        if !stockShareDict.isEmpty {
-            defaults.set(stockShareDict, forKey: "userStocks")
-        }
- */
 
         
     }
@@ -133,9 +125,12 @@ class StocksViewController: UIViewController, UITableViewDelegate, UITableViewDa
                             }
                         }
                     }
-                    if !stockShareDict.isEmpty {
-                        defaults.set(stockShareDict, forKey: "userStocks")
+                    // if nothing is in the stock dictionary, put an empty string in there
+                    // to avoid unwrapping a nil optional
+                    if stockShareDict.isEmpty {
+                        stockShareDict[""] = 0
                     }
+                    defaults.set(stockShareDict, forKey: "userStocks")
                 }
         }
     }

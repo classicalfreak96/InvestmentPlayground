@@ -35,10 +35,8 @@ class StocksDetailsViewController: UIViewController{
             if let text: String = textField?.text {
                 let trimmedString = Int(text.trimmingCharacters(in: .whitespaces))
                 self.stockHold[0].numShares = trimmedString!
-                //print(self.stockHold[0].numShares)
                 let username = UserDefaults.standard.string(forKey: "username")
                 if let user = username {
-                    print("inside user = username")
                     self.updateStock(username: user, ticker: self.tickerName, numShares: self.stockHold[0].numShares)
                 }
             }
@@ -136,6 +134,10 @@ class StocksDetailsViewController: UIViewController{
                 print("Document successfully written!")
             }
         }
+        let defaults = UserDefaults.standard
+        var stockShareDict:[String: Int] = defaults.value(forKey: "userStocks") as! [String:Int]
+        stockShareDict[ticker] = numShares
+        defaults.set(stockShareDict, forKey: "userStocks")
     }
 }
 
