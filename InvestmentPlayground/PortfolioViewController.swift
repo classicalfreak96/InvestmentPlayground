@@ -14,16 +14,20 @@ class PortfolioViewController: UIViewController, UITableViewDataSource, UITableV
     let db = Firestore.firestore()
     var stocks: [Stock] = []
     let dataParser = dataParse()
+    var totalPortfolioValue: Double = 0.0
     
     @IBOutlet weak var portfolioValue: UILabel!
     
     @IBOutlet weak var portfolioTable: UITableView!
+    
+    @IBOutlet weak var cashLeft: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         let username = UserDefaults.standard.string(forKey: "username")!
         getStocksForUser(username: username)
         self.view.backgroundColor = .white
+        
         portfolioTable.delegate = self
         portfolioTable.dataSource = self
         calculatePortfolioValue()
@@ -44,10 +48,13 @@ class PortfolioViewController: UIViewController, UITableViewDataSource, UITableV
         let sdvc = segue.destination as! StocksDetailsViewController
         let currentStock = stocks[(portfolioTable.indexPathForSelectedRow?.row)!]
         sdvc.tickerName = currentStock.ticker
-        let dp = dataParse()
-        let (dollar, percent, volume, open, high, low) = dp.pullStockData(append: false, ticker: currentStock.ticker)
+        //let dp = dataParse()
+        /*
+        let (dollar, percent, volume) = dp.pullStockData(ticker: currentStock.ticker)
         dp.searchEquity(function: "SMA", symbol: currentStock.ticker, interval: "daily", time_period: "100")
-        sdvc.stockHold = dp.equityList
+        */
+        let (dollar, percent, volume, open, high, low) = dataParser.pullStockData(append: true, ticker: currentStock.ticker)
+        sdvc.stockHold = dataParser.equityList
         sdvc.dollar = dollar
         sdvc.percent = percent
         sdvc.volume = volume
@@ -74,14 +81,25 @@ class PortfolioViewController: UIViewController, UITableViewDataSource, UITableV
             alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { [unowned self, weak alert] (_) in
                 let textField = alert?.textFields![0] // Force unwrapping because we know it exists.
                 if let text: String = textField?.text {
+                    var trimmedString = Int(text.trimmingCharacters(in: .whitespaces))
                     if let textInt: Int = Int(text) {
-                        self.updateStock(username: UserDefaults.standard.string(forKey: "username")!, ticker: self.stocks[indexPath.row].ticker, numShares: self.stocks[indexPath.row].numShares - Int(textInt))
+                    self.updateStock(username: UserDefaults.standard.string(forKey: "username")!, ticker: self.stocks[indexPath.row].ticker, numShares: self.stocks[indexPath.row].numShares - Int(textInt))
                     }
-                    let trimmedString = Int(text.trimmingCharacters(in: .whitespaces))
-                    self.stocks[indexPath.row].numShares = self.stocks[indexPath.row].numShares - trimmedString!
-                    let alert = UIAlertController(title: "Profit from selling " + self.stocks[indexPath.row].ticker, message: "You have made " + "12132312123", preferredStyle: .alert) //CHANGE "123123123123"
-                    alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-                    self.present(alert, animated: true, completion: nil)
+                    if trimmedString == nil {
+                        trimmedString = 0
+                    }
+                    if (self.stocks[indexPath.row].numShares - trimmedString! < 0) {
+                        let alert = UIAlertController(title: "NO", message: "You cannot sell more stocks than you have", preferredStyle: .alert)
+                        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                        self.present(alert, animated: true, completion: nil)
+                    }
+                    else {
+                        self.stocks[indexPath.row].numShares = self.stocks[indexPath.row].numShares - trimmedString!
+                        let alert = UIAlertController(title: "Profit from selling " + self.stocks[indexPath.row].ticker, message: "You have made " + "12132312123", preferredStyle: .alert) //CHANGE "123123123123"
+                        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                        self.present(alert, animated: true, completion: nil)
+
+                    }
                 }
                 self.portfolioTable.reloadData()
             }))
@@ -129,10 +147,13 @@ class PortfolioViewController: UIViewController, UITableViewDataSource, UITableV
     
     func calculatePortfolioValue() {
         var totalVal = 0.0
-        
-        //for stock in self.stocks {
-        //    totalVal = totalVal + (stock.numShares)
-        //}
+        print("Stocks: \(self.stocks)")
+        for stock in self.stocks {
+            var stockValue = Double(stock.numShares) * dataParser.pullCurrentPrice(ticker:stock.ticker)
+            print(stockValue)
+        }
+        totalPortfolioValue = totalVal
+        self.portfolioValue.text = String(totalPortfolioValue)
     }
     
     // Ticker is the shorthand name for the stock (i.e. AAPL for Apple)

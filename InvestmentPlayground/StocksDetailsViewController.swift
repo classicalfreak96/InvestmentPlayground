@@ -23,8 +23,8 @@ class StocksDetailsViewController: UIViewController{
     var high:Double = 0
     var low:Double = 0
     let db = Firestore.firestore()
-
-
+    
+    
     @IBAction func addPortfolio(_ sender: Any) {
         let alert = UIAlertController(title: "Buy " + tickerName + " stocks", message: "Enter number of shares: ", preferredStyle: .alert)
         alert.addTextField { (textField) in
@@ -47,7 +47,7 @@ class StocksDetailsViewController: UIViewController{
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
         self.present(alert, animated: true, completion: nil)
     }
-
+    
     
     @IBOutlet weak var graph: LineChart!
     
@@ -56,7 +56,7 @@ class StocksDetailsViewController: UIViewController{
     @IBOutlet weak var ticker: UINavigationBar!
     
     @IBOutlet weak var changeDol: UILabel!
-
+    
     @IBOutlet weak var changePercent: UILabel!
     
     @IBOutlet weak var marketCap: UILabel!
@@ -78,7 +78,7 @@ class StocksDetailsViewController: UIViewController{
         
         //price.text = String(describing: chronoStockPrice.last!)
         changeDol.text = "$" + String(format: "%.2f", dollar)
-        changePercent.text = String(format: "%.5f", percent) + "%"
+        changePercent.text = "(" + String(format: "%.5f", percent) + "%" + ")"
         if (percent < 0) {
             changeDol.textColor = UIColor.red
             changePercent.textColor = UIColor.red
@@ -87,12 +87,7 @@ class StocksDetailsViewController: UIViewController{
             changeDol.textColor = UIColor.green
             changePercent.textColor = UIColor.green
         }
-        if let unwrapped = chronoStockPrice.last {
-            marketCap.text = "Market Cap: $" + String(volume * Int(unwrapped))
-        }
-        else {
-            marketCap.text = "Market Cap: Not found :("
-        }
+        marketCap.text = "Open: " + String(open)
         peRatio.text = "High: " + String(high)
         betaValue.text = "Low: " + String(low)
         
@@ -117,7 +112,7 @@ class StocksDetailsViewController: UIViewController{
             let nextVC:PortfolioViewController = (segue.destination as? PortfolioViewController)!
             nextVC.stocks.append(stockHold[0])
         }
-
+        
     }
     
     func sortStocks (stockDic: [Date:Double]) {
@@ -143,6 +138,5 @@ class StocksDetailsViewController: UIViewController{
         }
     }
 }
-
 
 
