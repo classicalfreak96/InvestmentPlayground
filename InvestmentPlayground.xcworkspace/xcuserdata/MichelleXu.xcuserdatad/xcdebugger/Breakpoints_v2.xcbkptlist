@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "InvestmentPlayground/StocksDetailsViewController.swift"
-            timestampString = "534053421.714561"
+            timestampString = "534055461.117071"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "46"
-            endingLineNumber = "46"
+            startingLineNumber = "47"
+            endingLineNumber = "47"
             landmarkName = "addPortfolio(_:)"
             landmarkType = "7">
             <Locations>

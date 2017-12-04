@@ -15,8 +15,8 @@ class StocksDetailsViewController: UIViewController{
     var stockHold:[Stock] = []
     var chronoStockPrice:[Double] = []
     var points:[CGPoint] = []
-    var stockPrice:Double = 0
     var shares:Int = 0
+    var stockPrice:Double = 0
     var dollar:Double = 0
     var percent:Double = 0
     var volume:Int = 0
@@ -35,12 +35,16 @@ class StocksDetailsViewController: UIViewController{
             let textField = alert?.textFields![0] // Force unwrapping because we know it exists.
             if let text: String = textField?.text {
                 let trimmedString = Int(text.trimmingCharacters(in: .whitespaces))
-                self.stockHold[0].numShares = trimmedString!
-                //print(self.stockHold[0].numShares)
-                let username = UserDefaults.standard.string(forKey: "username")
-                if let user = username {
-                    print("inside user = username")
-                    self.updateStock(username: user, ticker: self.tickerName, numShares: self.stockHold[0].numShares)
+                if let numShares = trimmedString {
+                    self.stockHold[0].numShares = numShares
+                    let username = UserDefaults.standard.string(forKey: "username")
+                    if let user = username {
+                        self.buyStock(username: user, ticker: self.tickerName, numShares: self.stockHold[0].numShares)
+                    }
+                }
+                else {
+                    let noNumberAlert = UIAlertController(title: "Error", message: "Please enter a valid number", preferredStyle: .alert)
+                    self.present(noNumberAlert, animated: true, completion: nil)
                 }
             }
             self.performSegue(withIdentifier: "toPortfolioView", sender: self)
@@ -70,16 +74,7 @@ class StocksDetailsViewController: UIViewController{
         super.viewDidLoad()
         sortStocks(stockDic: stockHold[0].SMA)
         self.title = tickerName
-//        if let unwrappedPrice = chronoStockPrice.last {
-//            price.text = String(unwrappedPrice)
-//        }
-//        price.text = String(chronoStockPrice[0])
         price.text = String(stockPrice)
-//        else {
-//            price.text = "Price not found"
-//        }
-        
-        //price.text = String(describing: chronoStockPrice.last!)
         changeDol.text = "$" + String(format: "%.2f", dollar)
         changePercent.text = "(" + String(format: "%.5f", percent) + "%" + ")"
         if (percent < 0) {
@@ -127,11 +122,19 @@ class StocksDetailsViewController: UIViewController{
     
     // Ticker is the shorthand name for the stock (i.e. AAPL for Apple)
     // This will update the stock
-    func updateStock(username: String, ticker: String, numShares: Int) {
-        db.collection("stocks").document("\(username)-\(ticker)").updateData([
+    func buyStock(username: String, ticker: String, numShares: Int) {
+        let stockDict: [String:Int] = UserDefaults.standard.value(forKey: "userStocks") as! [String : Int]
+        var newNumShares: Int
+        if let oldShareNumber = stockDict[ticker] {
+            newNumShares = numShares + oldShareNumber
+        }
+        else {
+            newNumShares = numShares
+        }
+        db.collection("stocks").document("\(username)-\(ticker)").setData([
             "username": username,
             "ticker": ticker,
-            "numShares": numShares
+            "numShares": newNumShares
         ]) { err in
             if let err = err {
                 print("Error adding document: \(err)")
