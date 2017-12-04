@@ -17,13 +17,15 @@ class LeadershipViewController: UIViewController, UITableViewDelegate, UITableVi
     var users: [String] = []
     let db = Firestore.firestore()
     let dp = dataParse()
-    var stocks:[Stock] = []
+    var stocks: [String:[Stock]] = [:]
+    var userPortfolioValues: [String:Double] = [:]
+    var userCashValues: [String:Double] = [:]
+    var sortedUsers:[String] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
         if game != "" {
             getUsersForGame(title: game)
-            sortUsers()
         }
         leadershipTable.dataSource = self
         leadershipTable.delegate = self
@@ -43,23 +45,25 @@ class LeadershipViewController: UIViewController, UITableViewDelegate, UITableVi
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell { //help from https://www.ralfebert.de/tutorials/ios-swift-uitableviewcontroller/#data_swift_arrays
-        
         let cell1 = tableView.dequeueReusableCell(withIdentifier: "leaderCell") as! LeaderCell
+        if !sortedUsers.indices.contains(indexPath.row) {
+            return cell1
+        }
         cell1.nameLabel.textColor = UIColor(red: 182, green: 192, blue: 210, alpha: 1.0)
         cell1.rankingLabel.textColor = UIColor(red: 182, green: 192, blue: 210, alpha: 1.0)
-        cell1.nameLabel.text = users[indexPath.row]
+        cell1.nameLabel.text = self.sortedUsers[indexPath.row]
         cell1.rankingLabel.text = "#" + String(indexPath.row + 1)
-        
-        let returnPort = calcPortfolioValue(user: users[indexPath.row])
-        
-        if ( returnPort < 0) {
-            cell1.returnLabel.textColor = UIColor.red
-            cell1.returnLabel.text = "-" + String(returnPort) + "%"
+        if let returnPort = self.userPortfolioValues[sortedUsers[indexPath.row]] {
+            if (returnPort < 0) {
+                cell1.returnLabel.textColor = UIColor.red
+                cell1.returnLabel.text = "$" + String(returnPort)
+            }
+            else {
+                cell1.returnLabel.textColor = UIColor.green
+                cell1.returnLabel.text = "$" + String(returnPort)
+            }
         }
-        else {
-            cell1.returnLabel.textColor = UIColor.green
-            cell1.returnLabel.text = "+" + String(returnPort) + "%"
-        }
+
 
         return cell1
     }
@@ -75,17 +79,20 @@ class LeadershipViewController: UIViewController, UITableViewDelegate, UITableVi
                     for document in querySnapshot!.documents {
                         if let username = document.data()["username"] as? String {
                             self.users.append(username)
+                            self.getStocksForUser(username: username)
+                            self.getCashValue(username: username)
                         }
                     }
+                    self.sortUsers()
                     self.leadershipTable.reloadData()
                 }
         }
     }
+    
+    
     func sortUsers() {
-        var userPortfolioValues:[String:Double] = [:]
+        /*
         for user in self.users {
-            print("inside the users ")
-
             userPortfolioValues[user] = calcPortfolioValue(user: user)
         }
         
@@ -93,25 +100,60 @@ class LeadershipViewController: UIViewController, UITableViewDelegate, UITableVi
         // I don't understand what it does
         
         //userPortfolioValues.keys.sorted(by: {$0 > $1}).flatMap({userPortfolioValues[$0]})
-        print("PortfolioValues: \(userPortfolioValues)")
-        self.stocks = []
         
+        // bad sorting algorithm
+        for (outerName, outerValue) in userPortfolioValues {
+            var minimum = 1000000.0
+            var minName = ""
+            for (name, value) in userPortfolioValues {
+                if value < minimum && !self.sortedUsers.contains(name){
+                    minimum = value
+                    minName = name
+                }
+            }
+            self.sortedUsers.append(minName)
+        }
+        print("Sorted users: \(self.sortedUsers)")
+        // print("User Portfolio Values: \(userPortfolioValues)")
+        */
+        let sortedKeys = Array(userPortfolioValues.keys).sorted
     }
     
     func calcPortfolioValue(user: String) -> Double{
-        getStocksForUser(username: user) // updates self.stocks
-        print ("Current User Stocks: \(self.stocks)")
+        // updates self.stocks
         // start the portfolio value with the amount of cash the user has
-        var totalPortfolioValue = self.getCashValue(username: user)
-        for stock in self.stocks {
-            let currPrice = dp.pullCurrentPrice(ticker: stock.ticker)
-            totalPortfolioValue +=  (currPrice * Double(stock.numShares))
+        let totalPortfolioValueOptional = self.userCashValues[user]
+        var totalPortfolioValue = 0.0
+        if totalPortfolioValueOptional != nil {
+            totalPortfolioValue = totalPortfolioValueOptional!
         }
+        if self.stocks[user] != nil {
+            for stock in self.stocks[user]! {
+                let currPrice = dp.pullCurrentPrice(ticker: stock.ticker)
+                totalPortfolioValue += (currPrice * Double(stock.numShares))
+            }
+        }
+        // bad sorting algorithm
+        for (_, _) in userPortfolioValues {
+            var minimum = 1000000.0
+            var minName = ""
+            for (name, value) in userPortfolioValues {
+                if value < minimum && !self.sortedUsers.contains(name){
+                    minimum = value
+                    minName = name
+                }
+            }
+            self.sortedUsers.append(minName)
+        }
+        print("Sorted users: \(self.sortedUsers)")
         return totalPortfolioValue
     }
+    
+    
     // This function pulls all of the stocks for a given user and reloads
     // the table with the tickers of the stocks
     func getStocksForUser(username: String) {
+        stocks[username] = []
         self.db.collection("stocks").whereField("username", isEqualTo: username)
             .getDocuments() { [unowned self] (querySnapshot, err) in
                 if let err = err {
@@ -121,17 +163,19 @@ class LeadershipViewController: UIViewController, UITableViewDelegate, UITableVi
                         if let ticker = document.data()["ticker"] as? String {
                             if let numShares = document.data()["numShares"] as? Int {
                                 if numShares > 0 {
-                                    self.stocks.append(Stock(SMA: [:], ticker: ticker, numShares: numShares))
+                                    self.stocks[username]?.append(Stock(SMA: [:], ticker: ticker, numShares: numShares))
                                 }
                             }
                         }
                     }
-                }
+                    let portfolioValue = self.calcPortfolioValue(user: username)
+                    self.userPortfolioValues[username] = portfolioValue
+                    self.leadershipTable.reloadData()
+            }
         }
     }
     
-    func getCashValue(username: String)->Double {
-        var returnCash = 0.0
+    func getCashValue(username: String) {
         self.db.collection("users").document(username).getDocument {
             [unowned self] (document, err) in
             if let err = err {
@@ -139,12 +183,29 @@ class LeadershipViewController: UIViewController, UITableViewDelegate, UITableVi
             } else {
                 if let document = document {
                     if let cash = document.data()["cash"] as? Double {
-                        returnCash = cash
+                        self.userCashValues[username] = cash
                     }
                 }
             }
+            let portfolioValue = self.calcPortfolioValue(user: username)
+            self.userPortfolioValues[username] = portfolioValue
+            self.leadershipTable.reloadData()
+            
+            // bad sorting algorithm
+            for (_, outerValue) in self.userPortfolioValues {
+                var minimum = 1000000.0
+                var minName = ""
+                for (name, value) in self.userPortfolioValues {
+                    if value < minimum && !self.sortedUsers.contains(name){
+                        minimum = value
+                        minName = name
+                    }
+                }
+                self.sortedUsers.append(minName)
+            }
+            print("Sorted users: \(self.sortedUsers)")
+
         }
-        return returnCash
     }
     
 }
