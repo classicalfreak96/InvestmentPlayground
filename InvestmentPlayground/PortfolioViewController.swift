@@ -70,6 +70,12 @@ class PortfolioViewController: UIViewController, UITableViewDataSource, UITableV
     
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]?{
         let sell = UITableViewRowAction(style: .normal, title: "Sell") {(action, indexpath) in
+            if !self.stocks.indices.contains(indexPath.row) {
+                let alert = UIAlertController(title: "Error", message: "An error occurred.", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                self.present(alert, animated: true, completion: nil)
+                return
+            }
             let alert = UIAlertController(title: "Sell " + self.stocks[indexPath.row].ticker + " stocks", message: "Enter number of shares: ", preferredStyle: .alert)
             alert.addTextField { (textField) in
                 textField.text = ""
@@ -82,24 +88,32 @@ class PortfolioViewController: UIViewController, UITableViewDataSource, UITableV
                     if trimmedString == nil {
                         trimmedString = 0
                     }
+                    if trimmedString! <= 0 {
+                        let alert = UIAlertController(title: "Error", message: "Please enter a positive number.", preferredStyle: .alert)
+                        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                        self.present(alert, animated: true, completion: nil)
+                    }
                     if (self.stocks[indexPath.row].numShares - trimmedString! < 0) {
                         let alert = UIAlertController(title: "NO", message: "You cannot sell more stocks than you have", preferredStyle: .alert)
                         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
                         self.present(alert, animated: true, completion: nil)
                     }
                     else {
-                        if let textInt: Int = Int(text) {
+                        if let textDouble: Double = Double(text) {
                             let username = UserDefaults.standard.string(forKey: "username")!
-                            self.sellStock(username: username, ticker: self.stocks[indexPath.row].ticker, numShares: self.stocks[indexPath.row].numShares - Int(textInt))
+                            self.sellStock(username: username, ticker: self.stocks[indexPath.row].ticker, numShares: self.stocks[indexPath.row].numShares - Int(textDouble))
                             let dp = dataParse()
                             let currentPrice = dp.pullCurrentPrice(ticker: self.stocks[indexPath.row].ticker)
                             self.setCashValue(username: username, newCashValue: self.cashValue + (currentPrice * Double(self.stocks[indexPath.row].numShares)))
+                            self.stocks[indexPath.row].numShares = self.stocks[indexPath.row].numShares - trimmedString!
+                            let query = self.stocks[indexPath.row].ticker
+                            let price = self.dataParser.pullCurrentPrice(ticker: query)
+                            let alert = UIAlertController(title: "Profit from selling " + self.stocks[indexPath.row].ticker, message: "You have made $" + String(price * textDouble), preferredStyle: .alert)
+                            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                            self.present(alert, animated: true, completion: nil)
                         }
-                        self.stocks[indexPath.row].numShares = self.stocks[indexPath.row].numShares - trimmedString!
-                        let query = self.stocks[indexPath.row].ticker
-                        let price = self.dataParser.pullCurrentPrice(ticker: query)
-                        if let textInt: Double = Double(text) {
-                        let alert = UIAlertController(title: "Profit from selling " + self.stocks[indexPath.row].ticker, message: "You have made $" + String(price * textInt), preferredStyle: .alert) //CHANGE "123123123123"
+                        else {
+                            let alert = UIAlertController(title: "Error", message: "Please enter a valid number.", preferredStyle: .alert)
                             alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
                             self.present(alert, animated: true, completion: nil)
                         }

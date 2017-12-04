@@ -12,8 +12,6 @@ import FirebaseFirestore
 class GamesViewController: UIViewController, UITableViewDataSource, UITableViewDelegate{ //games they are currently in
     
     let db = Firestore.firestore()
-    
-    // Maybe it would make sense to make an array of Game structs instead of a string, but for now just doing strings to show the concept
     var games: [String] = []
     @IBOutlet weak var gamesTable: UITableView!
     
