@@ -139,6 +139,7 @@ class StocksDetailsViewController: UIViewController{
         var stockShareDict:[String: Int] = defaults.value(forKey: "userStocks") as! [String:Int]
         stockShareDict[ticker] = newNumShares
         defaults.set(stockShareDict, forKey: "userStocks")
+        
         db.collection("stocks").document("\(username)-\(ticker)").setData([
             "username": username,
             "ticker": ticker,

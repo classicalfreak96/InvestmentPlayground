@@ -43,6 +43,7 @@ class PortfolioViewController: UIViewController, UITableViewDataSource, UITableV
     override func viewDidAppear(_ animated: Bool) {
         let username = UserDefaults.standard.string(forKey: "username")!
         getStocksForUser(username: username)
+        calculatePortfolioValue()
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -145,7 +146,7 @@ class PortfolioViewController: UIViewController, UITableViewDataSource, UITableV
     }
     
     func calculatePortfolioValue() {
-        var totalVal = 0.0
+        var totalVal = 0.0 // just set this to total cash initially once nick is done
         let defaults = UserDefaults.standard
         if let stockDict:[String:Int] = defaults.value(forKey: "userStocks") as? [String: Int] {
             for (ticker, numShares) in stockDict {
@@ -156,7 +157,7 @@ class PortfolioViewController: UIViewController, UITableViewDataSource, UITableV
             }
         }
         totalPortfolioValue = totalVal
-        self.portfolioValue.text = String(totalPortfolioValue)
+        self.portfolioValue.text = "Portfolio Value: $" + String(totalPortfolioValue)
     }
     }
     
@@ -166,8 +167,11 @@ class PortfolioViewController: UIViewController, UITableViewDataSource, UITableV
         // have the stock info locally
         let defaults = UserDefaults.standard
         var stockShareDict:[String: Int] = defaults.value(forKey: "userStocks") as! [String:Int]
+        // this is ok because the numShares passed in here is former number of shares - shares to be sold
+        
         stockShareDict[ticker] = numShares
         defaults.set(stockShareDict, forKey: "userStocks")
+        calculatePortfolioValue()
         db.collection("stocks").document("\(username)-\(ticker)").setData([
             "username": username,
             "ticker": ticker,
