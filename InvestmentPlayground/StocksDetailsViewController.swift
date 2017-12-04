@@ -24,6 +24,7 @@ class StocksDetailsViewController: UIViewController{
     var open: Double = 0
     var high: Double = 0
     var low: Double = 0
+    var success:Bool = false
     let db = Firestore.firestore()
     
     
@@ -81,10 +82,15 @@ class StocksDetailsViewController: UIViewController{
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        if (!success) {
+            let alert = UIAlertController(title: "Sorry!", message: "The API is currently not responding, please wait a few seconds before reloading for accurate data", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+        }
         getCashValue(username: UserDefaults.standard.value(forKey: "username") as! String)
         sortStocks(stockDic: stockHold[0].SMA)
         self.title = tickerName
-        price.text = "$" + String(chronoStockPrice[0])
+        price.text = "$" + String(stockPrice)
         changeDol.text = "$" + String(format: "%.2f", dollar)
         changePercent.text = "(" + String(format: "%.5f", percent) + "%" + ")"
         if (percent < 0) {
@@ -134,46 +140,54 @@ class StocksDetailsViewController: UIViewController{
     // This will update the stock
     func buyStock(username: String, ticker: String, numShares: Int) -> Bool {
         let dp = dataParse()
-        let currentPrice = dp.pullCurrentPrice(ticker: ticker)
-        let newCashValue = userCashValue - (currentPrice * Double(numShares))
-        let alert = UIAlertController(title: "Error", message: "You don't have enough money to buy \(numShares) of \(ticker).", preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-        if newCashValue < 0 {
-            self.present(alert, animated: true)
-            return false
-        }
-        
-        var stockShareDict: [String:Int] = UserDefaults.standard.value(forKey: "userStocks") as! [String : Int]
-        
-        // The amount they buy will come in, so we need to retrieve
-        // how much they already have (if they already own it) in 
-        // order to update the value correctly
-        var newNumShares: Int
-        if let oldShareNumber = stockShareDict[ticker] {
-            newNumShares = numShares + oldShareNumber
+        let (success,currentPrice) = dp.pullCurrentPrice(ticker: ticker)
+        if success {
+            let newCashValue = userCashValue - (currentPrice * Double(numShares))
+            let alert = UIAlertController(title: "Error", message: "You don't have enough money to buy \(numShares) of \(ticker).", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+            if newCashValue < 0 {
+                self.present(alert, animated: true)
+                return false
+            }
+            
+            var stockShareDict: [String:Int] = UserDefaults.standard.value(forKey: "userStocks") as! [String : Int]
+            
+            // The amount they buy will come in, so we need to retrieve
+            // how much they already have (if they already own it) in
+            // order to update the value correctly
+            var newNumShares: Int
+            if let oldShareNumber = stockShareDict[ticker] {
+                newNumShares = numShares + oldShareNumber
+            }
+            else {
+                newNumShares = numShares
+            }
+            
+            stockShareDict[ticker] = newNumShares
+            UserDefaults.standard.set(stockShareDict, forKey: "userStocks")
+            
+            // Update stock share numbers in the database
+            db.collection("stocks").document("\(username)-\(ticker)").setData([
+                "username": username,
+                "ticker": ticker,
+                "numShares": newNumShares
+            ]) { err in
+                if let err = err {
+                    print("Error adding document: \(err)")
+                } else {
+                    print("Document successfully written!")
+                }
+            }
+            
+            setCashValue(username: username, newCashValue: newCashValue)
+            return true
         }
         else {
-            newNumShares = numShares
+            let alert = UIAlertController(title: "Sorry!", message: "The API is currently not responding, please wait a few seconds before repurchasing", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+            return false
         }
-        
-        stockShareDict[ticker] = newNumShares
-        UserDefaults.standard.set(stockShareDict, forKey: "userStocks")
-        
-        // Update stock share numbers in the database
-        db.collection("stocks").document("\(username)-\(ticker)").setData([
-            "username": username,
-            "ticker": ticker,
-            "numShares": newNumShares
-        ]) { err in
-            if let err = err {
-                print("Error adding document: \(err)")
-            } else {
-                print("Document successfully written!")
-            }
-        }
-
-        setCashValue(username: username, newCashValue: newCashValue)
-        return true
     }
             
     func getCashValue(username: String) {

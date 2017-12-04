@@ -21,6 +21,7 @@ class StocksViewController: UIViewController, UITableViewDelegate, UITableViewDa
     var open:Double = 0
     var high:Double = 0
     var low:Double = 0
+    var success:Bool = false
     var currentUserStocks: [Stock] = []
 
     @IBOutlet weak var stocksTable: UITableView!
@@ -61,7 +62,7 @@ class StocksViewController: UIViewController, UITableViewDelegate, UITableViewDa
             nextVC.open = open
             nextVC.high = high
             nextVC.low = low
-            nextVC.stockPrice = equityInfo.pullCurrentPrice(ticker: query)
+            (nextVC.success, nextVC.stockPrice) = equityInfo.pullCurrentPrice(ticker: query)
         }
     }
     

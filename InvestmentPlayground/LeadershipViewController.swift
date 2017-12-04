@@ -129,11 +129,18 @@ class LeadershipViewController: UIViewController, UITableViewDelegate, UITableVi
         }
         if self.stocks[user] != nil {
             for stock in self.stocks[user]! {
-                let currPrice = dp.pullCurrentPrice(ticker: stock.ticker)
-                totalPortfolioValue += (currPrice * Double(stock.numShares))
+                let (success, currPrice) = dp.pullCurrentPrice(ticker: stock.ticker)
+                if success {
+                    totalPortfolioValue += (currPrice * Double(stock.numShares))
+                }
+                else {
+                    let alert = UIAlertController(title: "Sorry!", message: "The API call is not currently working, please try again in a few seconds for an accurate portfolio value", preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                    self.present(alert, animated: true, completion: nil)
+                }
             }
         }
-        // bad sorting algorithm
+//         bad sorting algorithm
         for (_, _) in userPortfolioValues {
             var minimum = 1000000.0
             var minName = ""
@@ -147,9 +154,22 @@ class LeadershipViewController: UIViewController, UITableViewDelegate, UITableVi
         }
         print("Sorted users: \(self.sortedUsers)")
         return totalPortfolioValue
+
+//        let tuplesArray = userPortfolioValues.sorted{ $0.value > $1.value }
+//        print("------------")
+//        for (name, portValue) in tuplesArray{
+//            print(name, portValue)
+//            self.sortedUsers.append(name)
+//        }
+//        print("------------")
+//        
+//        
+//        print("Sorted users: \(self.sortedUsers)")
+//        return totalPortfolioValue
+        
     }
-    
-    
+
+
     // This function pulls all of the stocks for a given user and reloads
     // the table with the tickers of the stocks
     func getStocksForUser(username: String) {
@@ -191,7 +211,7 @@ class LeadershipViewController: UIViewController, UITableViewDelegate, UITableVi
             self.userPortfolioValues[username] = portfolioValue
             self.leadershipTable.reloadData()
             
-            // bad sorting algorithm
+//             bad sorting algorithm
             for (_, outerValue) in self.userPortfolioValues {
                 var minimum = 1000000.0
                 var minName = ""

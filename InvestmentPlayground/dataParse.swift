@@ -22,6 +22,10 @@ class dataParse{
     
     let fourthApiKey = "M7UUAHWMRH7SAAN7"
     
+    enum MyError: Error {
+        case FoundNil(String)
+    }
+    
     
     
     private func getJSON(path: String) -> JSON {
@@ -37,7 +41,7 @@ class dataParse{
         
     }
     
-    func pullCurrentPrice(ticker: String) -> Double {
+    func pullCurrentPrice(ticker: String) -> (Bool, Double) {
         var sortedPrices:[Double] = []
         var tempStock = Stock()
         let path = "https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=" + ticker + "&interval=1min&apikey=" + fourthApiKey
@@ -57,7 +61,12 @@ class dataParse{
             //print("Adding \(price) to chronoStockPrice")
             sortedPrices.append(price)
         }
-        return sortedPrices[0]
+        if sortedPrices.count == 0 {
+            return (false, 0)
+        }
+        else {
+            return (true, sortedPrices[0])
+        }
     }
     
     
@@ -101,12 +110,14 @@ class dataParse{
                 sortedHigh.append(high)
                 sortedLow.append(low)
             }
-            let dollar:Double = sortedClosePrice[0] - sortedClosePrice[1]
-            let percent:Double = (sortedClosePrice[0] - sortedClosePrice[1])/sortedClosePrice[1]
-            if (append) {
-                equityList.append(tempStock)
+            if sortedClosePrice.count != 0 {
+                let dollar:Double = sortedClosePrice[0] - sortedClosePrice[1]
+                let percent:Double = (sortedClosePrice[0] - sortedClosePrice[1])/sortedClosePrice[1]
+                if (append) {
+                    equityList.append(tempStock)
+                }
+                return(dollar, percent, sortedVolume[0], sortedOpen[0], sortedHigh[0], sortedLow[0])
             }
-            return(dollar, percent, sortedVolume[0], sortedOpen[0], sortedHigh[0], sortedLow[0])
         }
         return(0,0,0,0,0,0)
     }

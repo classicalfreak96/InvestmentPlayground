@@ -51,7 +51,7 @@ class PortfolioViewController: UIViewController, UITableViewDataSource, UITableV
         sdvc.tickerName = currentStock.ticker
         let (dollar, percent, volume, open, high, low) = dataParser.pullStockData(append: true, ticker: currentStock.ticker)
         sdvc.stockHold = dataParser.equityList
-        sdvc.stockPrice = dataParser.pullCurrentPrice(ticker: currentStock.ticker)
+        (sdvc.success, sdvc.stockPrice) = dataParser.pullCurrentPrice(ticker: currentStock.ticker)
         sdvc.dollar = dollar
         sdvc.percent = percent
         sdvc.volume = volume
@@ -103,11 +103,11 @@ class PortfolioViewController: UIViewController, UITableViewDataSource, UITableV
                             let username = UserDefaults.standard.string(forKey: "username")!
                             self.sellStock(username: username, ticker: self.stocks[indexPath.row].ticker, numShares: self.stocks[indexPath.row].numShares - Int(textDouble))
                             let dp = dataParse()
-                            let currentPrice = dp.pullCurrentPrice(ticker: self.stocks[indexPath.row].ticker)
+                            let (success, currentPrice) = dp.pullCurrentPrice(ticker: self.stocks[indexPath.row].ticker)
                             self.setCashValue(username: username, newCashValue: self.cashValue + (currentPrice * Double(self.stocks[indexPath.row].numShares)))
                             self.stocks[indexPath.row].numShares = self.stocks[indexPath.row].numShares - trimmedString!
                             let query = self.stocks[indexPath.row].ticker
-                            let price = self.dataParser.pullCurrentPrice(ticker: query)
+                            let (success1, price) = self.dataParser.pullCurrentPrice(ticker: query)
                             let alert = UIAlertController(title: "Profit from selling " + self.stocks[indexPath.row].ticker, message: "You have made $" + String(price * textDouble), preferredStyle: .alert)
                             alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
                             self.present(alert, animated: true, completion: nil)
@@ -185,8 +185,9 @@ class PortfolioViewController: UIViewController, UITableViewDataSource, UITableV
         if let stockDict = UserDefaults.standard.value(forKey: "userStocks") as? [String : Int] {
             for (ticker, numShares) in stockDict {
                 if numShares > 0 {
-                        let stockValue = Double(numShares) * dataParser.pullCurrentPrice(ticker: ticker)
-                        totalVal += stockValue
+                    let (success, price) = dataParser.pullCurrentPrice(ticker: ticker)
+                    let stockValue = Double(numShares) * price
+                    totalVal += stockValue
                 }
             }
             totalPortfolioValue = totalVal
