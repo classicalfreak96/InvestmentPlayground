@@ -17,6 +17,8 @@ class LeadershipViewController: UIViewController, UITableViewDelegate, UITableVi
     var users: [String] = []
     let db = Firestore.firestore()
     let dp = dataParse()
+    var stocks:[Stock] = []
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         if game != "" {
@@ -48,7 +50,7 @@ class LeadershipViewController: UIViewController, UITableViewDelegate, UITableVi
         cell1.nameLabel.text = users[indexPath.row]
         cell1.rankingLabel.text = "#" + String(indexPath.row + 1)
         
-        let returnPort = 1.23 //@MICHAEL: this should be calculated for users
+        let returnPort = calcPortfolioValue(user: users[indexPath.row])
         
         if ( returnPort < 0) {
             cell1.returnLabel.textColor = UIColor.red
@@ -82,20 +84,34 @@ class LeadershipViewController: UIViewController, UITableViewDelegate, UITableVi
     func sortUsers() {
         var userPortfolioValues:[String:Double] = [:]
         for user in self.users {
-            let currUserStocks = getStocksForUser(username: user)
-            for stock in currUserStocks {
-                let currPrice = dp.pullCurrentPrice(ticker: stock.ticker)
-                
-            }
-            
+            print("inside the users ")
+
+            userPortfolioValues[user] = calcPortfolioValue(user: user)
         }
+        
+        // taken from https://stackoverflow.com/questions/24090016/sort-dictionary-by-values-in-swift
+        // I don't understand what it does
+        
+        //userPortfolioValues.keys.sorted(by: {$0 > $1}).flatMap({userPortfolioValues[$0]})
+        print("PortfolioValues: \(userPortfolioValues)")
+        self.stocks = []
+        
     }
     
-    
+    func calcPortfolioValue(user: String) -> Double{
+        getStocksForUser(username: user) // updates self.stocks
+        print ("Current User Stocks: \(self.stocks)")
+        // start the portfolio value with the amount of cash the user has
+        var totalPortfolioValue = self.getCashValue(username: user)
+        for stock in self.stocks {
+            let currPrice = dp.pullCurrentPrice(ticker: stock.ticker)
+            totalPortfolioValue +=  (currPrice * Double(stock.numShares))
+        }
+        return totalPortfolioValue
+    }
     // This function pulls all of the stocks for a given user and reloads
     // the table with the tickers of the stocks
-    func getStocksForUser(username: String) -> [Stock] {
-        var stocks:[Stock] = []
+    func getStocksForUser(username: String) {
         self.db.collection("stocks").whereField("username", isEqualTo: username)
             .getDocuments() { [unowned self] (querySnapshot, err) in
                 if let err = err {
@@ -105,14 +121,30 @@ class LeadershipViewController: UIViewController, UITableViewDelegate, UITableVi
                         if let ticker = document.data()["ticker"] as? String {
                             if let numShares = document.data()["numShares"] as? Int {
                                 if numShares > 0 {
-                                    stocks.append(Stock(SMA: [:], ticker: ticker, numShares: numShares))
+                                    self.stocks.append(Stock(SMA: [:], ticker: ticker, numShares: numShares))
                                 }
                             }
                         }
                     }
                 }
         }
-        return stocks
+    }
+    
+    func getCashValue(username: String)->Double {
+        var returnCash = 0.0
+        self.db.collection("users").document(username).getDocument {
+            [unowned self] (document, err) in
+            if let err = err {
+                print("Error getting documents: \(err)")
+            } else {
+                if let document = document {
+                    if let cash = document.data()["cash"] as? Double {
+                        returnCash = cash
+                    }
+                }
+            }
+        }
+        return returnCash
     }
     
 }
