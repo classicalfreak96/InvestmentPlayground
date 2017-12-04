@@ -34,12 +34,16 @@ class StocksDetailsViewController: UIViewController{
             let textField = alert?.textFields![0] // Force unwrapping because we know it exists.
             if let text: String = textField?.text {
                 let trimmedString = Int(text.trimmingCharacters(in: .whitespaces))
-                self.stockHold[0].numShares = trimmedString!
-                //print(self.stockHold[0].numShares)
-                let username = UserDefaults.standard.string(forKey: "username")
-                if let user = username {
-                    print("inside user = username")
-                    self.updateStock(username: user, ticker: self.tickerName, numShares: self.stockHold[0].numShares)
+                if let numShares = trimmedString {
+                    self.stockHold[0].numShares = numShares
+                    let username = UserDefaults.standard.string(forKey: "username")
+                    if let user = username {
+                        self.updateStock(username: user, ticker: self.tickerName, numShares: self.stockHold[0].numShares)
+                    }
+                }
+                else {
+                    let noNumberAlert = UIAlertController(title: "Error", message: "Please enter a valid number", preferredStyle: .alert)
+                    self.present(noNumberAlert, animated: true, completion: nil)
                 }
             }
             self.performSegue(withIdentifier: "toPortfolioView", sender: self)
@@ -125,7 +129,7 @@ class StocksDetailsViewController: UIViewController{
     // Ticker is the shorthand name for the stock (i.e. AAPL for Apple)
     // This will update the stock
     func updateStock(username: String, ticker: String, numShares: Int) {
-        db.collection("stocks").document("\(username)-\(ticker)").updateData([
+        db.collection("stocks").document("\(username)-\(ticker)").setData([
             "username": username,
             "ticker": ticker,
             "numShares": numShares

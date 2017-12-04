@@ -72,14 +72,13 @@ class dataParse{
         var sortedLow:[Double] = []
         let path = "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=" + ticker + "&apikey=" + "AA16SBF68AT9U5OS"
         let results = getJSON(path: path)
-        print("TIME SERIES DAILY ")
         
         if results.count == 0 {
-            validStock = false;
+            validStock = false
         }
         for (key, _) in results {
             if key == "Error Message" {
-                validStock = false;
+                validStock = false
             }
         }
         if (validStock) {
@@ -95,8 +94,7 @@ class dataParse{
             }
             
             let sorted = dateClose.sorted { $0.0 > $1.0 }
-            for (date, (price, volume, open, high, low)) in sorted {
-                //print(date)
+            for (_, (price, volume, open, high, low)) in sorted {
                 sortedClosePrice.append(price)
                 sortedVolume.append(volume)
                 sortedOpen.append(open)

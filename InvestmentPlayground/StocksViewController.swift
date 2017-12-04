@@ -39,20 +39,9 @@ class StocksViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     func getUsersStocks() {
         let user = UserDefaults.standard.string(forKey: "username")
-        if let unwrappedUser = user {
+        if user != nil {
             getStocksForUser(username: user!)
         }
-        //let defaults = UserDefaults.standard
-        /*
-        for stock in self.currentUserStocks {
-            stockShareDict[stock.ticker] = stock.numShares
-        }
-        if !stockShareDict.isEmpty {
-            defaults.set(stockShareDict, forKey: "userStocks")
-        }
- */
-
-        
     }
     
     override func didReceiveMemoryWarning() {

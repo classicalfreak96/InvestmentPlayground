@@ -27,13 +27,9 @@ class PortfolioViewController: UIViewController, UITableViewDataSource, UITableV
         let username = UserDefaults.standard.string(forKey: "username")!
         getStocksForUser(username: username)
         self.view.backgroundColor = .white
-        
         portfolioTable.delegate = self
         portfolioTable.dataSource = self
         calculatePortfolioValue()
-        
-        print("printing the userdefaults dictionary")
-        print(UserDefaults.standard.value(forKey: "userStocks"))
     }
 
     override func didReceiveMemoryWarning() {
@@ -50,11 +46,6 @@ class PortfolioViewController: UIViewController, UITableViewDataSource, UITableV
         let sdvc = segue.destination as! StocksDetailsViewController
         let currentStock = stocks[(portfolioTable.indexPathForSelectedRow?.row)!]
         sdvc.tickerName = currentStock.ticker
-        //let dp = dataParse()
-        /*
-        let (dollar, percent, volume) = dp.pullStockData(ticker: currentStock.ticker)
-        dp.searchEquity(function: "SMA", symbol: currentStock.ticker, interval: "daily", time_period: "100")
-        */
         let (dollar, percent, volume, open, high, low) = dataParser.pullStockData(append: true, ticker: currentStock.ticker)
         sdvc.stockHold = dataParser.equityList
         sdvc.dollar = dollar
@@ -84,9 +75,6 @@ class PortfolioViewController: UIViewController, UITableViewDataSource, UITableV
                 let textField = alert?.textFields![0] // Force unwrapping because we know it exists.
                 if let text: String = textField?.text {
                     var trimmedString = Int(text.trimmingCharacters(in: .whitespaces))
-                    if let textInt: Int = Int(text) {
-                    self.updateStock(username: UserDefaults.standard.string(forKey: "username")!, ticker: self.stocks[indexPath.row].ticker, numShares: self.stocks[indexPath.row].numShares - Int(textInt))
-                    }
                     if trimmedString == nil {
                         trimmedString = 0
                     }
@@ -96,6 +84,9 @@ class PortfolioViewController: UIViewController, UITableViewDataSource, UITableV
                         self.present(alert, animated: true, completion: nil)
                     }
                     else {
+                        if let textInt: Int = Int(text) {
+                            self.updateStock(username: UserDefaults.standard.string(forKey: "username")!, ticker: self.stocks[indexPath.row].ticker, numShares: self.stocks[indexPath.row].numShares - Int(textInt))
+                        }
                         self.stocks[indexPath.row].numShares = self.stocks[indexPath.row].numShares - trimmedString!
                         let alert = UIAlertController(title: "Profit from selling " + self.stocks[indexPath.row].ticker, message: "You have made " + "12132312123", preferredStyle: .alert) //CHANGE "123123123123"
                         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
@@ -151,11 +142,12 @@ class PortfolioViewController: UIViewController, UITableViewDataSource, UITableV
     
     func calculatePortfolioValue() {
         var totalVal = 0.0
-        var stockDict:[String:Int] = UserDefaults.standard.value(forKey: "userStocks") as! [String : Int]
+        let stockDict:[String:Int] = UserDefaults.standard.value(forKey: "userStocks") as! [String : Int]
         for (ticker, numShares) in stockDict {
-            var stockValue = Double(numShares) * dataParser.pullCurrentPrice(ticker:ticker)
-            print("stockValue: \(stockValue)")
-            totalVal += stockValue
+            if numShares > 0 {
+                let stockValue = Double(numShares) * dataParser.pullCurrentPrice(ticker:ticker)
+                totalVal += stockValue
+            }
         }
         totalPortfolioValue = totalVal
         self.portfolioValue.text = String(totalPortfolioValue)
@@ -164,7 +156,6 @@ class PortfolioViewController: UIViewController, UITableViewDataSource, UITableV
     // Ticker is the shorthand name for the stock (i.e. AAPL for Apple)
     // This will add a stock if it exists and update it otherwise
     func updateStock(username: String, ticker: String, numShares: Int) {
-        print("cool")
         db.collection("stocks").document("\(username)-\(ticker)").setData([
             "username": username,
             "ticker": ticker,
