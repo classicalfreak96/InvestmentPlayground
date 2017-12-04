@@ -27,7 +27,8 @@ class PortfolioViewController: UIViewController, UITableViewDataSource, UITableV
         let defaults = UserDefaults.standard
         let username = UserDefaults.standard.string(forKey: "username")!
         
-        getStocksForUser(username: username)
+        //getStocksForUser(username: username)
+        getStocksFromUserDefaults(username: username)
         self.view.backgroundColor = .white
         portfolioTable.delegate = self
         portfolioTable.dataSource = self
@@ -42,7 +43,8 @@ class PortfolioViewController: UIViewController, UITableViewDataSource, UITableV
     
     override func viewDidAppear(_ animated: Bool) {
         let username = UserDefaults.standard.string(forKey: "username")!
-        getStocksForUser(username: username)
+        //getStocksForUser(username: username)
+        getStocksFromUserDefaults(username: username)
         calculatePortfolioValue()
     }
     
@@ -93,9 +95,23 @@ class PortfolioViewController: UIViewController, UITableViewDataSource, UITableV
                             self.sellStock(username: UserDefaults.standard.string(forKey: "username")!, ticker: self.stocks[indexPath.row].ticker, numShares: self.stocks[indexPath.row].numShares - Int(textInt))
                         }
                         self.stocks[indexPath.row].numShares = self.stocks[indexPath.row].numShares - trimmedString!
-                        let alert = UIAlertController(title: "Profit from selling " + self.stocks[indexPath.row].ticker, message: "You have made " + "12132312123", preferredStyle: .alert) //CHANGE "123123123123"
-                        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-                        self.present(alert, animated: true, completion: nil)
+                        /*
+                        var dollar:Double = 0.0
+                        var percent: Double = 0.0
+                        var volume: Int = 0
+                        var open: Double = 0.0
+                        var high: Double = 0.0
+                        var low: Double = 0.0
+                        (dollar, percent, volume, open, high, low) = self.dataParser.pullStockData(append: true, ticker: query)
+                        */
+                        var query = self.stocks[indexPath.row].ticker
+                        var price = self.dataParser.pullCurrentPrice(ticker: query)
+                        if let textInt: Double = Double(text) {
+                        let alert = UIAlertController(title: "Profit from selling " + self.stocks[indexPath.row].ticker, message: "You have made $" + String(price * textInt), preferredStyle: .alert) //CHANGE "123123123123"
+                            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                            self.present(alert, animated: true, completion: nil)
+                        }
+
 
                     }
                 }
@@ -145,6 +161,18 @@ class PortfolioViewController: UIViewController, UITableViewDataSource, UITableV
         }
     }
     
+    func getStocksFromUserDefaults(username: String) {
+        let defaults = UserDefaults.standard
+        self.stocks = []
+        var stockShareDict: [String: Int] = defaults.value(forKey: "userStocks") as! [String:Int]
+        for (ticker, numShares) in stockShareDict {
+            if numShares > 0 {
+                self.stocks.append(Stock(SMA: [:], ticker: ticker, numShares: numShares))
+            }
+        }
+        self.portfolioTable.reloadData()
+    }
+    
     func calculatePortfolioValue() {
         var totalVal = 0.0 // just set this to total cash initially once nick is done
         let defaults = UserDefaults.standard
@@ -167,8 +195,8 @@ class PortfolioViewController: UIViewController, UITableViewDataSource, UITableV
         // have the stock info locally
         let defaults = UserDefaults.standard
         var stockShareDict:[String: Int] = defaults.value(forKey: "userStocks") as! [String:Int]
-        // this is ok because the numShares passed in here is former number of shares - shares to be sold
         
+        // this is ok because the numShares passed in here is former number of shares - shares to be sold
         stockShareDict[ticker] = numShares
         defaults.set(stockShareDict, forKey: "userStocks")
         calculatePortfolioValue()
