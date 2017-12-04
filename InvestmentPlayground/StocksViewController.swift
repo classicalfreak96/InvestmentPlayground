@@ -132,5 +132,6 @@ class StocksViewController: UIViewController, UITableViewDelegate, UITableViewDa
                     defaults.set(stockShareDict, forKey: "userStocks")
                 }
         }
+
     }
 }
