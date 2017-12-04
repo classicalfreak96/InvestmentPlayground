@@ -73,6 +73,7 @@ class StocksDetailsViewController: UIViewController{
         super.viewDidLoad()
         sortStocks(stockDic: stockHold[0].SMA)
         self.title = tickerName
+        price.text = "$" + String(chronoStockPrice[0])
         changeDol.text = "$" + String(format: "%.2f", dollar)
         changePercent.text = "(" + String(format: "%.5f", percent) + "%" + ")"
         if (percent < 0) {
@@ -86,7 +87,6 @@ class StocksDetailsViewController: UIViewController{
         marketCap.text = "Open: " + String(open)
         peRatio.text = "High: " + String(high)
         betaValue.text = "Low: " + String(low)
-        
         
         var i: Int = 0
         for price in chronoStockPrice {
@@ -122,6 +122,9 @@ class StocksDetailsViewController: UIViewController{
     // This will update the stock
     func buyStock(username: String, ticker: String, numShares: Int) {
         let stockDict: [String:Int] = UserDefaults.standard.value(forKey: "userStocks") as! [String : Int]
+        // The amount they buy will come in, so we need to retrieve
+        // how much they already have (if they already own it) in 
+        // order to update the value correctly
         var newNumShares: Int
         if let oldShareNumber = stockDict[ticker] {
             newNumShares = numShares + oldShareNumber
@@ -129,6 +132,10 @@ class StocksDetailsViewController: UIViewController{
         else {
             newNumShares = numShares
         }
+        let defaults = UserDefaults.standard
+        var stockShareDict:[String: Int] = defaults.value(forKey: "userStocks") as! [String:Int]
+        stockShareDict[ticker] = newNumShares
+        defaults.set(stockShareDict, forKey: "userStocks")
         db.collection("stocks").document("\(username)-\(ticker)").setData([
             "username": username,
             "ticker": ticker,

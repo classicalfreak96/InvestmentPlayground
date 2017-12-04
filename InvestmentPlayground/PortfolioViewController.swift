@@ -155,7 +155,12 @@ class PortfolioViewController: UIViewController, UITableViewDataSource, UITableV
     
     // Ticker is the shorthand name for the stock (i.e. AAPL for Apple)
     func sellStock(username: String, ticker: String, numShares: Int) {
-        let stockDict: [String:Int] = UserDefaults.standard.value(forKey: "userStocks") as! [String : Int]
+        // We need to update the value in user defaults so that we 
+        // have the stock info locally
+        let defaults = UserDefaults.standard
+        var stockShareDict:[String: Int] = defaults.value(forKey: "userStocks") as! [String:Int]
+        stockShareDict[ticker] = numShares
+        defaults.set(stockShareDict, forKey: "userStocks")
         db.collection("stocks").document("\(username)-\(ticker)").setData([
             "username": username,
             "ticker": ticker,
