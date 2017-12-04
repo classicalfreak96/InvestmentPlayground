@@ -31,7 +31,9 @@ class PortfolioViewController: UIViewController, UITableViewDataSource, UITableV
         portfolioTable.delegate = self
         portfolioTable.dataSource = self
         calculatePortfolioValue()
-
+        
+        print("printing the userdefaults dictionary")
+        print(UserDefaults.standard.value(forKey: "userStocks"))
     }
 
     override func didReceiveMemoryWarning() {
@@ -149,10 +151,11 @@ class PortfolioViewController: UIViewController, UITableViewDataSource, UITableV
     
     func calculatePortfolioValue() {
         var totalVal = 0.0
-        print("Stocks: \(self.stocks)")
-        for stock in self.stocks {
-            var stockValue = Double(stock.numShares) * dataParser.pullCurrentPrice(ticker:stock.ticker)
-            print(stockValue)
+        var stockDict:[String:Int] = UserDefaults.standard.value(forKey: "userStocks") as! [String : Int]
+        for (ticker, numShares) in stockDict {
+            var stockValue = Double(numShares) * dataParser.pullCurrentPrice(ticker:ticker)
+            print("stockValue: \(stockValue)")
+            totalVal += stockValue
         }
         totalPortfolioValue = totalVal
         self.portfolioValue.text = String(totalPortfolioValue)
