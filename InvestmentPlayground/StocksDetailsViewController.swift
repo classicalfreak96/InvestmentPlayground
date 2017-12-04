@@ -39,7 +39,7 @@ class StocksDetailsViewController: UIViewController{
                 let username = UserDefaults.standard.string(forKey: "username")
                 if let user = username {
                     print("inside user = username")
-                    self.addStock(username: user, ticker: self.tickerName, numShares: self.stockHold[0].numShares)
+                    self.updateStock(username: user, ticker: self.tickerName, numShares: self.stockHold[0].numShares)
                 }
             }
             self.performSegue(withIdentifier: "toPortfolioView", sender: self)
@@ -113,9 +113,7 @@ class StocksDetailsViewController: UIViewController{
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        
         if (segue.identifier == "toPortfolioView") {
-            print("segueing to the portfolio view")
             let nextVC:PortfolioViewController = (segue.destination as? PortfolioViewController)!
             nextVC.stocks.append(stockHold[0])
         }
@@ -124,18 +122,15 @@ class StocksDetailsViewController: UIViewController{
     
     func sortStocks (stockDic: [Date:Double]) {
         let sorted = stockDic.sorted { $0.0 < $1.0 }
-        //print(sorted)
         for (date, price) in sorted {
-            //print(date)
-            //print("Adding \(price) to chronoStockPrice")
             chronoStockPrice.append(price)
         }
     }
     
     // Ticker is the shorthand name for the stock (i.e. AAPL for Apple)
-    func addStock(username: String, ticker: String, numShares: Int) {
-        var ref: DocumentReference? = nil
-        ref = db.collection("stocks").addDocument(data: [
+    // This will add a stock if it exists and update it otherwise
+    func updateStock(username: String, ticker: String, numShares: Int) {
+        db.collection("stocks").document("\(username)-\(ticker)").updateData([
             "username": username,
             "ticker": ticker,
             "numShares": numShares
@@ -143,11 +138,10 @@ class StocksDetailsViewController: UIViewController{
             if let err = err {
                 print("Error adding document: \(err)")
             } else {
-                print("Document added with ID: \(ref!.documentID)")
+                print("Document successfully written!")
             }
         }
     }
-    
 }
 
 

@@ -14,13 +14,13 @@ class StocksViewController: UIViewController, UITableViewDelegate, UITableViewDa
     var equityInfo = dataParse()
     let db = Firestore.firestore()
     var query: String = ""
-    var stockHold:[Stock] = []
-    var dollar:Double = 0
-    var percent:Double = 0
-    var volume:Int = 0
-    var open:Double = 0
-    var high:Double = 0
-    var low:Double = 0
+    var stockHold: [Stock] = []
+    var dollar: Double = 0
+    var percent: Double = 0
+    var volume: Int = 0
+    var open: Double = 0
+    var high: Double = 0
+    var low: Double = 0
     
     @IBOutlet weak var stocksTable: UITableView!
     
@@ -88,8 +88,6 @@ class StocksViewController: UIViewController, UITableViewDelegate, UITableViewDa
         if searchText.isEmpty{                                                                                                                                                    
             equityInfo.equityList.removeAll()
             stockHold = equityInfo.equityList
-            
-            //pageCount = 1
             stocksTable.reloadData()
         }
     }

@@ -26,7 +26,6 @@ class PortfolioViewController: UIViewController, UITableViewDataSource, UITableV
         self.view.backgroundColor = .white
         portfolioTable.delegate = self
         portfolioTable.dataSource = self
-        //print(self.stocks)
         calculatePortfolioValue()
 
     }
@@ -69,12 +68,15 @@ class PortfolioViewController: UIViewController, UITableViewDataSource, UITableV
         let sell = UITableViewRowAction(style: .normal, title: "Sell") {(action, indexpath) in
             let alert = UIAlertController(title: "Sell " + self.stocks[indexPath.row].ticker + " stocks", message: "Enter number of shares: ", preferredStyle: .alert)
             alert.addTextField { (textField) in
-                textField.text = " "
+                textField.text = ""
             }
             
-            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { [weak alert] (_) in
+            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { [unowned self, weak alert] (_) in
                 let textField = alert?.textFields![0] // Force unwrapping because we know it exists.
                 if let text: String = textField?.text {
+                    if let textInt: Int = Int(text) {
+                        self.updateStock(username: UserDefaults.standard.string(forKey: "username")!, ticker: self.stocks[indexPath.row].ticker, numShares: self.stocks[indexPath.row].numShares - Int(textInt))
+                    }
                     let trimmedString = Int(text.trimmingCharacters(in: .whitespaces))
                     self.stocks[indexPath.row].numShares = self.stocks[indexPath.row].numShares - trimmedString!
                     let alert = UIAlertController(title: "Profit from selling " + self.stocks[indexPath.row].ticker, message: "You have made " + "12132312123", preferredStyle: .alert) //CHANGE "123123123123"
@@ -132,6 +134,24 @@ class PortfolioViewController: UIViewController, UITableViewDataSource, UITableV
         //    totalVal = totalVal + (stock.numShares)
         //}
     }
+    
+    // Ticker is the shorthand name for the stock (i.e. AAPL for Apple)
+    // This will add a stock if it exists and update it otherwise
+    func updateStock(username: String, ticker: String, numShares: Int) {
+        print("cool")
+        db.collection("stocks").document("\(username)-\(ticker)").setData([
+            "username": username,
+            "ticker": ticker,
+            "numShares": numShares
+        ]) { err in
+            if let err = err {
+                print("Error adding document: \(err)")
+            } else {
+                print("Document successfully written!")
+            }
+        }
+    }
+
     
 }
 
