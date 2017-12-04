@@ -37,7 +37,12 @@ class RegisterViewController: UIViewController {
     
     
     override func viewDidLoad() {
-
+        if UserDefaults.standard.string(forKey: "username") != nil {
+            DispatchQueue.main.async() {
+                [unowned self] in
+                self.performSegue(withIdentifier: "enterGame", sender: self)
+            }
+        }
     }
     
     override func didReceiveMemoryWarning() {

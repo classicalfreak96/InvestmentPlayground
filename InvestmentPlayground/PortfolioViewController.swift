@@ -30,7 +30,6 @@ class PortfolioViewController: UIViewController, UITableViewDataSource, UITableV
         
         portfolioTable.delegate = self
         portfolioTable.dataSource = self
-        
         calculatePortfolioValue()
         
         print("printing the userdefaults dictionary")
@@ -78,13 +77,16 @@ class PortfolioViewController: UIViewController, UITableViewDataSource, UITableV
         let sell = UITableViewRowAction(style: .normal, title: "Sell") {(action, indexpath) in
             let alert = UIAlertController(title: "Sell " + self.stocks[indexPath.row].ticker + " stocks", message: "Enter number of shares: ", preferredStyle: .alert)
             alert.addTextField { (textField) in
-                textField.text = " "
+                textField.text = ""
             }
             
-            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { [weak alert] (_) in
+            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { [unowned self, weak alert] (_) in
                 let textField = alert?.textFields![0] // Force unwrapping because we know it exists.
                 if let text: String = textField?.text {
                     var trimmedString = Int(text.trimmingCharacters(in: .whitespaces))
+                    if let textInt: Int = Int(text) {
+                    self.updateStock(username: UserDefaults.standard.string(forKey: "username")!, ticker: self.stocks[indexPath.row].ticker, numShares: self.stocks[indexPath.row].numShares - Int(textInt))
+                    }
                     if trimmedString == nil {
                         trimmedString = 0
                     }
@@ -136,7 +138,9 @@ class PortfolioViewController: UIViewController, UITableViewDataSource, UITableV
                     for document in querySnapshot!.documents {
                         if let ticker = document.data()["ticker"] as? String {
                             if let numShares = document.data()["numShares"] as? Int {
-                                self.stocks.append(Stock(SMA: [:], ticker: ticker, numShares: numShares))
+                                if numShares > 0 {
+                                    self.stocks.append(Stock(SMA: [:], ticker: ticker, numShares: numShares))
+                                }
                             }
                         }
                     }
@@ -156,6 +160,24 @@ class PortfolioViewController: UIViewController, UITableViewDataSource, UITableV
         totalPortfolioValue = totalVal
         self.portfolioValue.text = String(totalPortfolioValue)
     }
+    
+    // Ticker is the shorthand name for the stock (i.e. AAPL for Apple)
+    // This will add a stock if it exists and update it otherwise
+    func updateStock(username: String, ticker: String, numShares: Int) {
+        print("cool")
+        db.collection("stocks").document("\(username)-\(ticker)").setData([
+            "username": username,
+            "ticker": ticker,
+            "numShares": numShares
+        ]) { err in
+            if let err = err {
+                print("Error adding document: \(err)")
+            } else {
+                print("Document successfully written!")
+            }
+        }
+    }
+
     
 }
 

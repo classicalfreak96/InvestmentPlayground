@@ -22,6 +22,7 @@ class StocksViewController: UIViewController, UITableViewDelegate, UITableViewDa
     var high:Double = 0
     var low:Double = 0
     var currentUserStocks: [Stock] = []
+
     @IBOutlet weak var stocksTable: UITableView!
     
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
@@ -105,8 +106,6 @@ class StocksViewController: UIViewController, UITableViewDelegate, UITableViewDa
         if searchText.isEmpty{
             equityInfo.equityList.removeAll()
             stockHold = equityInfo.equityList
-            
-            //pageCount = 1
             stocksTable.reloadData()
         }
     }
