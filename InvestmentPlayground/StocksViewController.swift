@@ -106,7 +106,7 @@ class StocksViewController: UIViewController, UITableViewDelegate, UITableViewDa
     // the table with the tickers of the stocks
     
     // This method may be better suited for dataParse, as it's already in PortfolioViewController
-    // But i edited it a little to return the stocks
+    // But i edited it a little to store things in UserDefaults
     func getStocksForUser(username: String) {
         self.db.collection("stocks").whereField("username", isEqualTo: username)
             .getDocuments() { [unowned self] (querySnapshot, err) in
@@ -132,5 +132,6 @@ class StocksViewController: UIViewController, UITableViewDelegate, UITableViewDa
                     defaults.set(stockShareDict, forKey: "userStocks")
                 }
         }
+
     }
 }

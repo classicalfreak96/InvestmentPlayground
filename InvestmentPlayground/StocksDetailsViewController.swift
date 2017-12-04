@@ -11,18 +11,19 @@ import FirebaseFirestore
 
 class StocksDetailsViewController: UIViewController{
     
-    var tickerName:String = ""
-    var stockHold:[Stock] = []
-    var chronoStockPrice:[Double] = []
-    var points:[CGPoint] = []
-    var shares:Int = 0
-    var dollar:Double = 0
-    var stockPrice:Double = 0
-    var percent:Double = 0
-    var volume:Int = 0
-    var open:Double = 0
-    var high:Double = 0
-    var low:Double = 0
+    var tickerName: String = ""
+    var userCashValue: Double = 0.0
+    var stockHold: [Stock] = []
+    var chronoStockPrice: [Double] = []
+    var points: [CGPoint] = []
+    var shares: Int = 0
+    var dollar: Double = 0
+    var stockPrice: Double = 0
+    var percent: Double = 0
+    var volume: Int = 0
+    var open: Double = 0
+    var high: Double = 0
+    var low: Double = 0
     let db = Firestore.firestore()
     
     
@@ -35,20 +36,27 @@ class StocksDetailsViewController: UIViewController{
             let textField = alert?.textFields![0] // Force unwrapping because we know it exists.
             if let text: String = textField?.text {
                 let trimmedString = Int(text.trimmingCharacters(in: .whitespaces))
-
                 if let numShares = trimmedString {
+                    if numShares <= 0 {
+                        let nonPositiveNumberAlert = UIAlertController(title: "Error", message: "Please enter a positive number", preferredStyle: .alert)
+                        nonPositiveNumberAlert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                        self.present(nonPositiveNumberAlert, animated: true, completion: nil)
+                    }
                     self.stockHold[0].numShares = numShares
                     let username = UserDefaults.standard.string(forKey: "username")
                     if let user = username {
-                        self.buyStock(username: user, ticker: self.tickerName, numShares: self.stockHold[0].numShares)
+                        let success = self.buyStock(username: user, ticker: self.tickerName, numShares: self.stockHold[0].numShares)
+                        if success {
+                            self.performSegue(withIdentifier: "toPortfolioView", sender: self)
+                        }
                     }
                 }
                 else {
                     let noNumberAlert = UIAlertController(title: "Error", message: "Please enter a valid number", preferredStyle: .alert)
+                    noNumberAlert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
                     self.present(noNumberAlert, animated: true, completion: nil)
                 }
             }
-            self.performSegue(withIdentifier: "toPortfolioView", sender: self)
         }))
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
         self.present(alert, animated: true, completion: nil)
@@ -73,6 +81,7 @@ class StocksDetailsViewController: UIViewController{
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        getCashValue(username: UserDefaults.standard.value(forKey: "username") as! String)
         sortStocks(stockDic: stockHold[0].SMA)
         self.title = tickerName
         price.text = "$" + String(chronoStockPrice[0])
@@ -123,27 +132,69 @@ class StocksDetailsViewController: UIViewController{
     
     // Ticker is the shorthand name for the stock (i.e. AAPL for Apple)
     // This will update the stock
-    func buyStock(username: String, ticker: String, numShares: Int) {
-        let stockDict: [String:Int] = UserDefaults.standard.value(forKey: "userStocks") as! [String : Int]
+    func buyStock(username: String, ticker: String, numShares: Int) -> Bool {
+        let dp = dataParse()
+        let currentPrice = dp.pullCurrentPrice(ticker: ticker)
+        let newCashValue = userCashValue - (currentPrice * Double(numShares))
+        let alert = UIAlertController(title: "Error", message: "You don't have enough money to buy \(numShares) of \(ticker).", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        if newCashValue < 0 {
+            self.present(alert, animated: true)
+            return false
+        }
+        
+        var stockShareDict: [String:Int] = UserDefaults.standard.value(forKey: "userStocks") as! [String : Int]
+        
         // The amount they buy will come in, so we need to retrieve
         // how much they already have (if they already own it) in 
         // order to update the value correctly
         var newNumShares: Int
-        if let oldShareNumber = stockDict[ticker] {
+        if let oldShareNumber = stockShareDict[ticker] {
             newNumShares = numShares + oldShareNumber
         }
         else {
             newNumShares = numShares
         }
-        let defaults = UserDefaults.standard
-        var stockShareDict:[String: Int] = defaults.value(forKey: "userStocks") as! [String:Int]
-        stockShareDict[ticker] = newNumShares
-        defaults.set(stockShareDict, forKey: "userStocks")
         
+        stockShareDict[ticker] = newNumShares
+        UserDefaults.standard.set(stockShareDict, forKey: "userStocks")
+        
+        // Update stock share numbers in the database
         db.collection("stocks").document("\(username)-\(ticker)").setData([
             "username": username,
             "ticker": ticker,
             "numShares": newNumShares
+        ]) { err in
+            if let err = err {
+                print("Error adding document: \(err)")
+            } else {
+                print("Document successfully written!")
+            }
+        }
+
+        setCashValue(username: username, newCashValue: newCashValue)
+        return true
+    }
+            
+    func getCashValue(username: String) {
+        self.db.collection("users").document(username).getDocument
+        { [unowned self] (document, err) in
+            if let err = err {
+                print("Error getting documents: \(err)")
+            }
+            else {
+                if let document = document {
+                    if let cash = document.data()["cash"] as? Double {
+                        self.userCashValue = cash
+                    }
+                }
+            }
+        }
+    }
+    
+    func setCashValue(username: String, newCashValue: Double) {
+        db.collection("users").document(username).updateData([
+            "cash": newCashValue
         ]) { err in
             if let err = err {
                 print("Error adding document: \(err)")
