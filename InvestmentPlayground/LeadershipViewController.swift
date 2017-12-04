@@ -11,6 +11,7 @@ import FirebaseFirestore
 
 class LeadershipViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
+    @IBOutlet weak var ranking: UILabel!
     @IBOutlet weak var leadershipTable: UITableView!
     var game: String = ""
     var users: [String] = []
@@ -41,8 +42,20 @@ class LeadershipViewController: UIViewController, UITableViewDelegate, UITableVi
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell { //help from https://www.ralfebert.de/tutorials/ios-swift-uitableviewcontroller/#data_swift_arrays
         
         let cell1 = tableView.dequeueReusableCell(withIdentifier: "leaderCell") as! LeaderCell
-        cell1.textLabel?.text = users[indexPath.row]
-        cell1.returnLabel.text = "+1.23%" //@MICHAEL: this should be calculated for users
+        cell1.nameLabel.textColor = UIColor(red: 182, green: 192, blue: 210, alpha: 1.0)
+        cell1.rankingLabel.textColor = UIColor(red: 182, green: 192, blue: 210, alpha: 1.0)
+        cell1.nameLabel.text = users[indexPath.row]
+        cell1.rankingLabel.text = "#" + String(indexPath.row + 1)
+        let returnPort = 1.23 //@MICHAEL: this should be calculated for users
+        if ( returnPort < 0) {
+            cell1.returnLabel.textColor = UIColor.red
+            cell1.returnLabel.text = "-" + String(returnPort) + "%"
+        }
+        else {
+            cell1.returnLabel.textColor = UIColor.green
+            cell1.returnLabel.text = "+" + String(returnPort) + "%"
+        }
+
         return cell1
     }
     

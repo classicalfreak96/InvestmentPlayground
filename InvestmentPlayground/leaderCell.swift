@@ -12,8 +12,11 @@ import UIKit
 
 class LeaderCell: UITableViewCell{
     
+    @IBOutlet weak var rankingLabel: UILabel!
 
     @IBOutlet weak var returnLabel: UILabel!
+    
+    @IBOutlet weak var nameLabel: UILabel!
     
 
 }

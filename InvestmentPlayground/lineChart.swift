@@ -45,6 +45,8 @@ class LineChart: UIView {
     var yMax: CGFloat = 100
     var xMin: CGFloat = 0
     var yMin: CGFloat = 0
+    var yMaxAbs: CGFloat = 0
+    var yMinAbs: CGFloat = 0
     
     var data: [CGPoint]?
     
@@ -90,8 +92,11 @@ class LineChart: UIView {
         xMax = ceil(xs.max()! / deltaX) * deltaX
         yMax = ceil(ys.max()! / deltaY) * deltaY
         xMin = floor(xs.min()! / deltaX) * deltaX
-        //yMin = floor(ys.min()! / deltaY) * deltaY
-        yMin = 0
+        yMin = floor(ys.min()! / deltaY) * deltaY
+        yMaxAbs = ys.max()!
+        yMinAbs = ys.min()!
+        //yMin = 0
+        print("yMin is: " + String(describing: yMinAbs))
         setTransform(minX: xMin, maxX: xMax, minY: yMin, maxY: yMax)
     }
     
@@ -103,7 +108,8 @@ class LineChart: UIView {
         let yOffset = yLabelSize.width + 5
         
         let xScale = (bounds.width - yOffset - xLabelSize.width/2 - 2)/(maxX-minX)
-        let yScale = (bounds.height - xOffset - yLabelSize.height/2 - 2)/(maxY-minY)
+        let yScale = (bounds.height - xOffset - yLabelSize.height/2 - 2)/(maxY)
+        print(yScale)
         
         chartTransform = CGAffineTransform(a: xScale, b: 0, c: 0, d: -yScale, tx: yOffset, ty: bounds.height - xOffset)
         
@@ -187,25 +193,33 @@ class LineChart: UIView {
     }
     
     func plot(_ points: [CGPoint]) {
+        var tempPoints:[CGPoint] = []
         lineLayer.path = nil
         circlesLayer.path = nil
         data = nil
         
         guard !points.isEmpty else {return}
         
-        self.data = points
-        
         if self.chartTransform == nil {
             setAxisRange(forPoints: points)
         }
         
+        self.data = points
+        
+        for point in points{
+            print("old Y: " + String(describing: point.y))
+            let newY = point.y - ((yMinAbs/(yMaxAbs-yMinAbs)) * (yMaxAbs - point.y))
+            print("new Y: " + String(describing: newY))
+            tempPoints.append(CGPoint.init(x: point.x, y: newY))
+        }
+        
         let linePath = CGMutablePath()
-        linePath.addLines(between: points, transform: chartTransform!)
+        linePath.addLines(between: tempPoints, transform: chartTransform!)
         
         lineLayer.path = linePath
         
         if showPoints {
-            circlesLayer.path = circles(atPoints: points, withTransform: chartTransform!)
+            circlesLayer.path = circles(atPoints: tempPoints, withTransform: chartTransform!)
         }
     }
     
