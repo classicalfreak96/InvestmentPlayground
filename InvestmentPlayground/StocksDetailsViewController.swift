@@ -38,7 +38,7 @@ class StocksDetailsViewController: UIViewController{
                     self.stockHold[0].numShares = numShares
                     let username = UserDefaults.standard.string(forKey: "username")
                     if let user = username {
-                        self.updateStock(username: user, ticker: self.tickerName, numShares: self.stockHold[0].numShares)
+                        self.buyStock(username: user, ticker: self.tickerName, numShares: self.stockHold[0].numShares)
                     }
                 }
                 else {
@@ -73,15 +73,6 @@ class StocksDetailsViewController: UIViewController{
         super.viewDidLoad()
         sortStocks(stockDic: stockHold[0].SMA)
         self.title = tickerName
-//        if let unwrappedPrice = chronoStockPrice.last {
-//            price.text = String(unwrappedPrice)
-//        }
-        price.text = String(chronoStockPrice[0])
-//        else {
-//            price.text = "Price not found"
-//        }
-        
-        //price.text = String(describing: chronoStockPrice.last!)
         changeDol.text = "$" + String(format: "%.2f", dollar)
         changePercent.text = "(" + String(format: "%.5f", percent) + "%" + ")"
         if (percent < 0) {
@@ -129,11 +120,19 @@ class StocksDetailsViewController: UIViewController{
     
     // Ticker is the shorthand name for the stock (i.e. AAPL for Apple)
     // This will update the stock
-    func updateStock(username: String, ticker: String, numShares: Int) {
+    func buyStock(username: String, ticker: String, numShares: Int) {
+        let stockDict: [String:Int] = UserDefaults.standard.value(forKey: "userStocks") as! [String : Int]
+        var newNumShares: Int
+        if let oldShareNumber = stockDict[ticker] {
+            newNumShares = numShares + oldShareNumber
+        }
+        else {
+            newNumShares = numShares
+        }
         db.collection("stocks").document("\(username)-\(ticker)").setData([
             "username": username,
             "ticker": ticker,
-            "numShares": numShares
+            "numShares": newNumShares
         ]) { err in
             if let err = err {
                 print("Error adding document: \(err)")

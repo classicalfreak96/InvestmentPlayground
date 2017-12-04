@@ -85,7 +85,7 @@ class PortfolioViewController: UIViewController, UITableViewDataSource, UITableV
                     }
                     else {
                         if let textInt: Int = Int(text) {
-                            self.updateStock(username: UserDefaults.standard.string(forKey: "username")!, ticker: self.stocks[indexPath.row].ticker, numShares: self.stocks[indexPath.row].numShares - Int(textInt))
+                            self.sellStock(username: UserDefaults.standard.string(forKey: "username")!, ticker: self.stocks[indexPath.row].ticker, numShares: self.stocks[indexPath.row].numShares - Int(textInt))
                         }
                         self.stocks[indexPath.row].numShares = self.stocks[indexPath.row].numShares - trimmedString!
                         let alert = UIAlertController(title: "Profit from selling " + self.stocks[indexPath.row].ticker, message: "You have made " + "12132312123", preferredStyle: .alert) //CHANGE "123123123123"
@@ -142,7 +142,7 @@ class PortfolioViewController: UIViewController, UITableViewDataSource, UITableV
     
     func calculatePortfolioValue() {
         var totalVal = 0.0
-        let stockDict:[String:Int] = UserDefaults.standard.value(forKey: "userStocks") as! [String : Int]
+        let stockDict: [String:Int] = UserDefaults.standard.value(forKey: "userStocks") as! [String : Int]
         for (ticker, numShares) in stockDict {
             if numShares > 0 {
                 let stockValue = Double(numShares) * dataParser.pullCurrentPrice(ticker:ticker)
@@ -154,8 +154,8 @@ class PortfolioViewController: UIViewController, UITableViewDataSource, UITableV
     }
     
     // Ticker is the shorthand name for the stock (i.e. AAPL for Apple)
-    // This will add a stock if it exists and update it otherwise
-    func updateStock(username: String, ticker: String, numShares: Int) {
+    func sellStock(username: String, ticker: String, numShares: Int) {
+        let stockDict: [String:Int] = UserDefaults.standard.value(forKey: "userStocks") as! [String : Int]
         db.collection("stocks").document("\(username)-\(ticker)").setData([
             "username": username,
             "ticker": ticker,
