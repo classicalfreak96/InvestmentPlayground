@@ -25,7 +25,6 @@ class PortfolioViewController: UIViewController, UITableViewDataSource, UITableV
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        let defaults = UserDefaults.standard
         let username = UserDefaults.standard.string(forKey: "username")!
         getStocksFromUserDefaults(username: username)
         getCashValue(username: username)
@@ -42,6 +41,7 @@ class PortfolioViewController: UIViewController, UITableViewDataSource, UITableV
     override func viewDidAppear(_ animated: Bool) {
         let username = UserDefaults.standard.string(forKey: "username")!
         getStocksFromUserDefaults(username: username)
+        getCashValue(username: username)
         calculatePortfolioValue()
     }
     
@@ -96,17 +96,8 @@ class PortfolioViewController: UIViewController, UITableViewDataSource, UITableV
                             self.setCashValue(username: username, newCashValue: self.cashValue + (currentPrice * Double(self.stocks[indexPath.row].numShares)))
                         }
                         self.stocks[indexPath.row].numShares = self.stocks[indexPath.row].numShares - trimmedString!
-                        /*
-                        var dollar:Double = 0.0
-                        var percent: Double = 0.0
-                        var volume: Int = 0
-                        var open: Double = 0.0
-                        var high: Double = 0.0
-                        var low: Double = 0.0
-                        (dollar, percent, volume, open, high, low) = self.dataParser.pullStockData(append: true, ticker: query)
-                        */
-                        var query = self.stocks[indexPath.row].ticker
-                        var price = self.dataParser.pullCurrentPrice(ticker: query)
+                        let query = self.stocks[indexPath.row].ticker
+                        let price = self.dataParser.pullCurrentPrice(ticker: query)
                         if let textInt: Double = Double(text) {
                         let alert = UIAlertController(title: "Profit from selling " + self.stocks[indexPath.row].ticker, message: "You have made $" + String(price * textInt), preferredStyle: .alert) //CHANGE "123123123123"
                             alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
@@ -166,7 +157,7 @@ class PortfolioViewController: UIViewController, UITableViewDataSource, UITableV
     func getStocksFromUserDefaults(username: String) {
         let defaults = UserDefaults.standard
         self.stocks = []
-        var stockShareDict: [String: Int] = defaults.value(forKey: "userStocks") as! [String:Int]
+        let stockShareDict: [String: Int] = defaults.value(forKey: "userStocks") as! [String:Int]
         for (ticker, numShares) in stockShareDict {
             if numShares > 0 {
                 self.stocks.append(Stock(SMA: [:], ticker: ticker, numShares: numShares))
@@ -239,6 +230,7 @@ class PortfolioViewController: UIViewController, UITableViewDataSource, UITableV
             } else {
                 print("Document successfully written!")
             }
+            self.cashValue = newCashValue
             self.cashLeft?.text = "Remaining cash: $" + String(newCashValue)
             self.calculatePortfolioValue()
         }
