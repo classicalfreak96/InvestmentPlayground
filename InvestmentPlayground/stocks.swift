@@ -1,6 +1,6 @@
 //
-//  movies.swift
-//  movie viewer
+//  stocks.swift
+//  stock viewer
 //
 //  Created by labuser on 10/22/17.
 //  Copyright © 2017 harrisonlu. All rights reserved.
