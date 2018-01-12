@@ -1,5 +1,5 @@
 //
-//  Reegister.swift
+//  ReegisterViewController.swift
 //  InvestmentPlayground
 //
 //  Created by Michelle Xu on 12/1/17.

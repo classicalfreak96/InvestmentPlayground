@@ -1,6 +1,6 @@
 //
 //  stocks.swift
-//  stock viewer
+//  InvestmentPlayground
 //
 //  Created by labuser on 10/22/17.
 //  Copyright © 2017 harrisonlu. All rights reserved.

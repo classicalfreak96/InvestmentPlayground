@@ -1,6 +1,6 @@
 //
 //  LeadershipViewController.swift
-//  movie viewer tabbed
+//  InvestmentPlayground
 //
 //  Created by Michelle Xu on 11/18/17.
 //  Copyright © 2017 Michelle Xu. All rights reserved.
